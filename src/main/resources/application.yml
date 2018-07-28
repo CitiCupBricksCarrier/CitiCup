@@ -19,7 +19,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/citicup
     username: root
-    password: 1998
+    password: DebugTeam
     driver-class-name: com.mysql.jdbc.Driver
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
