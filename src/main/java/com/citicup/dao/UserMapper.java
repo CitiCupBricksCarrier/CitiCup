@@ -1,6 +1,8 @@
 package com.citicup.dao;
 
 import com.citicup.entity.User;
+import org.apache.ibatis.annotations.Select;
+import java.util.List;
 
 public interface UserMapper {
     /**
@@ -50,4 +52,7 @@ public interface UserMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(User record);
+
+    @Select("select * from 用户")
+    public List<User> getAll();
 }
