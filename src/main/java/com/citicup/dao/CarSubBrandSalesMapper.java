@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.entity.CarSubBrandSales;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CarSubBrandSalesMapper {
     /**
@@ -18,4 +21,7 @@ public interface CarSubBrandSalesMapper {
      * @mbggenerated
      */
     int insertSelective(CarSubBrandSales record);
+
+    @Select("select * from 中国乘用车分品牌销量")
+    List<CarSubBrandSales> getAll();
 }

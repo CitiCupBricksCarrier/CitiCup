@@ -54,5 +54,5 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     @Select("select * from 用户")
-    public List<User> getAll();
+    List<User> getAll();
 }
