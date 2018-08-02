@@ -50,7 +50,7 @@ public class IndustryDataSellNumController {
         return JSONObject.toJSONString(list);
     }
 
-    @RequestMapping("/cycxl/cycfxl")
+    @RequestMapping("/cycxl/cycxl")
     public String selectCycfxl() {
 
         List<ChinesePassengerCarSales> list = chinesePassengerCarSalesMapper.getAll();
