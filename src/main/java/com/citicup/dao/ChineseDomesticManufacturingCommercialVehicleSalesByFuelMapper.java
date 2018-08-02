@@ -1,6 +1,10 @@
 package com.citicup.dao;
 
+import com.citicup.model.ChineseCommercialVehicleSales;
 import com.citicup.model.ChineseDomesticManufacturingCommercialVehicleSalesByFuel;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ChineseDomesticManufacturingCommercialVehicleSalesByFuelMapper {
     /**
@@ -50,4 +54,7 @@ public interface ChineseDomesticManufacturingCommercialVehicleSalesByFuelMapper 
      * @mbggenerated
      */
     int updateByPrimaryKey(ChineseDomesticManufacturingCommercialVehicleSalesByFuel record);
+
+    @Select("SELECT * FROM citicup.中国国内制造商用车分燃料类型销量")
+    List<ChineseDomesticManufacturingCommercialVehicleSalesByFuel> getAll();
 }
