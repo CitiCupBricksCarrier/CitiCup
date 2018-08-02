@@ -129,18 +129,18 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="中国国内制造商用车分燃料类型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByType"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="中国国内制造商用车分燃料类型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByFuel"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="中国国内制造商用车分车型产量" domainObjectName="ChineseDomesticManufacturingProductionDividedByType"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="中国国内制造商用车分车型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByType"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="中国国内制造商用车分车型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByType"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="中国国内制造商用车销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSales"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -481,13 +481,13 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="gain乘用车整体价格变化指数" domainObjectName="GainPassengerCarOverallPriceChangeIndex"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="gain乘用车整体终端优惠指数" domainObjectName="GainPassengerCarOverallEndPreferentialIndex"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="gain乘用车整体价格变化指数" domainObjectName="GainPassengerCarOverallPriceChangeIndex"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="gain乘用车整体终端优惠指数" domainObjectName="GainPassengerCarOverallEndPreferentialIndex"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
     </context>
 </generatorConfiguration>
