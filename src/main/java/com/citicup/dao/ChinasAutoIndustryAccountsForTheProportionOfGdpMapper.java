@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ChinasAutoIndustryAccountsForTheProportionOfGdp;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ChinasAutoIndustryAccountsForTheProportionOfGdpMapper {
     /**
@@ -50,4 +53,7 @@ public interface ChinasAutoIndustryAccountsForTheProportionOfGdpMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ChinasAutoIndustryAccountsForTheProportionOfGdp record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业收入占gdp比重")
+    List<ChinasAutoIndustryAccountsForTheProportionOfGdp> getAll();
 }

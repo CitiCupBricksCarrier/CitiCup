@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.GraphicsAndDataDeriveTotalProfitsFromChinasAutoIndustry;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface GraphicsAndDataDeriveTotalProfitsFromChinasAutoIndustryMapper {
     /**
@@ -50,4 +53,7 @@ public interface GraphicsAndDataDeriveTotalProfitsFromChinasAutoIndustryMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(GraphicsAndDataDeriveTotalProfitsFromChinasAutoIndustry record);
+
+    @Select("SELECT * FROM citicup.图形和数据导出中国汽车行业利润总额")
+    List<GraphicsAndDataDeriveTotalProfitsFromChinasAutoIndustry> getAll();
 }

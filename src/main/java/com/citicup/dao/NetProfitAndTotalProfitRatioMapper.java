@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.NetProfitAndTotalProfitRatio;
 import com.citicup.model.NetProfitAndTotalProfitRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface NetProfitAndTotalProfitRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface NetProfitAndTotalProfitRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(NetProfitAndTotalProfitRatio record);
+
+    @Select("SELECT * FROM citicup.净利润与利润总额比")
+    List<NetProfitAndTotalProfitRatio> getAll();
 }

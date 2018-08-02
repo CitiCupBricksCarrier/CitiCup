@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.MonthlyAverageMarketPriceOfNaturalRubberInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface MonthlyAverageMarketPriceOfNaturalRubberInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface MonthlyAverageMarketPriceOfNaturalRubberInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(MonthlyAverageMarketPriceOfNaturalRubberInChina record);
+
+    @Select("SELECT * FROM citicup.中国天然橡胶月均市场价")
+    List<MonthlyAverageMarketPriceOfNaturalRubberInChina> getAll();
 }

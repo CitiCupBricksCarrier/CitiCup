@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.AssetLiabilityRatioOfAutomobileEnterprisesInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AssetLiabilityRatioOfAutomobileEnterprisesInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface AssetLiabilityRatioOfAutomobileEnterprisesInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AssetLiabilityRatioOfAutomobileEnterprisesInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车企业资产负债率")
+    List<AssetLiabilityRatioOfAutomobileEnterprisesInChina> getAll();
 }

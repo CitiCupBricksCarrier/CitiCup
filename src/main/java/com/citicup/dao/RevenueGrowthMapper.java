@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.RevenueGrowth;
 import com.citicup.model.RevenueGrowthKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface RevenueGrowthMapper {
     /**
@@ -51,4 +54,7 @@ public interface RevenueGrowthMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(RevenueGrowth record);
+
+    @Select("SELECT * FROM citicup.营业收入增长率")
+    List<RevenueGrowth> getAll();
 }

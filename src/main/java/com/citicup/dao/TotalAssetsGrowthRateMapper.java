@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.TotalAssetsGrowthRate;
 import com.citicup.model.TotalAssetsGrowthRateKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TotalAssetsGrowthRateMapper {
     /**
@@ -51,4 +54,7 @@ public interface TotalAssetsGrowthRateMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TotalAssetsGrowthRate record);
+
+    @Select("SELECT * FROM citicup.总资产增长率")
+    List<TotalAssetsGrowthRate> getAll();
 }

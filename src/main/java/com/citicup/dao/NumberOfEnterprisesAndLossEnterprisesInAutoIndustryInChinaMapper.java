@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.NumberOfEnterprisesAndLossEnterprisesInAutoIndustryInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface NumberOfEnterprisesAndLossEnterprisesInAutoIndustryInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface NumberOfEnterprisesAndLossEnterprisesInAutoIndustryInChinaMappe
      * @mbggenerated
      */
     int updateByPrimaryKey(NumberOfEnterprisesAndLossEnterprisesInAutoIndustryInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业企业和亏损企业数量")
+    List<NumberOfEnterprisesAndLossEnterprisesInAutoIndustryInChina> getAll();
 }

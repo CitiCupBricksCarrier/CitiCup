@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.ProfitMarginOfTheCostAndExpense;
 import com.citicup.model.ProfitMarginOfTheCostAndExpenseKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ProfitMarginOfTheCostAndExpenseMapper {
     /**
@@ -51,4 +54,7 @@ public interface ProfitMarginOfTheCostAndExpenseMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ProfitMarginOfTheCostAndExpense record);
+
+    @Select("SELECT * FROM citicup.成本费用利润率")
+    List<ProfitMarginOfTheCostAndExpense> getAll();
 }

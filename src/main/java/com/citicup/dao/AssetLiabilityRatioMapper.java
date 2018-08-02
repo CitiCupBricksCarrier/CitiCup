@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.AssetLiabilityRatio;
 import com.citicup.model.AssetLiabilityRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AssetLiabilityRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface AssetLiabilityRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AssetLiabilityRatio record);
+
+    @Select("SELECT * FROM citicup.资产负债率")
+    List<AssetLiabilityRatio> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfFinancialRatio_codeName;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfFinancialRatio_codeNameMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfFinancialRatio_codeNameMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfFinancialRatio_codeName record);
+
+    @Select("SELECT * FROM citicup.财务比率比较-代号名称")
+    List<ComparisonOfFinancialRatio_codeName> getAll();
 }

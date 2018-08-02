@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ProfitMarginOfAutomobileSalesInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ProfitMarginOfAutomobileSalesInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface ProfitMarginOfAutomobileSalesInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ProfitMarginOfAutomobileSalesInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车企业销售利润率")
+    List<ProfitMarginOfAutomobileSalesInChina> getAll();
 }

@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.CompanyBasicInformation;
 import com.citicup.model.CompanyBasicInformationWithBLOBs;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CompanyBasicInformationMapper {
     /**
@@ -59,4 +62,7 @@ public interface CompanyBasicInformationMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(CompanyBasicInformation record);
+
+    @Select("SELECT * FROM citicup.公司基本信息")
+    List<CompanyBasicInformation> getAll();
 }

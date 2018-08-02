@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfIndustryHistory_all;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfIndustryHistory_allMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfIndustryHistory_allMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfIndustryHistory_all record);
+
+    @Select("SELECT * FROM citicup.行业历史比较-全部")
+    List<ComparisonOfIndustryHistory_all> getAll();
 }

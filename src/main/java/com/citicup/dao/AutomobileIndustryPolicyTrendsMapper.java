@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.AutomobileIndustryPolicyTrends;
 import com.citicup.model.AutomobileIndustryPolicyTrendsKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AutomobileIndustryPolicyTrendsMapper {
     /**
@@ -59,4 +62,7 @@ public interface AutomobileIndustryPolicyTrendsMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AutomobileIndustryPolicyTrends record);
+
+    @Select("SELECT * FROM citicup.汽车行业政策动态")
+    List<AutomobileIndustryPolicyTrends> getAll();
 }

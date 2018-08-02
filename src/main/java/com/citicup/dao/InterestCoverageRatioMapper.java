@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.InterestCoverageRatio;
 import com.citicup.model.InterestCoverageRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface InterestCoverageRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface InterestCoverageRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(InterestCoverageRatio record);
+
+    @Select("SELECT * FROM citicup.利息保障倍数")
+    List<InterestCoverageRatio> getAll();
 }

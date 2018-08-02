@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfIndustryHistory_shanghaiAndShenzhenAShares;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfIndustryHistory_shanghaiAndShenzhenASharesMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfIndustryHistory_shanghaiAndShenzhenASharesMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfIndustryHistory_shanghaiAndShenzhenAShares record);
+
+    @Select("SELECT * FROM citicup.行业历史比较-沪深a股")
+    List<ComparisonOfIndustryHistory_shanghaiAndShenzhenAShares> getAll();
 }

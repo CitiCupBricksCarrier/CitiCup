@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.TheGlobalCommercialVehicleSales;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TheGlobalCommercialVehicleSalesMapper {
     /**
@@ -50,4 +53,7 @@ public interface TheGlobalCommercialVehicleSalesMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TheGlobalCommercialVehicleSales record);
+
+    @Select("SELECT * FROM citicup.全球商用车销量")
+    List<TheGlobalCommercialVehicleSales> getAll();
 }

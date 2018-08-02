@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.CashFlowLiabilityRatioOfAutomobileEnterprisesInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CashFlowLiabilityRatioOfAutomobileEnterprisesInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface CashFlowLiabilityRatioOfAutomobileEnterprisesInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(CashFlowLiabilityRatioOfAutomobileEnterprisesInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车企业现金流动负债比率")
+    List<CashFlowLiabilityRatioOfAutomobileEnterprisesInChina> getAll();
 }

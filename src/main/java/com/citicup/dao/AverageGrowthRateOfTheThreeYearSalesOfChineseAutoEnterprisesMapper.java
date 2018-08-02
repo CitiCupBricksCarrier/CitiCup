@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.AverageGrowthRateOfTheThreeYearSalesOfChineseAutoEnterprises;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AverageGrowthRateOfTheThreeYearSalesOfChineseAutoEnterprisesMapper {
     /**
@@ -50,4 +53,7 @@ public interface AverageGrowthRateOfTheThreeYearSalesOfChineseAutoEnterprisesMap
      * @mbggenerated
      */
     int updateByPrimaryKey(AverageGrowthRateOfTheThreeYearSalesOfChineseAutoEnterprises record);
+
+    @Select("SELECT * FROM citicup.中国汽车企业三年销售平均增长率")
+    List<AverageGrowthRateOfTheThreeYearSalesOfChineseAutoEnterprises> getAll();
 }

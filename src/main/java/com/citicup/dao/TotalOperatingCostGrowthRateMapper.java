@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.TotalOperatingCostGrowthRate;
 import com.citicup.model.TotalOperatingCostGrowthRateKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TotalOperatingCostGrowthRateMapper {
     /**
@@ -51,4 +54,7 @@ public interface TotalOperatingCostGrowthRateMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TotalOperatingCostGrowthRate record);
+
+    @Select("SELECT * FROM citicup.营业总成本增长率")
+    List<TotalOperatingCostGrowthRate> getAll();
 }

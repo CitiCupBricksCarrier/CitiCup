@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfMarketPerformance_sheet2;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfMarketPerformance_sheet2Mapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfMarketPerformance_sheet2Mapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfMarketPerformance_sheet2 record);
+
+    @Select("SELECT * FROM citicup.市场表现比较-sheet2")
+    List<ComparisonOfMarketPerformance_sheet2> getAll();
 }

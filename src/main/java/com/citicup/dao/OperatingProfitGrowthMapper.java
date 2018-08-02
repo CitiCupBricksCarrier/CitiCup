@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.OperatingProfitGrowth;
 import com.citicup.model.OperatingProfitGrowthKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface OperatingProfitGrowthMapper {
     /**
@@ -51,4 +54,7 @@ public interface OperatingProfitGrowthMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(OperatingProfitGrowth record);
+
+    @Select("SELECT * FROM citicup.营业利润增长率")
+    List<OperatingProfitGrowth> getAll();
 }

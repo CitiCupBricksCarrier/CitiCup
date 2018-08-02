@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfFinancialRatio_all;
 import com.citicup.model.ComparisonOfFinancialRatio_allKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfFinancialRatio_allMapper {
     /**
@@ -51,4 +54,7 @@ public interface ComparisonOfFinancialRatio_allMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfFinancialRatio_all record);
+
+    @Select("SELECT * FROM citicup.财务比率比较-全部")
+    List<ComparisonOfFinancialRatio_all> getAll();
 }

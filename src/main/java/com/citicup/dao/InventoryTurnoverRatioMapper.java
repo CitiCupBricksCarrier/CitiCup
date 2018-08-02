@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.InventoryTurnoverRatio;
 import com.citicup.model.InventoryTurnoverRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface InventoryTurnoverRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface InventoryTurnoverRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(InventoryTurnoverRatio record);
+
+    @Select("SELECT * FROM citicup.存货周转率")
+    List<InventoryTurnoverRatio> getAll();
 }

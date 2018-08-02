@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfEarningsForecast_codeSplitTable;
 import com.citicup.model.ComparisonOfEarningsForecast_codeSplitTableKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfEarningsForecast_codeSplitTableMapper {
     /**
@@ -51,4 +54,7 @@ public interface ComparisonOfEarningsForecast_codeSplitTableMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfEarningsForecast_codeSplitTable record);
+
+    @Select("SELECT * FROM citicup.盈利预测比较-代码+分表")
+    List<ComparisonOfEarningsForecast_codeSplitTable> getAll();
 }

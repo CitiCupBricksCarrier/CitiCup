@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.PerCapitaGdpIndexInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface PerCapitaGdpIndexInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface PerCapitaGdpIndexInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(PerCapitaGdpIndexInChina record);
+
+    @Select("SELECT * FROM citicup.中国人均gdp指数")
+    List<PerCapitaGdpIndexInChina> getAll();
 }

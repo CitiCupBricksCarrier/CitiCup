@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.HeavyTruckProductionInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface HeavyTruckProductionInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface HeavyTruckProductionInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(HeavyTruckProductionInChina record);
+
+    @Select("SELECT * FROM citicup.中国重卡产量")
+    List<HeavyTruckProductionInChina> getAll();
 }

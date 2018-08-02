@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ConsumptionExpenditureOfChineseResidents;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ConsumptionExpenditureOfChineseResidentsMapper {
     /**
@@ -50,4 +53,7 @@ public interface ConsumptionExpenditureOfChineseResidentsMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ConsumptionExpenditureOfChineseResidents record);
+
+    @Select("SELECT * FROM citicup.中国居民消费支出")
+    List<ConsumptionExpenditureOfChineseResidents> getAll();
 }

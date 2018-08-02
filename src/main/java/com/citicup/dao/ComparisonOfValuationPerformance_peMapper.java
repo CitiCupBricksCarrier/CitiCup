@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfValuationPerformance_pe;
 import com.citicup.model.ComparisonOfValuationPerformance_peKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfValuationPerformance_peMapper {
     /**
@@ -51,4 +54,7 @@ public interface ComparisonOfValuationPerformance_peMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfValuationPerformance_pe record);
+
+    @Select("SELECT * FROM citicup.估值表现分析-市盈率拆分表")
+    List<ComparisonOfValuationPerformance_pe> getAll();
 }

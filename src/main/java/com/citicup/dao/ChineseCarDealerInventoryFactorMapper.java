@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ChineseCarDealerInventoryFactor;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ChineseCarDealerInventoryFactorMapper {
     /**
@@ -50,4 +53,7 @@ public interface ChineseCarDealerInventoryFactorMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ChineseCarDealerInventoryFactor record);
+
+    @Select("SELECT * FROM citicup.中国汽车经销商库存系数")
+    List<ChineseCarDealerInventoryFactor> getAll();
 }

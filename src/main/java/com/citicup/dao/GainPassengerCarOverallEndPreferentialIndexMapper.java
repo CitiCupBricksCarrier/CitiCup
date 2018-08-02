@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.GainPassengerCarOverallEndPreferentialIndex;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface GainPassengerCarOverallEndPreferentialIndexMapper {
     /**
@@ -50,4 +53,7 @@ public interface GainPassengerCarOverallEndPreferentialIndexMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(GainPassengerCarOverallEndPreferentialIndex record);
+
+    @Select("SELECT * FROM citicup.gain乘用车整体终端优惠指数")
+    List<GainPassengerCarOverallEndPreferentialIndex> getAll();
 }

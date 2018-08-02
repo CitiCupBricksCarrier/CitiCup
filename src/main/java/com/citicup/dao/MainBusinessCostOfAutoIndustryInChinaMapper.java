@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.MainBusinessCostOfAutoIndustryInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface MainBusinessCostOfAutoIndustryInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface MainBusinessCostOfAutoIndustryInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(MainBusinessCostOfAutoIndustryInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业主营业务成本")
+    List<MainBusinessCostOfAutoIndustryInChina> getAll();
 }

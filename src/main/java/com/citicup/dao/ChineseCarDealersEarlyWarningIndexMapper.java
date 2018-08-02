@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ChineseCarDealersEarlyWarningIndex;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ChineseCarDealersEarlyWarningIndexMapper {
     /**
@@ -50,4 +53,7 @@ public interface ChineseCarDealersEarlyWarningIndexMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ChineseCarDealersEarlyWarningIndex record);
+
+    @Select("SELECT * FROM citicup.中国汽车经销商库存预警指数")
+    List<ChineseCarDealersEarlyWarningIndex> getAll();
 }

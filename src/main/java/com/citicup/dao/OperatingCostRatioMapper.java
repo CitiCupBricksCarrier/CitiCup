@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.OperatingCostRatio;
 import com.citicup.model.OperatingCostRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface OperatingCostRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface OperatingCostRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(OperatingCostRatio record);
+
+    @Select("SELECT * FROM citicup.营业成本率")
+    List<OperatingCostRatio> getAll();
 }

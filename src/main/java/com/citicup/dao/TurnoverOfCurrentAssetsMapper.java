@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.TurnoverOfCurrentAssets;
 import com.citicup.model.TurnoverOfCurrentAssetsKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TurnoverOfCurrentAssetsMapper {
     /**
@@ -51,4 +54,7 @@ public interface TurnoverOfCurrentAssetsMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TurnoverOfCurrentAssets record);
+
+    @Select("SELECT * FROM citicup.流动资产周转率")
+    List<TurnoverOfCurrentAssets> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.TotalDebtOfAutoIndustryInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TotalDebtOfAutoIndustryInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface TotalDebtOfAutoIndustryInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TotalDebtOfAutoIndustryInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业负债总计")
+    List<TotalDebtOfAutoIndustryInChina> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ContrastOfMarketPerformance_newThirdBoard;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ContrastOfMarketPerformance_newThirdBoardMapper {
     /**
@@ -50,4 +53,7 @@ public interface ContrastOfMarketPerformance_newThirdBoardMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ContrastOfMarketPerformance_newThirdBoard record);
+
+    @Select("SELECT * FROM citicup.市场表现对比-新三板做市")
+    List<ContrastOfMarketPerformance_newThirdBoard> getAll();
 }

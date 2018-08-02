@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.EquityTurnover;
 import com.citicup.model.EquityTurnoverKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface EquityTurnoverMapper {
     /**
@@ -51,4 +54,7 @@ public interface EquityTurnoverMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(EquityTurnover record);
+
+    @Select("SELECT * FROM citicup.股东权益周转率")
+    List<EquityTurnover> getAll();
 }

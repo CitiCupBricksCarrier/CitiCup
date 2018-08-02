@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.DaysInInventory;
 import com.citicup.model.DaysInInventoryKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface DaysInInventoryMapper {
     /**
@@ -51,4 +54,7 @@ public interface DaysInInventoryMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(DaysInInventory record);
+
+    @Select("SELECT * FROM citicup.存货周转天数")
+    List<DaysInInventory> getAll();
 }

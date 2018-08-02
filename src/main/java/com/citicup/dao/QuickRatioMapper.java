@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.QuickRatio;
 import com.citicup.model.QuickRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface QuickRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface QuickRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(QuickRatio record);
+
+    @Select("SELECT * FROM citicup.速动比率")
+    List<QuickRatio> getAll();
 }

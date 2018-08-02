@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.CompanyClassification;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CompanyClassificationMapper {
     /**
@@ -18,4 +21,7 @@ public interface CompanyClassificationMapper {
      * @mbggenerated
      */
     int insertSelective(CompanyClassification record);
+
+    @Select("SELECT * FROM citicup.公司分类")
+    List<CompanyClassification> getAll();
 }

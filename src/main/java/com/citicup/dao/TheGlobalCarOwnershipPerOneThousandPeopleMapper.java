@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.TheGlobalCarOwnershipPerOneThousandPeople;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TheGlobalCarOwnershipPerOneThousandPeopleMapper {
     /**
@@ -50,4 +53,7 @@ public interface TheGlobalCarOwnershipPerOneThousandPeopleMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TheGlobalCarOwnershipPerOneThousandPeople record);
+
+    @Select("SELECT * FROM citicup.全球每千人汽车保有量")
+    List<TheGlobalCarOwnershipPerOneThousandPeople> getAll();
 }

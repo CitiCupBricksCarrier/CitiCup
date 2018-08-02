@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.RateOfReturnOnInvestment;
 import com.citicup.model.RateOfReturnOnInvestmentKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface RateOfReturnOnInvestmentMapper {
     /**
@@ -51,4 +54,7 @@ public interface RateOfReturnOnInvestmentMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(RateOfReturnOnInvestment record);
+
+    @Select("SELECT * FROM citicup.投资收益率")
+    List<RateOfReturnOnInvestment> getAll();
 }

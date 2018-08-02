@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.TheGlobalCarOwnership;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TheGlobalCarOwnershipMapper {
     /**
@@ -50,4 +53,7 @@ public interface TheGlobalCarOwnershipMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TheGlobalCarOwnership record);
+
+    @Select("SELECT * FROM citicup.全球汽车保有量")
+    List<TheGlobalCarOwnership> getAll();
 }

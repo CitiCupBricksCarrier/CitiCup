@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.CarBusinessNews;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CarBusinessNewsMapper {
     /**
@@ -18,4 +21,7 @@ public interface CarBusinessNewsMapper {
      * @mbggenerated
      */
     int insertSelective(CarBusinessNews record);
+
+    @Select("SELECT * FROM citicup.汽车企业新闻速览")
+    List<CarBusinessNews> getAll();
 }

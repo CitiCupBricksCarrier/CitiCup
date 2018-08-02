@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.WorkingCapitalAndLoanRatio;
 import com.citicup.model.WorkingCapitalAndLoanRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface WorkingCapitalAndLoanRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface WorkingCapitalAndLoanRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(WorkingCapitalAndLoanRatio record);
+
+    @Select("SELECT * FROM citicup.营运资金与借款比")
+    List<WorkingCapitalAndLoanRatio> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.HighwayPassengerTurnoverInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface HighwayPassengerTurnoverInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface HighwayPassengerTurnoverInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(HighwayPassengerTurnoverInChina record);
+
+    @Select("SELECT * FROM citicup.中国公路旅客周转量")
+    List<HighwayPassengerTurnoverInChina> getAll();
 }

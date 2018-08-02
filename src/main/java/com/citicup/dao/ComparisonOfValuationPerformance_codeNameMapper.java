@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfValuationPerformance_codeName;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfValuationPerformance_codeNameMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfValuationPerformance_codeNameMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfValuationPerformance_codeName record);
+
+    @Select("SELECT * FROM citicup.估值表现分析-代码+简称")
+    List<ComparisonOfValuationPerformance_codeName> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfIndustryHistory_allAShares;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfIndustryHistory_allASharesMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfIndustryHistory_allASharesMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfIndustryHistory_allAShares record);
+
+    @Select("SELECT * FROM citicup.行业历史比较-全部a股")
+    List<ComparisonOfIndustryHistory_allAShares> getAll();
 }

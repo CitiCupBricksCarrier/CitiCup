@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.FixedAssetsInvestmentPriceIndexInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface FixedAssetsInvestmentPriceIndexInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface FixedAssetsInvestmentPriceIndexInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(FixedAssetsInvestmentPriceIndexInChina record);
+
+    @Select("SELECT * FROM citicup.中国固定资产投资价格指数")
+    List<FixedAssetsInvestmentPriceIndexInChina> getAll();
 }

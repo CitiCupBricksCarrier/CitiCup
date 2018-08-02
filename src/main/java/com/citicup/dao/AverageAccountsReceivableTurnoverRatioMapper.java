@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.AverageAccountsReceivableTurnoverRatio;
 import com.citicup.model.AverageAccountsReceivableTurnoverRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AverageAccountsReceivableTurnoverRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface AverageAccountsReceivableTurnoverRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AverageAccountsReceivableTurnoverRatio record);
+
+    @Select("SELECT * FROM citicup.应收账款周转率")
+    List<AverageAccountsReceivableTurnoverRatio> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfIndustryHistory_newThirdBoard;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfIndustryHistory_newThirdBoardMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfIndustryHistory_newThirdBoardMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfIndustryHistory_newThirdBoard record);
+
+    @Select("SELECT * FROM citicup.行业历史比较-新三板做市")
+    List<ComparisonOfIndustryHistory_newThirdBoard> getAll();
 }

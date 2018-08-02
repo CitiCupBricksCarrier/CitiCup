@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfMarketPerformance_risefal;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfMarketPerformance_risefalMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfMarketPerformance_risefalMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfMarketPerformance_risefal record);
+
+    @Select("SELECT * FROM citicup.市场表现比较-risefal")
+    List<ComparisonOfMarketPerformance_risefal> getAll();
 }

@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.NetProfitGrowthRate;
 import com.citicup.model.NetProfitGrowthRateKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface NetProfitGrowthRateMapper {
     /**
@@ -51,4 +54,7 @@ public interface NetProfitGrowthRateMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(NetProfitGrowthRate record);
+
+    @Select("SELECT * FROM citicup.净利润增长率")
+    List<NetProfitGrowthRate> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.GainPassengerCarOverallPriceChangeIndex;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface GainPassengerCarOverallPriceChangeIndexMapper {
     /**
@@ -50,4 +53,7 @@ public interface GainPassengerCarOverallPriceChangeIndexMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(GainPassengerCarOverallPriceChangeIndex record);
+
+    @Select("SELECT * FROM citicup.gain乘用车整体价格变化指数")
+    List<GainPassengerCarOverallPriceChangeIndex> getAll();
 }

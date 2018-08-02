@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.FixedAssetInvestmentInChinasAutoIndustryAccountsForTheProportionOfInvestmentInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface FixedAssetInvestmentInChinasAutoIndustryAccountsForTheProportionOfInvestmentInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface FixedAssetInvestmentInChinasAutoIndustryAccountsForTheProportio
      * @mbggenerated
      */
     int updateByPrimaryKey(FixedAssetInvestmentInChinasAutoIndustryAccountsForTheProportionOfInvestmentInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业固定资产投资占全国投资比重")
+    List<FixedAssetInvestmentInChinasAutoIndustryAccountsForTheProportionOfInvestmentInChina> getAll();
 }

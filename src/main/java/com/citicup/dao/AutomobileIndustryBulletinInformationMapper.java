@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.AutomobileIndustryBulletinInformation;
 import com.citicup.model.AutomobileIndustryBulletinInformationKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AutomobileIndustryBulletinInformationMapper {
     /**
@@ -51,4 +54,7 @@ public interface AutomobileIndustryBulletinInformationMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AutomobileIndustryBulletinInformation record);
+
+    @Select("SELECT * FROM citicup.汽车行业公告信息")
+    List<AutomobileIndustryBulletinInformation> getAll();
 }

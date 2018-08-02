@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.StatusOfIndustryListing_newThirdBoard;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface StatusOfIndustryListing_newThirdBoardMapper {
     /**
@@ -50,4 +53,7 @@ public interface StatusOfIndustryListing_newThirdBoardMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StatusOfIndustryListing_newThirdBoard record);
+
+    @Select("SELECT * FROM citicup.行业上市地位-新三板做市")
+    List<StatusOfIndustryListing_newThirdBoard> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.StatusOfIndustryListing_shanghaiAndShenzhenAShares;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface StatusOfIndustryListing_shanghaiAndShenzhenASharesMapper {
     /**
@@ -50,4 +53,7 @@ public interface StatusOfIndustryListing_shanghaiAndShenzhenASharesMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StatusOfIndustryListing_shanghaiAndShenzhenAShares record);
+
+    @Select("SELECT * FROM citicup.行业上市地位-沪深a股")
+    List<StatusOfIndustryListing_shanghaiAndShenzhenAShares> getAll();
 }

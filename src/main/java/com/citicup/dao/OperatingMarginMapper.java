@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.OperatingMargin;
 import com.citicup.model.OperatingMarginKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface OperatingMarginMapper {
     /**
@@ -51,4 +54,7 @@ public interface OperatingMarginMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(OperatingMargin record);
+
+    @Select("SELECT * FROM citicup.营业毛利率")
+    List<OperatingMargin> getAll();
 }

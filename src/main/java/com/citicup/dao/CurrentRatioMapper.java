@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.CurrentRatio;
 import com.citicup.model.CurrentRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CurrentRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface CurrentRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(CurrentRatio record);
+
+    @Select("SELECT * FROM citicup.流动比率")
+    List<CurrentRatio> getAll();
 }

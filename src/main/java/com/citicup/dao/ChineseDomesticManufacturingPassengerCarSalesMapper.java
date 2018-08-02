@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ChineseDomesticManufacturingPassengerCarSales;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ChineseDomesticManufacturingPassengerCarSalesMapper {
     /**
@@ -50,4 +53,7 @@ public interface ChineseDomesticManufacturingPassengerCarSalesMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ChineseDomesticManufacturingPassengerCarSales record);
+
+    @Select("SELECT * FROM citicup.中国国内制造乘用车销量")
+    List<ChineseDomesticManufacturingPassengerCarSales> getAll();
 }

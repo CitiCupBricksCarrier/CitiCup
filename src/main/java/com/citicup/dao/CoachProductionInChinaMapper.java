@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.CoachProductionInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CoachProductionInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface CoachProductionInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(CoachProductionInChina record);
+
+    @Select("SELECT * FROM citicup.中国客车销量")
+    List<CoachProductionInChina> getAll();
 }

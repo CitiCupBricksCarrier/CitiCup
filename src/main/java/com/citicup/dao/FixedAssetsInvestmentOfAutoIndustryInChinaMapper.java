@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.FixedAssetsInvestmentOfAutoIndustryInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface FixedAssetsInvestmentOfAutoIndustryInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface FixedAssetsInvestmentOfAutoIndustryInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(FixedAssetsInvestmentOfAutoIndustryInChina record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业固定资产投资额")
+    List<FixedAssetsInvestmentOfAutoIndustryInChina> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfEarningsForecast_codeName;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfEarningsForecast_codeNameMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfEarningsForecast_codeNameMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfEarningsForecast_codeName record);
+
+    @Select("SELECT * FROM citicup.盈利预测比较-代码+简称")
+    List<ComparisonOfEarningsForecast_codeName> getAll();
 }

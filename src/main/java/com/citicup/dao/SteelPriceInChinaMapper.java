@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.SteelPriceInChina;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface SteelPriceInChinaMapper {
     /**
@@ -50,4 +53,7 @@ public interface SteelPriceInChinaMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(SteelPriceInChina record);
+
+    @Select("SELECT * FROM citicup.中国钢材价格")
+    List<SteelPriceInChina> getAll();
 }

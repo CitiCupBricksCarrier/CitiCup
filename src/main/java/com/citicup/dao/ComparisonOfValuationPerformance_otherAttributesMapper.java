@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfValuationPerformance_otherAttributes;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfValuationPerformance_otherAttributesMapper {
     /**
@@ -50,4 +53,7 @@ public interface ComparisonOfValuationPerformance_otherAttributesMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfValuationPerformance_otherAttributes record);
+
+    @Select("SELECT * FROM citicup.估值表现分析-其他属性")
+    List<ComparisonOfValuationPerformance_otherAttributes> getAll();
 }

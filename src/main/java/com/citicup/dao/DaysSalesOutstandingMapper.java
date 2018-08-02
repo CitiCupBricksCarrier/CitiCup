@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.DaysSalesOutstanding;
 import com.citicup.model.DaysSalesOutstandingKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface DaysSalesOutstandingMapper {
     /**
@@ -51,4 +54,7 @@ public interface DaysSalesOutstandingMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(DaysSalesOutstanding record);
+
+    @Select("SELECT * FROM citicup.应收账款周转天数")
+    List<DaysSalesOutstanding> getAll();
 }

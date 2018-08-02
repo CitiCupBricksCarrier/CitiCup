@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.StatusOfIndustryListing_all;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface StatusOfIndustryListing_allMapper {
     /**
@@ -50,4 +53,7 @@ public interface StatusOfIndustryListing_allMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(StatusOfIndustryListing_all record);
+
+    @Select("SELECT * FROM citicup.行业上市地位-全部")
+    List<StatusOfIndustryListing_all> getAll();
 }

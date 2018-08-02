@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.ComparisonOfFinancialData_splitTable;
 import com.citicup.model.ComparisonOfFinancialData_splitTableKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ComparisonOfFinancialData_splitTableMapper {
     /**
@@ -51,4 +54,7 @@ public interface ComparisonOfFinancialData_splitTableMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ComparisonOfFinancialData_splitTable record);
+
+    @Select("SELECT * FROM citicup.财务数据比较-拆分表")
+    List<ComparisonOfFinancialData_splitTable> getAll();
 }

@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.GrowthRateOfOwnersEquity;
 import com.citicup.model.GrowthRateOfOwnersEquityKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface GrowthRateOfOwnersEquityMapper {
     /**
@@ -51,4 +54,7 @@ public interface GrowthRateOfOwnersEquityMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(GrowthRateOfOwnersEquity record);
+
+    @Select("SELECT * FROM citicup.所有者权益增长率")
+    List<GrowthRateOfOwnersEquity> getAll();
 }

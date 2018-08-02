@@ -2,6 +2,9 @@ package com.citicup.dao;
 
 import com.citicup.model.TotalProfitPreTaxProfitRatio;
 import com.citicup.model.TotalProfitPreTaxProfitRatioKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TotalProfitPreTaxProfitRatioMapper {
     /**
@@ -51,4 +54,7 @@ public interface TotalProfitPreTaxProfitRatioMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(TotalProfitPreTaxProfitRatio record);
+
+    @Select("SELECT * FROM citicup.利润总额与息税前利润相比")
+    List<TotalProfitPreTaxProfitRatio> getAll();
 }
