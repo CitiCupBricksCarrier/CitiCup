@@ -22,7 +22,7 @@
         <mapper resource="mapper/ChineseCommercialVehicleSalesDividedByFuelMapper.xml"/>
         <mapper resource="mapper/ChineseCommercialVehicleSalesDividedByTypeMapper.xml"/>
         <mapper resource="mapper/ChineseCommercialVehicleSalesMapper.xml"/>
-        <mapper resource="mapper/Fixed-assetInvestmentPriceIndexInChinaMapper.xml"/>
+        <mapper resource="mapper/FixedAssetsInvestmentPriceIndexInChinaMapper.xml"/>
         <mapper resource="mapper/ChineseDomesticManufacturingPassengerCarProductionMapper.xml"/>
         <mapper resource="mapper/ChineseDomesticManufacturingPassengerCarProductionDividedByTypeMapper.xml"/>
         <mapper resource="mapper/ChineseDomesticManufacturingPassengerCarSalesDividedByTypeMapper.xml"/>

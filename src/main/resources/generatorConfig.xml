@@ -105,7 +105,7 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="中国固定资产投资价格指数" domainObjectName="Fixed-assetInvestmentPriceIndexInChina"-->
+        <!--<table tableName="中国固定资产投资价格指数" domainObjectName="FixedAssetsInvestmentPriceIndexInChina"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
