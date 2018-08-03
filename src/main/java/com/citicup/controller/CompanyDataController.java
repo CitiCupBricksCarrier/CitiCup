@@ -9,6 +9,7 @@ import com.citicup.model.CompanyClassification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,10 +29,10 @@ public class CompanyDataController {
      * @return
      */
     @RequestMapping("/companyDetail")
-    public String selectcompanyDetail() {
+    public String selectcompanyDetail(@RequestParam String stkid) {
 
-        List<CompanyBasicInformation> list = companyBasicInformationMapper.getAll();
-        return JSONObject.toJSONString(list);
+        CompanyBasicInformation companyBasicInformationWithBLOBs = companyBasicInformationMapper.selectByPrimaryKey(stkid);
+        return JSONObject.toJSONString(companyBasicInformationWithBLOBs);
     }
 
     /**
