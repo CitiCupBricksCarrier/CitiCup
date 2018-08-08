@@ -19,7 +19,7 @@ public class IndustryDataHoldNumController {
     @Autowired
     private ChineseCarOwnershipMapper ChineseCarOwnershipMapper;
     @Autowired
-    private ChineseCarOwnershipPerOneThousandPeople chineseCarOwnershipPerOneThousandPeople;
+    private ChineseCarOwnershipPerOneThousandPeopleMapper chineseCarOwnershipPerOneThousandPeople;
 
     /**
      * 中国汽车保有量
@@ -36,7 +36,7 @@ public class IndustryDataHoldNumController {
      */
     @RequestMapping("/qcbyl/zgqcmqrbyl")
     public String selectZgqcmqrbyl() {
-        List<ChineseCarOwnership> list = ChineseCarOwnershipMapper.getAll();
+        List<ChineseCarOwnershipPerOneThousandPeople> list = chineseCarOwnershipPerOneThousandPeople.getAll();
         return JSONObject.toJSONString(list);
     }
 
