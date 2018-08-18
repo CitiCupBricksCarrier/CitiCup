@@ -7,10 +7,6 @@
         <package name="com.citicup.model"/>
     </typeAliases>
     <mappers>
-        <!--<mapper resource="mapper/UserMapper.xml"/>-->
-        <!--<mapper resource="mapper/CarSubBrandSalesMapper.xml"/>-->
-        <!--<mapper resource="mapper/CompanyInfoMapper.xml"/>-->
-        <!--<mapper resource="mapper/CompanyTypeMapper.xml"/>-->
         <mapper resource="mapper/ChineseMajorAutomobileGroupProductionMapper.xml"/>
         <mapper resource="mapper/ChineseMajorAutomobileGroupBasicPassengerVehiclesProductionMapper.xml"/>
         <mapper resource="mapper/ChinesePassengerCarSalesDividedByBrandMapper.xml"/>

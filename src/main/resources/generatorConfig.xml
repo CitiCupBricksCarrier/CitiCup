@@ -65,10 +65,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="中国主要汽车集团基本型乘用车(轿车)产量" domainObjectName="ChineseMajorAutomobileGroupBasicPassengerVehiclesProduction"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="中国主要汽车集团基本型乘用车轿车产量" domainObjectName="ChineseMajorAutomobileGroupBasicPassengerVehiclesProduction"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="中国乘用车分品牌销量" domainObjectName="ChinesePassengerCarSalesDividedByBrand"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -129,18 +129,18 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="中国国内制造商用车分燃料类型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByFuel"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="中国国内制造商用车分燃料类型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByFuel"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="中国国内制造商用车分车型产量" domainObjectName="ChineseDomesticManufacturingProductionDividedByType"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="中国国内制造商用车分车型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByType"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="中国国内制造商用车分车型销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSalesByType"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="中国国内制造商用车销量" domainObjectName="ChineseDomesticManufacturingCommercialVehicleSales"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
