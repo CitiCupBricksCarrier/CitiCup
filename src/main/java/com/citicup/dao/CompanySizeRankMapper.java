@@ -57,4 +57,12 @@ public interface CompanySizeRankMapper {
 
     @Select("SELECT * FROM citicup.公司规模排序")
     List<CompanySizeRank> getAll();
+
+    //根据分类找所有stkcd
+    @Select("SELECT stkcd FROM citicup.公司规模排序 WHERE category = ${category}")
+    List<String> getAllStkcd(String category);
+
+    //根据stkcd找所有分类
+    @Select("SELECT category FROM citicup.公司规模排序 WHERE stkcd = ${stkcd}")
+    List<String> getAllCategory(String stkcd);
 }
