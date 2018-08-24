@@ -130,4 +130,13 @@ public class BookValueKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public BookValueKey(String stkcd, String time) {
+        this.stkcd = stkcd;
+        this.time = time;
+    }
+
+    public BookValueKey(){
+
+    }
 }
