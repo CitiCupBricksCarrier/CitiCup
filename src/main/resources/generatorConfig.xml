@@ -65,10 +65,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="中国主要汽车集团基本型乘用车轿车产量" domainObjectName="ChineseMajorAutomobileGroupBasicPassengerVehiclesProduction"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="中国主要汽车集团基本型乘用车轿车产量" domainObjectName="ChineseMajorAutomobileGroupBasicPassengerVehiclesProduction"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="中国乘用车分品牌销量" domainObjectName="ChinesePassengerCarSalesDividedByBrand"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -489,5 +489,21 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
+        <table tableName="公司规模排序" domainObjectName="CompanySizeRank"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="流通市值与总市值" domainObjectName="CirculationMarketValueAndTotalMarketValue"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="账面价值" domainObjectName="BookValue"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="总资产" domainObjectName="TotalAssets"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
     </context>
 </generatorConfiguration>
