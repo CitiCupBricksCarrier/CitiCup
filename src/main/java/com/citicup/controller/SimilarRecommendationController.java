@@ -32,6 +32,16 @@ public class SimilarRecommendationController {
     @Autowired
     private TotalAssetsMapper totalAssetsMapper;
 
+    /**
+     * 得到该公司所在行业其他相似公司（至多4个）
+     * @param stkid 股票id
+     * @return { campany : stkid,
+     *          categories : [行业1, 行业2, ...],
+     *          行业1 : [],
+     *          行业2 ：[],
+     *          ...
+     *          }
+     */
     @RequestMapping("")
     public String getSimilarCompany(@RequestParam String stkid) {
         List<String> categories = companySizeRankMapper.getAllCategory(stkid);
@@ -39,7 +49,7 @@ public class SimilarRecommendationController {
         double[] stkFourVal = getFourVal(stkid);
         JSONObject json = new JSONObject();
 
-        json.put("campony", stkid);
+        json.put("campany", stkid);
         json.put("categories", categories);
         if(categories == null || categories.isEmpty()) return "";
 
@@ -82,6 +92,7 @@ public class SimilarRecommendationController {
         return json.toJSONString();
     }
 
+    //相似度计算
     private double countSimilarity(double[] m1, double[] m2){
 
         double c1 = 0, c2 = 0, c3 = 0;
@@ -95,6 +106,7 @@ public class SimilarRecommendationController {
         return  c1 / (Math.sqrt(c2)*Math.sqrt(c3));
     }
 
+    //得到股票排序需要的4维数据
     private double[] getFourVal(String stkid){
         double[] res = new double[4];
 
