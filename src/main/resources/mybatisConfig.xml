@@ -114,5 +114,9 @@
         <mapper resource="mapper/QuickRatioMapper.xml"/>
         <mapper resource="mapper/GainPassengerCarOverallPriceChangeIndexMapper.xml"/>
         <mapper resource="mapper/GainPassengerCarOverallEndPreferentialIndexMapper.xml"/>
+        <mapper resource="mapper/CompanySizeRankMapper.xml"/>
+        <mapper resource="mapper/CirculationMarketValueAndTotalMarketValueMapper.xml"/>
+        <mapper resource="mapper/BookValueMapper.xml"/>
+        <mapper resource="mapper/TotalAssetsMapper.xml"/>
     </mappers>
 </configuration>
