@@ -62,9 +62,9 @@ public class CompanyDataController {
      * @return
      */
     @RequestMapping("/searchByName")
-    public String searchByName(@RequestParam String name) {
+    public String searchByName(@RequestParam String partName) {
 
-        List<CompanyBasicInformation> list = companyBasicInformationMapper.searchByName(name);
+        List<CompanyBasicInformation> list = companyBasicInformationMapper.searchByName(partName);
         return JSONObject.toJSONString(list);
     }
 }
