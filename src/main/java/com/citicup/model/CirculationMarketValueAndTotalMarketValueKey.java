@@ -130,4 +130,13 @@ public class CirculationMarketValueAndTotalMarketValueKey implements Serializabl
         sb.append("]");
         return sb.toString();
     }
+
+    public CirculationMarketValueAndTotalMarketValueKey(String stkcd, String time) {
+        this.stkcd = stkcd;
+        this.time = time;
+    }
+
+    public CirculationMarketValueAndTotalMarketValueKey(){
+
+    }
 }

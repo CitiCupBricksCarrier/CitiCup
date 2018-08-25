@@ -130,4 +130,12 @@ public class TotalAssetsKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public TotalAssetsKey(String stkcd, String time) {
+        this.stkcd = stkcd;
+        this.time = time;
+    }
+
+    public TotalAssetsKey() {
+    }
 }
