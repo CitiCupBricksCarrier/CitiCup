@@ -35,7 +35,7 @@ public class SimilarRecommendationController {
     /**
      * 得到该公司所在行业其他相似公司（至多4个）
      * @param stkid 股票id
-     * @return { campany : stkid,
+     * @return {campany : stkid,
      *          categories : [行业1, 行业2, ...],
      *          行业1 : [],
      *          行业2 ：[],
@@ -51,7 +51,9 @@ public class SimilarRecommendationController {
 
         json.put("company", companyBasicInformationMapper.selectByPrimaryKey(stkid));
         json.put("categories", categories);
-        if(categories == null || categories.isEmpty()) return "";
+        if(categories == null){
+            categories = new ArrayList<>();
+        }
 
         //找到每个行业最相似的4个
         for (String category : categories){
