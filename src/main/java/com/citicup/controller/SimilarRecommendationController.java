@@ -60,6 +60,8 @@ public class SimilarRecommendationController {
             List<String> peerStocks = companySizeRankMapper.getAllStkcd(category);
             TreeMap<String, Double> map = new TreeMap<>();
             for (String stock : peerStocks){
+                if (stock.equals(stkid))
+                    continue;
                 if (table.containsKey(stock)){
                     map.put(stock, table.get(stock));
                 }
