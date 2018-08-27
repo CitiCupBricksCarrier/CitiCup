@@ -1,10 +1,7 @@
 package com.citicup.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.BookValueMapper;
-import com.citicup.dao.CirculationMarketValueAndTotalMarketValueMapper;
-import com.citicup.dao.CompanySizeRankMapper;
-import com.citicup.dao.TotalAssetsMapper;
+import com.citicup.dao.*;
 import com.citicup.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -32,10 +29,13 @@ public class SimilarRecommendationController {
     @Autowired
     private TotalAssetsMapper totalAssetsMapper;
 
+    @Autowired
+    private CompanyBasicInformationMapper companyBasicInformationMapper;
+
     /**
      * 得到该公司所在行业其他相似公司（至多4个）
      * @param stkid 股票id
-     * @return { campany : stkid,
+     * @return {campany : stkid,
      *          categories : [行业1, 行业2, ...],
      *          行业1 : [],
      *          行业2 ：[],
@@ -49,15 +49,19 @@ public class SimilarRecommendationController {
         double[] stkFourVal = getFourVal(stkid);
         JSONObject json = new JSONObject();
 
-        json.put("campany", stkid);
+        json.put("company", companyBasicInformationMapper.selectByPrimaryKey(stkid));
         json.put("categories", categories);
-        if(categories == null || categories.isEmpty()) return "";
+        if(categories == null){
+            categories = new ArrayList<>();
+        }
 
         //找到每个行业最相似的4个
         for (String category : categories){
             List<String> peerStocks = companySizeRankMapper.getAllStkcd(category);
             TreeMap<String, Double> map = new TreeMap<>();
             for (String stock : peerStocks){
+                if (stock.equals(stkid))
+                    continue;
                 if (table.containsKey(stock)){
                     map.put(stock, table.get(stock));
                 }
@@ -80,9 +84,9 @@ public class SimilarRecommendationController {
             List<Map.Entry<String, Double>> list = new ArrayList<>(map.entrySet());
             Collections.sort(list,valueComparator);
 
-            List<String> resStocks = list
+            List<CompanyBasicInformationWithBLOBs> resStocks = list
                     .stream()
-                    .map(entry -> entry.getKey())
+                    .map(entry -> companyBasicInformationMapper.selectByPrimaryKey(entry.getKey()))
                     .limit(4)
                     .collect(Collectors.toList());
 

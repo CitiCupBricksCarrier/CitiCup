@@ -45,4 +45,37 @@ public class CompanyDataController {
         List<CompanyClassification> list = companyClassificationMapper.getAll();
         return JSONObject.toJSONString(list);
     }
+
+    /**
+     * 公司基本信息列表
+     * @return
+     */
+    @RequestMapping("/companyDetailList")
+    public String selectcompanyDetail() {
+
+        List<CompanyBasicInformation> companyBasicInformationWithBLOBsList = companyBasicInformationMapper.getAll();
+        return JSONObject.toJSONString(companyBasicInformationWithBLOBsList);
+    }
+
+    /**
+     * 根据partStkcd(股票id)模糊查找公司信息
+     * @return
+     */
+    @RequestMapping("/searchByStkcd")
+    public String searchByStkcd(@RequestParam String partStkcd) {
+
+        List<CompanyBasicInformation> list = companyBasicInformationMapper.searchByStkcd(partStkcd);
+        return JSONObject.toJSONString(list);
+    }
+
+    /**
+     * 根据name(公司名称)模糊查找公司信息
+     * @return
+     */
+    @RequestMapping("/searchByName")
+    public String searchByName(@RequestParam String partName) {
+
+        List<CompanyBasicInformation> list = companyBasicInformationMapper.searchByName(partName);
+        return JSONObject.toJSONString(list);
+    }
 }

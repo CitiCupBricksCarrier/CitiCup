@@ -66,9 +66,9 @@ public interface CompanyBasicInformationMapper {
     @Select("SELECT * FROM citicup.公司基本信息")
     List<CompanyBasicInformation> getAll();
 
-    @Select("SELECT * FROM citicup.公司基本信息 WHERE stkcd LIKE #{partStkcd}")
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE stkcd LIKE CONCAT('%', #{partStkcd}, '%')")
     List<CompanyBasicInformation> searchByStkcd(String partStkcd);
 
-    @Select("SELECT * FROM citicup.公司基本信息 WHERE compName LIKE #{partName}")
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE compName LIKE CONCAT('%', #{partName}, '%')")
     List<CompanyBasicInformation> searchByName(String partName);
 }
