@@ -47,6 +47,17 @@ public class CompanyDataController {
     }
 
     /**
+     * 公司基本信息列表
+     * @return
+     */
+    @RequestMapping("/companyDetailList")
+    public String selectcompanyDetail() {
+
+        List<CompanyBasicInformation> companyBasicInformationWithBLOBsList = companyBasicInformationMapper.getAll();
+        return JSONObject.toJSONString(companyBasicInformationWithBLOBsList);
+    }
+
+    /**
      * 根据partStkcd(股票id)模糊查找公司信息
      * @return
      */
