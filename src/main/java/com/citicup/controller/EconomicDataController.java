@@ -24,8 +24,8 @@ public class EconomicDataController {
     private ProfitMarginOfAutomobileSalesInChinaMapper profitMarginOfAutomobileSalesInChinaMapper;
     @Autowired
     private AssetLiabilityRatioOfAutomobileEnterprisesInChinaMapper assetLiabilityRatioOfAutomobileEnterprisesInChinaMapper;
-//    @Autowired
-//    private CashFlowLiabilityRatioOfAutomobileEnterprisesInChinaMapper cashFlowLiabilityRatioOfAutomobileEnterprisesInChinaMapper;
+    @Autowired
+    private AverageNumberOfEmployeesInChinaAutoIndustryMapper averageNumberOfEmployeesInChinaAutoIndustryMapper;
 
     @RequestMapping("/qyjx/snxspjzzl")
     public String selectsnxspjzzl() {
@@ -52,8 +52,8 @@ public class EconomicDataController {
     }
 
     @RequestMapping("/qyjx/qbcyrypjrs")
-    public String selectZgqcbyl() {
-        List<CashFlowLiabilityRatioOfAutomobileEnterprisesInChina> list = cashFlowLiabilityRatioOfAutomobileEnterprisesInChinaMapper.getAll();
+    public String qbcyrypjrs() {
+        List<AverageNumberOfEmployeesInChinaAutoIndustry> list = averageNumberOfEmployeesInChinaAutoIndustryMapper.getAll();
         return JSONObject.toJSONString(list);
     }
 
