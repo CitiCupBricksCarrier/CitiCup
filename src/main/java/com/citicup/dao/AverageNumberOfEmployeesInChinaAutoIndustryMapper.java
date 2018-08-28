@@ -1,6 +1,10 @@
 package com.citicup.dao;
 
+import com.citicup.model.AmericanCarSales;
 import com.citicup.model.AverageNumberOfEmployeesInChinaAutoIndustry;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AverageNumberOfEmployeesInChinaAutoIndustryMapper {
     /**
@@ -50,4 +54,7 @@ public interface AverageNumberOfEmployeesInChinaAutoIndustryMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AverageNumberOfEmployeesInChinaAutoIndustry record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业全部从业人员平均人数")
+    List<AverageNumberOfEmployeesInChinaAutoIndustry> getAll();
 }
