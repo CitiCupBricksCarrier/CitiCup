@@ -1,6 +1,9 @@
 package com.citicup.dao;
 
 import com.citicup.model.ChinaAutoIndustryFinishedGoodsInventory;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ChinaAutoIndustryFinishedGoodsInventoryMapper {
     /**
@@ -50,4 +53,7 @@ public interface ChinaAutoIndustryFinishedGoodsInventoryMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(ChinaAutoIndustryFinishedGoodsInventory record);
+
+    @Select("SELECT * FROM citicup.中国汽车行业产成品存货")
+    List<ChinaAutoIndustryFinishedGoodsInventory> getAll();
 }

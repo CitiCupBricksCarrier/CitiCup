@@ -1,11 +1,14 @@
 package com.citicup.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.citicup.dao.ChinaAutoIndustryFinishedGoodsInventoryMapper;
 import com.citicup.dao.ChineseCarDealerInventoryFactorMapper;
 import com.citicup.dao.ChineseCarDealersEarlyWarningIndexMapper;
+import com.citicup.model.ChinaAutoIndustryFinishedGoodsInventory;
 import com.citicup.model.ChineseCarDealerInventoryFactor;
 import com.citicup.model.ChineseCarDealersEarlyWarningIndex;
 import com.citicup.model.ChinesePassengerCarSalesDividedByBrand;
+import com.sun.javafx.logging.PulseLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +21,19 @@ import java.util.List;
 @RequestMapping("/industryData/inventory")
 public class IndustryDataInventoryController {
 
-    //todo 没有产成品存货
-
     @Autowired
     private ChineseCarDealerInventoryFactorMapper chineseCarDealerInventoryFactorMapper;
     @Autowired
     private ChineseCarDealersEarlyWarningIndexMapper chineseCarDealersEarlyWarningIndexMapper;
+    @Autowired
+    private ChinaAutoIndustryFinishedGoodsInventoryMapper chinaAutoIndustryFinishedGoodsInventoryMapper;
+
+    @RequestMapping("/ccpch/qchyccpch")
+    public String selectqchyccpch() {
+
+        List<ChinaAutoIndustryFinishedGoodsInventory> list = chinaAutoIndustryFinishedGoodsInventoryMapper.getAll();
+        return JSONObject.toJSONString(list);
+    }
 
     @RequestMapping("/kcxs/qcjxskcxs")
     public String selectqcjxskcxs() {
