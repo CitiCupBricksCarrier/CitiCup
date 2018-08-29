@@ -22,7 +22,8 @@ public interface CommentMapper {
     @Delete({
         "delete from comment",
         "where author = #{author,jdbcType=VARCHAR}",
-          "and graphId = #{graphid,jdbcType=VARCHAR}"
+          "and graphId = #{graphid,jdbcType=VARCHAR}",
+          "and time = #{time,jdbcType=VARCHAR}"
     })
     int deleteByPrimaryKey(CommentKey key);
 
@@ -34,9 +35,9 @@ public interface CommentMapper {
      */
     @Insert({
         "insert into comment (author, graphId, ",
-        "comment)",
+        "time, comment)",
         "values (#{author,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
-        "#{comment,jdbcType=VARCHAR})"
+        "#{time,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR})"
     })
     int insert(Comment record);
 
@@ -57,14 +58,16 @@ public interface CommentMapper {
      */
     @Select({
         "select",
-        "author, graphId, comment",
+        "author, graphId, time, comment",
         "from comment",
         "where author = #{author,jdbcType=VARCHAR}",
-          "and graphId = #{graphid,jdbcType=VARCHAR}"
+          "and graphId = #{graphid,jdbcType=VARCHAR}",
+          "and time = #{time,jdbcType=VARCHAR}"
     })
     @Results({
         @Result(column="author", property="author", jdbcType=JdbcType.VARCHAR, id=true),
         @Result(column="graphId", property="graphid", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="time", property="time", jdbcType=JdbcType.VARCHAR, id=true),
         @Result(column="comment", property="comment", jdbcType=JdbcType.VARCHAR)
     })
     Comment selectByPrimaryKey(CommentKey key);
@@ -88,7 +91,8 @@ public interface CommentMapper {
         "update comment",
         "set comment = #{comment,jdbcType=VARCHAR}",
         "where author = #{author,jdbcType=VARCHAR}",
-          "and graphId = #{graphid,jdbcType=VARCHAR}"
+          "and graphId = #{graphid,jdbcType=VARCHAR}",
+          "and time = #{time,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(Comment record);
 }

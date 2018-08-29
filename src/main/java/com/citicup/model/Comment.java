@@ -63,6 +63,7 @@ public class Comment extends CommentKey implements Serializable {
         Comment other = (Comment) that;
         return (this.getAuthor() == null ? other.getAuthor() == null : this.getAuthor().equals(other.getAuthor()))
             && (this.getGraphid() == null ? other.getGraphid() == null : this.getGraphid().equals(other.getGraphid()))
+            && (this.getTime() == null ? other.getTime() == null : this.getTime().equals(other.getTime()))
             && (this.getComment() == null ? other.getComment() == null : this.getComment().equals(other.getComment()));
     }
 
@@ -78,6 +79,7 @@ public class Comment extends CommentKey implements Serializable {
         int result = 1;
         result = prime * result + ((getAuthor() == null) ? 0 : getAuthor().hashCode());
         result = prime * result + ((getGraphid() == null) ? 0 : getGraphid().hashCode());
+        result = prime * result + ((getTime() == null) ? 0 : getTime().hashCode());
         result = prime * result + ((getComment() == null) ? 0 : getComment().hashCode());
         return result;
     }
