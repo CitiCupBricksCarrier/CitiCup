@@ -2,6 +2,15 @@ package com.citicup.dao;
 
 import com.citicup.model.Point;
 import com.citicup.model.PointKey;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface PointMapper {
     /**
@@ -10,6 +19,11 @@ public interface PointMapper {
      *
      * @mbggenerated
      */
+    @Delete({
+        "delete from point",
+        "where stkcd = #{stkcd,jdbcType=VARCHAR}",
+          "and graphId = #{graphid,jdbcType=VARCHAR}"
+    })
     int deleteByPrimaryKey(PointKey key);
 
     /**
@@ -18,6 +32,20 @@ public interface PointMapper {
      *
      * @mbggenerated
      */
+    @Insert({
+        "insert into point (stkcd, graphId, ",
+        "status, defectProb, ",
+        "infectProb, infectProbTemp, ",
+        "infectTime, timeLeft, ",
+        "color, role, posx, ",
+        "posy, name)",
+        "values (#{stkcd,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
+        "#{status,jdbcType=TINYINT}, #{defectprob,jdbcType=DOUBLE}, ",
+        "#{infectprob,jdbcType=DOUBLE}, #{infectprobtemp,jdbcType=DOUBLE}, ",
+        "#{infecttime,jdbcType=INTEGER}, #{timeleft,jdbcType=INTEGER}, ",
+        "#{color,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{posx,jdbcType=VARCHAR}, ",
+        "#{posy,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})"
+    })
     int insert(Point record);
 
     /**
@@ -26,6 +54,7 @@ public interface PointMapper {
      *
      * @mbggenerated
      */
+    @InsertProvider(type=PointSqlProvider.class, method="insertSelective")
     int insertSelective(Point record);
 
     /**
@@ -34,6 +63,29 @@ public interface PointMapper {
      *
      * @mbggenerated
      */
+    @Select({
+        "select",
+        "stkcd, graphId, status, defectProb, infectProb, infectProbTemp, infectTime, ",
+        "timeLeft, color, role, posx, posy, name",
+        "from point",
+        "where stkcd = #{stkcd,jdbcType=VARCHAR}",
+          "and graphId = #{graphid,jdbcType=VARCHAR}"
+    })
+    @Results({
+        @Result(column="stkcd", property="stkcd", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="graphId", property="graphid", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="status", property="status", jdbcType=JdbcType.TINYINT),
+        @Result(column="defectProb", property="defectprob", jdbcType=JdbcType.DOUBLE),
+        @Result(column="infectProb", property="infectprob", jdbcType=JdbcType.DOUBLE),
+        @Result(column="infectProbTemp", property="infectprobtemp", jdbcType=JdbcType.DOUBLE),
+        @Result(column="infectTime", property="infecttime", jdbcType=JdbcType.INTEGER),
+        @Result(column="timeLeft", property="timeleft", jdbcType=JdbcType.INTEGER),
+        @Result(column="color", property="color", jdbcType=JdbcType.VARCHAR),
+        @Result(column="role", property="role", jdbcType=JdbcType.VARCHAR),
+        @Result(column="posx", property="posx", jdbcType=JdbcType.VARCHAR),
+        @Result(column="posy", property="posy", jdbcType=JdbcType.VARCHAR),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR)
+    })
     Point selectByPrimaryKey(PointKey key);
 
     /**
@@ -42,6 +94,7 @@ public interface PointMapper {
      *
      * @mbggenerated
      */
+    @UpdateProvider(type=PointSqlProvider.class, method="updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(Point record);
 
     /**
@@ -50,5 +103,21 @@ public interface PointMapper {
      *
      * @mbggenerated
      */
+    @Update({
+        "update point",
+        "set status = #{status,jdbcType=TINYINT},",
+          "defectProb = #{defectprob,jdbcType=DOUBLE},",
+          "infectProb = #{infectprob,jdbcType=DOUBLE},",
+          "infectProbTemp = #{infectprobtemp,jdbcType=DOUBLE},",
+          "infectTime = #{infecttime,jdbcType=INTEGER},",
+          "timeLeft = #{timeleft,jdbcType=INTEGER},",
+          "color = #{color,jdbcType=VARCHAR},",
+          "role = #{role,jdbcType=VARCHAR},",
+          "posx = #{posx,jdbcType=VARCHAR},",
+          "posy = #{posy,jdbcType=VARCHAR},",
+          "name = #{name,jdbcType=VARCHAR}",
+        "where stkcd = #{stkcd,jdbcType=VARCHAR}",
+          "and graphId = #{graphid,jdbcType=VARCHAR}"
+    })
     int updateByPrimaryKey(Point record);
 }
