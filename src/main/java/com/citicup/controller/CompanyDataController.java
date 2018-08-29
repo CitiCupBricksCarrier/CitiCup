@@ -6,13 +6,17 @@ import com.citicup.dao.CompanyClassificationMapper;
 import com.citicup.model.ChinesePassengerCarSalesDividedByBrand;
 import com.citicup.model.CompanyBasicInformation;
 import com.citicup.model.CompanyClassification;
+import com.citicup.model.MainBusinessCostOfAutoIndustryInChina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @EnableAutoConfiguration
@@ -43,7 +47,26 @@ public class CompanyDataController {
     public String selectcompanyList() {
 
         List<CompanyClassification> list = companyClassificationMapper.getAll();
-        return JSONObject.toJSONString(list);
+        List<JSONObject> json = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+
+        for(CompanyClassification clf : list){
+            String stkcd = clf.getStkcd();
+            String campanyName = "";
+
+            if(!map.containsKey(stkcd)){
+                CompanyBasicInformation info = companyBasicInformationMapper.selectByPrimaryKey(stkcd);
+                map.put(stkcd, info.getCompname());
+            }
+            campanyName = map.get(stkcd);
+
+            JSONObject t = new JSONObject();
+            t.put("category", clf.getCategory());
+            t.put("stkcd", clf.getStkcd());
+            t.put("name", campanyName);
+            json.add(t);
+        }
+        return JSONObject.toJSONString(json);
     }
 
     /**
