@@ -30,6 +30,10 @@ public class CommentSqlProvider {
             VALUES("graphId", "#{graphid,jdbcType=VARCHAR}");
         }
         
+        if (record.getTime() != null) {
+            VALUES("time", "#{time,jdbcType=VARCHAR}");
+        }
+        
         if (record.getComment() != null) {
             VALUES("comment", "#{comment,jdbcType=VARCHAR}");
         }
@@ -53,6 +57,7 @@ public class CommentSqlProvider {
         
         WHERE("author = #{author,jdbcType=VARCHAR}");
         WHERE("graphId = #{graphid,jdbcType=VARCHAR}");
+        WHERE("time = #{time,jdbcType=VARCHAR}");
         
         return SQL();
     }

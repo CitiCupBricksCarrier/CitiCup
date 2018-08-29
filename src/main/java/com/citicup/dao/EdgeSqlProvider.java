@@ -10,6 +10,10 @@ import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
 import com.citicup.model.Edge;
 
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Map;
+
 public class EdgeSqlProvider {
 
     /**

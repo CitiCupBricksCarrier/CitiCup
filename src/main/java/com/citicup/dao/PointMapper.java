@@ -2,15 +2,10 @@ package com.citicup.dao;
 
 import com.citicup.model.Point;
 import com.citicup.model.PointKey;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface PointMapper {
     /**
@@ -120,4 +115,14 @@ public interface PointMapper {
           "and graphId = #{graphid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(Point record);
+
+    @Select({"SELECT * FROM point WHERE graphid = #{graphId, jdbcType=VARCHAR}"})
+    List<Point> getAllById(String graphId);
+
+    @Insert({"<script> INSERT INTO point(stkcd,graphid,status,defectprob,infectprob,infectprobtemp,infecttime,timeleft,color,role,posx,posy,name) " +
+            "VALUES " +
+            "<foreach collection=\"list\" item=\"item\" index=\"index\"  separator=\",\"> "+
+            "(#{item.stkcd},#{item.graphid},#{item.status},#{item.defectprob},#{item.infectprob},#{item.infectprobtemp},#{item.infecttime},#{item.timeleft},#{item.color},#{item.role},#{item.posx},#{item.posy},#{item.name})"+
+            "</foreach> </script>"})
+    int savePointList(@Param("list") List<Point> list);
 }

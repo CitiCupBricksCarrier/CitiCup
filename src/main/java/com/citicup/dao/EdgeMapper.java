@@ -2,15 +2,10 @@ package com.citicup.dao;
 
 import com.citicup.model.Edge;
 import com.citicup.model.EdgeKey;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface EdgeMapper {
     /**
@@ -105,4 +100,14 @@ public interface EdgeMapper {
           "and graphId = #{graphid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(Edge record);
+
+    @Select({"SELECT * FROM edge WHERE graphid = #{graphId, jdbcType=VARCHAR}"})
+    List<Edge> getAllById(String graphId);
+
+    @Insert({"<script> INSERT INTO edge(stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund) " +
+            "VALUES " +
+            "<foreach collection=\"list\" item=\"item\" index=\"index\"  separator=\",\"> "+
+            "(#{item.stkcdA},#{item.stkcdB},#{item.graphId},#{item.status},#{item.propagateProbA},#{item.propagateProbB},#{item.fund})"+
+            "</foreach> </script>"})
+    int saveEdgeList(@Param("list") List<Edge> list);
 }
