@@ -34,10 +34,10 @@ public class UserController {
         User user = userMapper.selectByPrimaryKey(json.getString("username"));
 
         if (user == null){
-            retMessage = "用户不存在！";
+            retMessage = "fail";
         }
-        else if(user.getPassword() != json.get("password")){
-            retMessage = "密码错误！";
+        else if(!user.getPassword().equals(json.get("password"))){
+            retMessage = "fail";
         }
         else{
             try{
@@ -48,7 +48,7 @@ public class UserController {
             //session的创建，15分钟
             session.setAttribute("user",json.get("username").toString());
             session.setMaxInactiveInterval(15*60);
-            retMessage = "登陆成功！";
+            retMessage = "success";
         }
 
         PrintWriter out = response.getWriter();
