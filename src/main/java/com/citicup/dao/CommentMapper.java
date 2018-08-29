@@ -2,6 +2,15 @@ package com.citicup.dao;
 
 import com.citicup.model.Comment;
 import com.citicup.model.CommentKey;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface CommentMapper {
     /**
@@ -10,6 +19,11 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    @Delete({
+        "delete from comment",
+        "where author = #{author,jdbcType=VARCHAR}",
+          "and graphId = #{graphid,jdbcType=VARCHAR}"
+    })
     int deleteByPrimaryKey(CommentKey key);
 
     /**
@@ -18,6 +32,12 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    @Insert({
+        "insert into comment (author, graphId, ",
+        "comment)",
+        "values (#{author,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
+        "#{comment,jdbcType=VARCHAR})"
+    })
     int insert(Comment record);
 
     /**
@@ -26,6 +46,7 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    @InsertProvider(type=CommentSqlProvider.class, method="insertSelective")
     int insertSelective(Comment record);
 
     /**
@@ -34,6 +55,18 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    @Select({
+        "select",
+        "author, graphId, comment",
+        "from comment",
+        "where author = #{author,jdbcType=VARCHAR}",
+          "and graphId = #{graphid,jdbcType=VARCHAR}"
+    })
+    @Results({
+        @Result(column="author", property="author", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="graphId", property="graphid", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="comment", property="comment", jdbcType=JdbcType.VARCHAR)
+    })
     Comment selectByPrimaryKey(CommentKey key);
 
     /**
@@ -42,6 +75,7 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    @UpdateProvider(type=CommentSqlProvider.class, method="updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(Comment record);
 
     /**
@@ -50,5 +84,11 @@ public interface CommentMapper {
      *
      * @mbggenerated
      */
+    @Update({
+        "update comment",
+        "set comment = #{comment,jdbcType=VARCHAR}",
+        "where author = #{author,jdbcType=VARCHAR}",
+          "and graphId = #{graphid,jdbcType=VARCHAR}"
+    })
     int updateByPrimaryKey(Comment record);
 }

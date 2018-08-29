@@ -1,6 +1,15 @@
 package com.citicup.dao;
 
 import com.citicup.model.Graph;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface GraphMapper {
     /**
@@ -9,6 +18,10 @@ public interface GraphMapper {
      *
      * @mbggenerated
      */
+    @Delete({
+        "delete from graph",
+        "where graphId = #{graphid,jdbcType=VARCHAR}"
+    })
     int deleteByPrimaryKey(String graphid);
 
     /**
@@ -17,6 +30,12 @@ public interface GraphMapper {
      *
      * @mbggenerated
      */
+    @Insert({
+        "insert into graph (graphId, author, ",
+        "up, down)",
+        "values (#{graphid,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, ",
+        "#{up,jdbcType=INTEGER}, #{down,jdbcType=INTEGER})"
+    })
     int insert(Graph record);
 
     /**
@@ -25,6 +44,7 @@ public interface GraphMapper {
      *
      * @mbggenerated
      */
+    @InsertProvider(type=GraphSqlProvider.class, method="insertSelective")
     int insertSelective(Graph record);
 
     /**
@@ -33,6 +53,18 @@ public interface GraphMapper {
      *
      * @mbggenerated
      */
+    @Select({
+        "select",
+        "graphId, author, up, down",
+        "from graph",
+        "where graphId = #{graphid,jdbcType=VARCHAR}"
+    })
+    @Results({
+        @Result(column="graphId", property="graphid", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="author", property="author", jdbcType=JdbcType.VARCHAR),
+        @Result(column="up", property="up", jdbcType=JdbcType.INTEGER),
+        @Result(column="down", property="down", jdbcType=JdbcType.INTEGER)
+    })
     Graph selectByPrimaryKey(String graphid);
 
     /**
@@ -41,6 +73,7 @@ public interface GraphMapper {
      *
      * @mbggenerated
      */
+    @UpdateProvider(type=GraphSqlProvider.class, method="updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(Graph record);
 
     /**
@@ -49,5 +82,12 @@ public interface GraphMapper {
      *
      * @mbggenerated
      */
+    @Update({
+        "update graph",
+        "set author = #{author,jdbcType=VARCHAR},",
+          "up = #{up,jdbcType=INTEGER},",
+          "down = #{down,jdbcType=INTEGER}",
+        "where graphId = #{graphid,jdbcType=VARCHAR}"
+    })
     int updateByPrimaryKey(Graph record);
 }

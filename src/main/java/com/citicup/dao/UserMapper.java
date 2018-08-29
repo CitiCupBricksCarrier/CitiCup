@@ -1,6 +1,15 @@
 package com.citicup.dao;
 
 import com.citicup.model.User;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface UserMapper {
     /**
@@ -9,6 +18,10 @@ public interface UserMapper {
      *
      * @mbggenerated
      */
+    @Delete({
+        "delete from user",
+        "where uid = #{uid,jdbcType=VARCHAR}"
+    })
     int deleteByPrimaryKey(String uid);
 
     /**
@@ -17,6 +30,14 @@ public interface UserMapper {
      *
      * @mbggenerated
      */
+    @Insert({
+        "insert into user (uid, name, ",
+        "phoneNum, password, ",
+        "isVip)",
+        "values (#{uid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
+        "#{phonenum,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
+        "#{isvip,jdbcType=TINYINT})"
+    })
     int insert(User record);
 
     /**
@@ -25,6 +46,7 @@ public interface UserMapper {
      *
      * @mbggenerated
      */
+    @InsertProvider(type=UserSqlProvider.class, method="insertSelective")
     int insertSelective(User record);
 
     /**
@@ -33,6 +55,19 @@ public interface UserMapper {
      *
      * @mbggenerated
      */
+    @Select({
+        "select",
+        "uid, name, phoneNum, password, isVip",
+        "from user",
+        "where uid = #{uid,jdbcType=VARCHAR}"
+    })
+    @Results({
+        @Result(column="uid", property="uid", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+        @Result(column="phoneNum", property="phonenum", jdbcType=JdbcType.VARCHAR),
+        @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
+        @Result(column="isVip", property="isvip", jdbcType=JdbcType.TINYINT)
+    })
     User selectByPrimaryKey(String uid);
 
     /**
@@ -41,6 +76,7 @@ public interface UserMapper {
      *
      * @mbggenerated
      */
+    @UpdateProvider(type=UserSqlProvider.class, method="updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(User record);
 
     /**
@@ -49,5 +85,13 @@ public interface UserMapper {
      *
      * @mbggenerated
      */
+    @Update({
+        "update user",
+        "set name = #{name,jdbcType=VARCHAR},",
+          "phoneNum = #{phonenum,jdbcType=VARCHAR},",
+          "password = #{password,jdbcType=VARCHAR},",
+          "isVip = #{isvip,jdbcType=TINYINT}",
+        "where uid = #{uid,jdbcType=VARCHAR}"
+    })
     int updateByPrimaryKey(User record);
 }
