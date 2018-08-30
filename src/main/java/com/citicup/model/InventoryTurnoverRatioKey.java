@@ -130,4 +130,12 @@ public class InventoryTurnoverRatioKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public InventoryTurnoverRatioKey(String stkcd, String acceper) {
+        this.stkcd = stkcd;
+        this.acceper = acceper;
+    }
+
+    public InventoryTurnoverRatioKey() {
+    }
 }

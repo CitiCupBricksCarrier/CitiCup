@@ -130,4 +130,12 @@ public class DaysInInventoryKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public DaysInInventoryKey(String stkcd, String acceper) {
+        this.stkcd = stkcd;
+        this.acceper = acceper;
+    }
+
+    public DaysInInventoryKey() {
+    }
 }

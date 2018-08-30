@@ -130,4 +130,12 @@ public class TurnoverOfCurrentAssetsKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public TurnoverOfCurrentAssetsKey(String stkcd, String acceper) {
+        this.stkcd = stkcd;
+        this.acceper = acceper;
+    }
+
+    public TurnoverOfCurrentAssetsKey() {
+    }
 }

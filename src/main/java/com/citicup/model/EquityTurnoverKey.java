@@ -130,4 +130,12 @@ public class EquityTurnoverKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public EquityTurnoverKey(String stkcd, String acceper) {
+        this.stkcd = stkcd;
+        this.acceper = acceper;
+    }
+
+    public EquityTurnoverKey() {
+    }
 }
