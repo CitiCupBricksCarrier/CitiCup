@@ -1,5 +1,7 @@
 package com.citicup.dao;
 
+import com.citicup.model.Edge;
+
 import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
 import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
 import static org.apache.ibatis.jdbc.SqlBuilder.SET;

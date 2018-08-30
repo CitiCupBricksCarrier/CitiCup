@@ -484,4 +484,23 @@ public class Point extends PointKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public Point(String stkcd, String graphid, Byte status, Double defectprob, Double infectprob, Double infectprobtemp, Integer infecttime, Integer timeleft, String color, String role, String posx, String posy, String name, String id) {
+        super(stkcd, graphid);
+        this.status = status;
+        this.defectprob = defectprob;
+        this.infectprob = infectprob;
+        this.infectprobtemp = infectprobtemp;
+        this.infecttime = infecttime;
+        this.timeleft = timeleft;
+        this.color = color;
+        this.role = role;
+        this.posx = posx;
+        this.posy = posy;
+        this.name = name;
+        this.id = id;
+    }
+
+    public Point() {
+    }
 }

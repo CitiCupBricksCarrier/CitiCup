@@ -30,17 +30,23 @@ public class RiskDiffusionController {
 
         List<Edge> edges = new ArrayList<>();
         Map<String, Point> points = new HashMap<>();
-        Point company = new Point(jsonCompany.getString("nodeStock"), "", (byte) 0, 0.0, 0.0, 0.0, 0, 0, jsonCompany.getString("nodeColor"), jsonCompany.getString("nodeRole"), "", "", "");
+        Point company = new Point(jsonCompany.getString("nodeStock"), "", (byte) 0,
+                0.0, 0.0, 0.0, 0, 0,
+                jsonCompany.getString("nodeColor"), jsonCompany.getString("nodeRole"),
+                jsonCompany.getString("x"), jsonCompany.getString("y"), jsonCompany.getString("nodeName"), jsonCompany.getString("id"));
 
         for (int i = 0; i < links.size(); i++){
             JSONObject jo = links.getJSONObject(i);
-            Edge edge = new Edge(jo.getString("begin"), jo.getString("end"), jo.getString("id"),
-                    (byte) 0, 0.0, 0.0, jo.getDouble("fund"));
+            Edge edge = new Edge(jo.getString("begin"), jo.getString("end"), "",
+                    (byte) 0, 0.0, 0.0, jo.getDouble("fund"), jo.getString("id"));
             edges.add(edge);
         }
         for (int i = 0; i < companys.size(); i++) {
             JSONObject jo = companys.getJSONObject(i);
-            Point point = new Point(jo.getString("nodeStock"), "", (byte) 0, 0.0, 0.0, 0.0, 0, 0, jo.getString("nodeColor"), jo.getString("nodeRole"), "", "", "");
+            Point point = new Point(jo.getString("nodeStock"), "", (byte) 0,
+                    0.0, 0.0, 0.0, 0, 0,
+                    jo.getString("nodeColor"), jo.getString("nodeRole"),
+                    jo.getString("x"), jo.getString("y"), jo.getString("nodeName"), jo.getString("id"));
             points.put(jo.getString("nodeStock"), point);
         }
 

@@ -200,4 +200,14 @@ public class Graph implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public Graph() {
+    }
+
+    public Graph(String graphid, String author, Integer up, Integer down) {
+        this.graphid = graphid;
+        this.author = author;
+        this.up = up;
+        this.down = down;
+    }
 }
