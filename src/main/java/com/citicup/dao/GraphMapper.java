@@ -93,6 +93,6 @@ public interface GraphMapper {
     })
     int updateByPrimaryKey(Graph record);
 
-    @Select({"select * from graph where graphId = #{author,jdbcType=VARCHAR}"})
+    @Select({"select * from graph where author = #{author,jdbcType=VARCHAR}"})
     List<Graph> selectByAuthor(String author);
 }
