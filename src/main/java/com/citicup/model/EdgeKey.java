@@ -165,13 +165,4 @@ public class EdgeKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
-
-    public EdgeKey(String stkcda, String stkcdb, String graphid) {
-        this.stkcda = stkcda;
-        this.stkcdb = stkcdb;
-        this.graphid = graphid;
-    }
-
-    public EdgeKey() {
-    }
 }

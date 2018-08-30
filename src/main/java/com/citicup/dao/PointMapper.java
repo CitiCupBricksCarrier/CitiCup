@@ -1,7 +1,5 @@
 package com.citicup.dao;
 
-import com.citicup.model.Point;
-import com.citicup.model.PointKey;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 

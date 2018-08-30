@@ -1,7 +1,5 @@
 package com.citicup.dao;
 
-import com.citicup.model.Edge;
-import com.citicup.model.EdgeKey;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 

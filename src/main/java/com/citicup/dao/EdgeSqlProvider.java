@@ -8,8 +8,6 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.citicup.model.Edge;
-
 public class EdgeSqlProvider {
 
     /**
