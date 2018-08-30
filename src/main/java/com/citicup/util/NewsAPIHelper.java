@@ -26,8 +26,8 @@ public class NewsAPIHelper {
         }
 
         //获取新闻内容分条
-        JSONObject json = JSON.parseObject(data);
-        JSONArray jsonArray = (JSONArray)json.get("data");
+        JSONObject newsJson = JSON.parseObject(data);
+        JSONArray jsonArray = (JSONArray)newsJson.get("data");
         List<String> newsList = jsonArray.toJavaList(String.class);
 
         //逐条处理
@@ -43,11 +43,12 @@ public class NewsAPIHelper {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("wordList", wordList);
         jsonObject.put("posList", posList);
+        jsonObject.put("news", newsJson);
 
         return jsonObject;
     }
 
-    public static String getMess(String news) {
+    private static String getMess(String news) {
         String title = JSON.parseObject(news).getString("title");
         String content = JSON.parseObject(news).getString("content");
         return callPyFunc(title + content);
@@ -80,7 +81,7 @@ public class NewsAPIHelper {
      * @return 相关信息 json格式
      * @throws Exception
      */
-    public String getNews(String compName, String stkcd) throws Exception {
+    private static String getNews(String compName, String stkcd) throws Exception {
         // 服务路径
         String servicePath = "http://www.digudata.com:8082/data/find";
 
