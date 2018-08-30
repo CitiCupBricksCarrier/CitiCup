@@ -110,4 +110,7 @@ public interface EdgeMapper {
             "(#{item.stkcdA},#{item.stkcdB},#{item.graphId},#{item.status},#{item.propagateProbA},#{item.propagateProbB},#{item.fund})"+
             "</foreach> </script>"})
     int saveEdgeList(@Param("list") List<Edge> list);
+
+    @Delete({"DELETE FROM edge where graphid = #{item, jdbcType=VARCHAR}"})
+    int deleteByGraphId(String graphId);
 }
