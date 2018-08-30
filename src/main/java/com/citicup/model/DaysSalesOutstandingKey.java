@@ -130,4 +130,12 @@ public class DaysSalesOutstandingKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public DaysSalesOutstandingKey(String stkcd, String acceper) {
+        this.stkcd = stkcd;
+        this.acceper = acceper;
+    }
+
+    public DaysSalesOutstandingKey() {
+    }
 }

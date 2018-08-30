@@ -87,7 +87,7 @@ public class NewsAPIHelper {
         //关键字
         String key = "\"" + compName + "\" or \"" + stkcd + "\"";
         String[] timeGap = getTimeGap();
-        String token = "";
+        String token = "b9edb973-c798-4a98-924f-f21c7a05a572";
 
         // 设置参数
         Map params = new HashMap();

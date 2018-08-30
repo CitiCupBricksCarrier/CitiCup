@@ -130,4 +130,12 @@ public class PointKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public PointKey(String stkcd, String graphid) {
+        this.stkcd = stkcd;
+        this.graphid = graphid;
+    }
+
+    public PointKey() {
+    }
 }

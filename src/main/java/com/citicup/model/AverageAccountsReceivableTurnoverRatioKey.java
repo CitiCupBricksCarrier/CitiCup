@@ -130,4 +130,12 @@ public class AverageAccountsReceivableTurnoverRatioKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public AverageAccountsReceivableTurnoverRatioKey(String stkcd, String acceper) {
+        this.stkcd = stkcd;
+        this.acceper = acceper;
+    }
+
+    public AverageAccountsReceivableTurnoverRatioKey() {
+    }
 }
