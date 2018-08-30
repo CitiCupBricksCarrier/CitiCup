@@ -14,7 +14,7 @@ public class NewsAPIHelper {
 
     private static final String sep = System.getProperty("file.separator");
 
-    public void getNewsProcess(String compName, String stkcd) {
+    public JSONObject getNewsProcess(String compName, String stkcd) {
         List<Double> posList = new ArrayList<>();  //正向指数列表
         String result = "";  //分词
 
@@ -39,6 +39,12 @@ public class NewsAPIHelper {
         }
 
         String[] wordList = result.split(",");  //分词列表
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("wordList", wordList);
+        jsonObject.put("posList", posList);
+
+        return jsonObject;
     }
 
     public static String getMess(String news) {
