@@ -1,15 +1,71 @@
 package com.citicup.util;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class NewsAPIHelper {
+
+    private static final String sep = System.getProperty("file.separator");
+
+    public void getNewsProcess(String compName, String stkcd) {
+        List<Double> posList = new ArrayList<>();  //正向指数列表
+        String result = "";  //分词
+
+        String data = null;
+        try {
+            data = getNews(compName, stkcd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //获取新闻内容分条
+        JSONObject json = JSON.parseObject(data);
+        JSONArray jsonArray = (JSONArray)json.get("data");
+        List<String> newsList = jsonArray.toJavaList(String.class);
+
+        //逐条处理
+        for(String news: newsList) {
+            String[] list = getMess(news).split("## ");
+            double postive = Double.valueOf(list[1]);
+            posList.add(postive);
+            result += list[0].replace("[|]", "");
+        }
+
+        String[] wordList = result.split(",");  //分词列表
+    }
+
+    public static String getMess(String news) {
+        String title = JSON.parseObject(news).getString("title");
+        String content = JSON.parseObject(news).getString("content");
+        return callPyFunc(title + content);
+    }
+
+    private static String callPyFunc(String news) {
+        String path = System.getProperty("user.dir")+sep+"src"+sep+"main"+sep+"java"+sep+"com"+sep+"citicup"+sep+"util"+sep+"NewsProcess.py";
+        String[] arguments = new String[] {"python", path, news};
+        String result = "";
+        try {
+            Process process = Runtime.getRuntime().exec(arguments);
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = "";
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+            in.close();
+            int re = process.waitFor();
+            System.out.println(re);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     /**
      * 获取信息列表
@@ -23,16 +79,16 @@ public class NewsAPIHelper {
         String servicePath = "http://www.digudata.com:8082/data/find";
 
         //关键字
-//        String compName = "中国南玻集团股份有限公司";
-//        String stkcd = "000012";
         String key = "\"" + compName + "\" or \"" + stkcd + "\"";
+        String[] timeGap = getTimeGap();
+        String token = "";
 
         // 设置参数
         Map params = new HashMap();
-        params.put("token", "");
+        params.put("token", token);
         params.put("platform", "News");
-        params.put("startdate", "20170103");
-        params.put("enddate", "20170203");
+        params.put("startdate", timeGap[0]);
+        params.put("enddate", timeGap[1]);
         params.put("pageno", "1");
         params.put("rows", "100");
         params.put("isDedup", "true");
@@ -44,6 +100,24 @@ public class NewsAPIHelper {
 
         String content = callServUrl(servicePath, params);
         return content;
+    }
+
+    private static String[] getTimeGap() {
+        String[] result = new String[2];
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        String now = format.format(date);
+        result[1] = now;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, -90);
+        date = calendar.getTime();
+        String pass = format.format(date);
+        result[0] = pass;
+
+        return result;
     }
 
     /**
