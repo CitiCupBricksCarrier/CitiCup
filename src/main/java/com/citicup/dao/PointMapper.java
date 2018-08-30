@@ -33,13 +33,13 @@ public interface PointMapper {
         "infectProb, infectProbTemp, ",
         "infectTime, timeLeft, ",
         "color, role, posx, ",
-        "posy, name)",
+        "posy, name, id)",
         "values (#{stkcd,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
         "#{status,jdbcType=TINYINT}, #{defectprob,jdbcType=DOUBLE}, ",
         "#{infectprob,jdbcType=DOUBLE}, #{infectprobtemp,jdbcType=DOUBLE}, ",
         "#{infecttime,jdbcType=INTEGER}, #{timeleft,jdbcType=INTEGER}, ",
         "#{color,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{posx,jdbcType=VARCHAR}, ",
-        "#{posy,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})"
+        "#{posy,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR})"
     })
     int insert(Point record);
 
@@ -61,7 +61,7 @@ public interface PointMapper {
     @Select({
         "select",
         "stkcd, graphId, status, defectProb, infectProb, infectProbTemp, infectTime, ",
-        "timeLeft, color, role, posx, posy, name",
+        "timeLeft, color, role, posx, posy, name, id",
         "from point",
         "where stkcd = #{stkcd,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}"
@@ -79,7 +79,8 @@ public interface PointMapper {
         @Result(column="role", property="role", jdbcType=JdbcType.VARCHAR),
         @Result(column="posx", property="posx", jdbcType=JdbcType.VARCHAR),
         @Result(column="posy", property="posy", jdbcType=JdbcType.VARCHAR),
-        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR)
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+        @Result(column="id", property="id", jdbcType=JdbcType.VARCHAR)
     })
     Point selectByPrimaryKey(PointKey key);
 
@@ -110,7 +111,8 @@ public interface PointMapper {
           "role = #{role,jdbcType=VARCHAR},",
           "posx = #{posx,jdbcType=VARCHAR},",
           "posy = #{posy,jdbcType=VARCHAR},",
-          "name = #{name,jdbcType=VARCHAR}",
+          "name = #{name,jdbcType=VARCHAR},",
+          "id = #{id,jdbcType=VARCHAR}",
         "where stkcd = #{stkcd,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}"
     })

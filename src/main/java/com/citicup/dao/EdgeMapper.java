@@ -32,11 +32,11 @@ public interface EdgeMapper {
         "insert into edge (stkcdA, stkcdB, ",
         "graphId, status, ",
         "propagateProbA, propagateProbB, ",
-        "fund)",
+        "fund, id)",
         "values (#{stkcda,jdbcType=VARCHAR}, #{stkcdb,jdbcType=VARCHAR}, ",
         "#{graphid,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, ",
         "#{propagateproba,jdbcType=DOUBLE}, #{propagateprobb,jdbcType=DOUBLE}, ",
-        "#{fund,jdbcType=DOUBLE})"
+        "#{fund,jdbcType=DOUBLE}, #{id,jdbcType=VARCHAR})"
     })
     int insert(Edge record);
 
@@ -57,7 +57,7 @@ public interface EdgeMapper {
      */
     @Select({
         "select",
-        "stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund",
+        "stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund, id",
         "from edge",
         "where stkcdA = #{stkcda,jdbcType=VARCHAR}",
           "and stkcdB = #{stkcdb,jdbcType=VARCHAR}",
@@ -70,7 +70,8 @@ public interface EdgeMapper {
         @Result(column="status", property="status", jdbcType=JdbcType.TINYINT),
         @Result(column="propagateProbA", property="propagateproba", jdbcType=JdbcType.DOUBLE),
         @Result(column="propagateProbB", property="propagateprobb", jdbcType=JdbcType.DOUBLE),
-        @Result(column="fund", property="fund", jdbcType=JdbcType.DOUBLE)
+        @Result(column="fund", property="fund", jdbcType=JdbcType.DOUBLE),
+        @Result(column="id", property="id", jdbcType=JdbcType.VARCHAR)
     })
     Edge selectByPrimaryKey(EdgeKey key);
 
@@ -94,7 +95,8 @@ public interface EdgeMapper {
         "set status = #{status,jdbcType=TINYINT},",
           "propagateProbA = #{propagateproba,jdbcType=DOUBLE},",
           "propagateProbB = #{propagateprobb,jdbcType=DOUBLE},",
-          "fund = #{fund,jdbcType=DOUBLE}",
+          "fund = #{fund,jdbcType=DOUBLE},",
+          "id = #{id,jdbcType=VARCHAR}",
         "where stkcdA = #{stkcda,jdbcType=VARCHAR}",
           "and stkcdB = #{stkcdb,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}"

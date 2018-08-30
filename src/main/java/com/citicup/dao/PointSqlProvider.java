@@ -74,6 +74,10 @@ public class PointSqlProvider {
             VALUES("name", "#{name,jdbcType=VARCHAR}");
         }
         
+        if (record.getId() != null) {
+            VALUES("id", "#{id,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -129,6 +133,10 @@ public class PointSqlProvider {
         
         if (record.getName() != null) {
             SET("name = #{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getId() != null) {
+            SET("id = #{id,jdbcType=VARCHAR}");
         }
         
         WHERE("stkcd = #{stkcd,jdbcType=VARCHAR}");

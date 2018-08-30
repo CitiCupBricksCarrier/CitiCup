@@ -10,10 +10,6 @@ import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
 import com.citicup.model.Edge;
 
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
-
 public class EdgeSqlProvider {
 
     /**
@@ -54,6 +50,10 @@ public class EdgeSqlProvider {
             VALUES("fund", "#{fund,jdbcType=DOUBLE}");
         }
         
+        if (record.getId() != null) {
+            VALUES("id", "#{id,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -81,6 +81,10 @@ public class EdgeSqlProvider {
         
         if (record.getFund() != null) {
             SET("fund = #{fund,jdbcType=DOUBLE}");
+        }
+        
+        if (record.getId() != null) {
+            SET("id = #{id,jdbcType=VARCHAR}");
         }
         
         WHERE("stkcdA = #{stkcda,jdbcType=VARCHAR}");
