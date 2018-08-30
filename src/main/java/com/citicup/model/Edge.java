@@ -241,4 +241,16 @@ public class Edge extends EdgeKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public Edge(String stkcda, String stkcdb, String graphid, Byte status, Double propagateproba, Double propagateprobb, Double fund, String id) {
+        super(stkcda, stkcdb, graphid);
+        this.status = status;
+        this.propagateproba = propagateproba;
+        this.propagateprobb = propagateprobb;
+        this.fund = fund;
+        this.id = id;
+    }
+
+    public Edge() {
+    }
 }
