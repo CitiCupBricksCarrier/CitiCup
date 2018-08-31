@@ -1,7 +1,7 @@
 package com.citicup.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.CompanyBasicInformationMapper;
+import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
 import com.citicup.util.NewsAPIHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

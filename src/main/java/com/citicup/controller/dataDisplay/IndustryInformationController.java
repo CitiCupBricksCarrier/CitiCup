@@ -1,8 +1,14 @@
 package com.citicup.controller.dataDisplay;
 
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.*;
-import com.citicup.model.*;
+import com.citicup.dao.dataDisplay.AutomobileIndustryBulletinInformationMapper;
+import com.citicup.dao.dataDisplay.AutomobileIndustryNewsMapper;
+import com.citicup.dao.dataDisplay.AutomobileIndustryPolicyTrendsMapper;
+import com.citicup.dao.dataDisplay.CarBusinessNewsMapper;
+import com.citicup.model.dataDisplay.AutomobileIndustryBulletinInformation;
+import com.citicup.model.dataDisplay.AutomobileIndustryNews;
+import com.citicup.model.dataDisplay.AutomobileIndustryPolicyTrends;
+import com.citicup.model.dataDisplay.CarBusinessNews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;

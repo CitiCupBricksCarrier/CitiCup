@@ -1,8 +1,11 @@
 package com.citicup.controller.dataDisplay;
 
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.*;
-import com.citicup.model.*;
+import com.citicup.dao.dataDisplay.ChineseCarOwnershipPerOneThousandPeopleMapper;
+import com.citicup.dao.dataDisplay.ChineseNewRegisteredCivilCarsMapper;
+import com.citicup.dao.dataDisplay.TheGlobalCarOwnershipMapper;
+import com.citicup.dao.dataDisplay.TheGlobalCarOwnershipPerOneThousandPeopleMapper;
+import com.citicup.model.dataDisplay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +20,7 @@ public class IndustryDataHoldNumController {
 
     //汽车保有量
     @Autowired
-    private ChineseCarOwnershipMapper ChineseCarOwnershipMapper;
+    private com.citicup.dao.dataDisplay.ChineseCarOwnershipMapper ChineseCarOwnershipMapper;
     @Autowired
     private ChineseCarOwnershipPerOneThousandPeopleMapper chineseCarOwnershipPerOneThousandPeople;
 

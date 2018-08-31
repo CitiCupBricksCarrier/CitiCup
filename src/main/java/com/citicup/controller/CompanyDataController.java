@@ -1,12 +1,10 @@
 package com.citicup.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.CompanyBasicInformationMapper;
-import com.citicup.dao.CompanyClassificationMapper;
-import com.citicup.model.ChinesePassengerCarSalesDividedByBrand;
-import com.citicup.model.CompanyBasicInformation;
-import com.citicup.model.CompanyClassification;
-import com.citicup.model.MainBusinessCostOfAutoIndustryInChina;
+import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
+import com.citicup.dao.dataDisplay.CompanyClassificationMapper;
+import com.citicup.model.dataDisplay.CompanyBasicInformation;
+import com.citicup.model.dataDisplay.CompanyClassification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,8 +1,11 @@
 package com.citicup.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.*;
-import com.citicup.model.*;
+import com.citicup.dao.dataDisplay.BookValueMapper;
+import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
+import com.citicup.dao.dataDisplay.CompanySizeRankMapper;
+import com.citicup.dao.dataDisplay.TotalAssetsMapper;
+import com.citicup.model.dataDisplay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,7 @@ public class SimilarRecommendationController {
     private BookValueMapper bookValueMapper;
 
     @Autowired
-    private CirculationMarketValueAndTotalMarketValueMapper CirculationMarketValueAndTotalMarketValueMapper;
+    private com.citicup.dao.dataDisplay.CirculationMarketValueAndTotalMarketValueMapper CirculationMarketValueAndTotalMarketValueMapper;
 
     @Autowired
     private CompanySizeRankMapper companySizeRankMapper;
