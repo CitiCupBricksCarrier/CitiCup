@@ -32,10 +32,13 @@ public class NewsAPIHelper {
 
         //逐条处理
         for(String news: newsList) {
-            String[] list = getMess(news).split("##");
-            double postive = Double.valueOf(list[1]);
-            posList.add(postive);
-            result += list[0].replace("[|]", "");
+            String afterProcess = getMess(news);
+            if(afterProcess != null && afterProcess != "") {
+                String[] list = afterProcess.split("##");
+                double postive = Double.valueOf(list[1]);
+                posList.add(postive);
+                result += list[0].replace("[|]", "");
+            }
         }
 
         String[] wordList = result.split(",");  //分词列表
