@@ -9,6 +9,7 @@ import com.citicup.dao.GraphMapper;
 import com.citicup.dao.PointMapper;
 import com.citicup.model.*;
 import com.citicup.util.SessionHelper;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,8 @@ public class GraphController {
     @Autowired
     private CommentMapper commentMapper;
 
-    @RequestMapping("/addGraph")
-    public String addGraph(HttpServletRequest request, @RequestParam String graphJson){
+    @RequestMapping("/newGragh")
+    public String newGragh(HttpServletRequest request){
 
         //验证用户登录状态
         HttpSession session = request.getSession();
@@ -48,8 +49,28 @@ public class GraphController {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String graphid = username + "-" + df.format(new Date());
 
+        //持久化
+        Graph graph = new Graph(graphid, username, 0, 0);
+        graphMapper.insert(graph);
+
+        JSONObject json = new JSONObject();
+        json.put("graphid", graphid);
+        return json.toJSONString();
+    }
+
+    @RequestMapping("/updateGraph")
+    public String updateGraph(HttpServletRequest request, @RequestParam String graphJson){
+
+        //验证用户登录状态
+        HttpSession session = request.getSession();
+        String username = SessionHelper.getUserFromSession(session);
+        if (username == null){
+            return "logout";
+        }
+
         //解析json
         JSONObject json = JSON.parseObject(graphJson);
+        String graphid = json.getString("graphid");
         JSONArray links = json.getJSONArray("linkList");
         JSONArray companys = json.getJSONArray("companyList");
 
@@ -71,8 +92,9 @@ public class GraphController {
             points.add(point);
         }
 
-        Graph graph = new Graph(graphid, username, 0, 0);
-        graphMapper.insert(graph);
+        //删除原节点和边，插入新的节点和边
+        edgeMapper.deleteByGraphId(graphid);
+        pointMapper.deleteByGraphId(graphid);
         edgeMapper.saveEdgeList(edges);
         pointMapper.savePointList(points);
 
@@ -80,7 +102,7 @@ public class GraphController {
     }
 
     @RequestMapping("/getGraghList")
-    public String addGraph(HttpServletRequest request){
+    public String getGraghList(HttpServletRequest request){
 
         //验证用户登录状态
         HttpSession session = request.getSession();
