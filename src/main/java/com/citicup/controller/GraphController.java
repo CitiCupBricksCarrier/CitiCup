@@ -101,8 +101,25 @@ public class GraphController {
         return "success";
     }
 
-    @RequestMapping("/getGraphList")
-    public String getGraphList(HttpServletRequest request){
+    /**
+     * 得到所有的graphlist
+     * @param request
+     * @return json
+     */
+    @RequestMapping("/getAllGraphList")
+    public String getAllGraphList(HttpServletRequest request){
+
+        List<Graph> graphs = graphMapper.selectAll();
+        return JSONObject.toJSONString(graphs);
+    }
+
+    /**
+     * 得到当前用户的graphlist
+     * @param request
+     * @return json
+     */
+    @RequestMapping("/getOwnGraphList")
+    public String getOwnGraphList(HttpServletRequest request){
 
         //验证用户登录状态
         HttpSession session = request.getSession();
