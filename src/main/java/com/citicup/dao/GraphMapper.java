@@ -1,6 +1,7 @@
 package com.citicup.dao;
 
 import com.citicup.model.Graph;
+import com.citicup.model.dataDisplay.AmericanCarSales;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -95,4 +96,7 @@ public interface GraphMapper {
 
     @Select({"select * from graph where author = #{author,jdbcType=VARCHAR}"})
     List<Graph> selectByAuthor(String author);
+
+    @Select({"select * from graph"})
+    List<Graph> selectAll();
 }
