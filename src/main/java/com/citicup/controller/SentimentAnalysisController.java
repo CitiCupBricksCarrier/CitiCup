@@ -23,12 +23,6 @@ public class SentimentAnalysisController {
         String stkName = companyBasicInformationMapper.selectByPrimaryKey(stkid).getCompname();
 
         JSONObject retJson = apiHelper.getNewsProcess(stkid, stkName);
-
-        JSONArray array = retJson.getJSONArray("wordList");
-        for (int i = 0; i < array.size(); i++){
-            JSONObject jo = array.getJSONObject(i);
-            System.out.println(jo.toString());
-        }
         return retJson.toJSONString();
     }
 
