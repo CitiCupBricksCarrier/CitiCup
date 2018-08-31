@@ -12,6 +12,7 @@ import com.citicup.util.SessionHelper;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,20 @@ public class GraphController {
     @Autowired
     private CommentMapper commentMapper;
 
+    @RequestMapping("/getGraphDetail")
+    public String getGraphDetail(@RequestParam String graphId){
+
+        List<Edge> edges = edgeMapper.getAllById(graphId);
+        List<Point> points = pointMapper.getAllById(graphId);
+
+        JSONObject json = new JSONObject();
+        json.put("id", graphId);
+        json.put("edges", edges);
+        json.put("points", points);
+
+        return json.toJSONString();
+    }
+
     @RequestMapping("/newGraph")
     public String newGraph(HttpServletRequest request){
 
@@ -46,7 +61,7 @@ public class GraphController {
         }
 
         //建立graphid
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String graphid = username + "-" + df.format(new Date());
 
         //持久化
