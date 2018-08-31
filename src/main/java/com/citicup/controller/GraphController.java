@@ -35,8 +35,8 @@ public class GraphController {
     @Autowired
     private CommentMapper commentMapper;
 
-    @RequestMapping("/newGragh")
-    public String newGragh(HttpServletRequest request){
+    @RequestMapping("/newGraph")
+    public String newGraph(HttpServletRequest request){
 
         //验证用户登录状态
         HttpSession session = request.getSession();
@@ -101,8 +101,8 @@ public class GraphController {
         return "success";
     }
 
-    @RequestMapping("/getGraghList")
-    public String getGraghList(HttpServletRequest request){
+    @RequestMapping("/getGraphList")
+    public String getGraphList(HttpServletRequest request){
 
         //验证用户登录状态
         HttpSession session = request.getSession();
@@ -115,8 +115,8 @@ public class GraphController {
         return JSONObject.toJSONString(graphs);
     }
 
-    @RequestMapping("/getGraghByID")
-    public String getGraghByID(@RequestParam String graghid){
+    @RequestMapping("/getGraphByID")
+    public String getGraphByID(@RequestParam String graghid){
 
         List<Point> points = pointMapper.getAllById(graghid);
         List<Edge> edges = edgeMapper.getAllById(graghid);
