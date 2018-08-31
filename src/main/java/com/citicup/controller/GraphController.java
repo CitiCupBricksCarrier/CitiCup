@@ -3,12 +3,12 @@ package com.citicup.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.citicup.dao.CommentMapper;
 import com.citicup.dao.EdgeMapper;
 import com.citicup.dao.GraphMapper;
 import com.citicup.dao.PointMapper;
-import com.citicup.model.Edge;
-import com.citicup.model.Graph;
-import com.citicup.model.Point;
+import com.citicup.model.*;
+import com.citicup.util.SessionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,18 +31,15 @@ public class GraphController {
     private PointMapper pointMapper;
     @Autowired
     private EdgeMapper edgeMapper;
+    @Autowired
+    private CommentMapper commentMapper;
 
     @RequestMapping("/addGraph")
     public String addGraph(HttpServletRequest request, @RequestParam String graphJson){
 
-        //验证用户名
+        //验证用户登录状态
         HttpSession session = request.getSession();
-        String username = null;
-        try {
-            username=session.getAttribute("user").toString();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        String username = SessionHelper.getUserFromSession(session);
         if (username == null){
             return "logout";
         }
@@ -83,7 +80,14 @@ public class GraphController {
     }
 
     @RequestMapping("/getGraghList")
-    public String addGraph(@RequestParam String username){
+    public String addGraph(HttpServletRequest request){
+
+        //验证用户登录状态
+        HttpSession session = request.getSession();
+        String username = SessionHelper.getUserFromSession(session);
+        if (username == null){
+            return "logout";
+        }
 
         List<Graph> graphs = graphMapper.selectByAuthor(username);
         return JSONObject.toJSONString(graphs);
@@ -99,5 +103,57 @@ public class GraphController {
         json.put("nodeList", points);
         json.put("connectionList", edges);
         return json.toJSONString();
+    }
+
+    @RequestMapping("/addComment")
+    public String addComment(HttpServletRequest request, @RequestParam String data){
+
+        //验证用户登录状态
+        HttpSession session = request.getSession();
+        String username = SessionHelper.getUserFromSession(session);
+        if (username == null){
+            return "logout";
+        }
+
+        JSONObject json = JSON.parseObject(data);
+        String graphid = json.getString("graphid");
+        String comment = json.getString("comment");
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        String time = df.format(new Date());
+
+        Comment c = new Comment(username, graphid, time, comment);
+        commentMapper.insert(c);
+
+        return "success";
+    }
+
+    @RequestMapping("/deleteComment")
+    public String deleteComment(HttpServletRequest request, @RequestParam String data){
+        //验证用户登录状态
+        HttpSession session = request.getSession();
+        String username = SessionHelper.getUserFromSession(session);
+        if (username == null){
+            return "logout";
+        }
+
+        JSONObject json = JSON.parseObject(data);
+        String graphid = json.getString("graphid");
+        String time = json.getString("time");
+        String commentUser = json.getString("username");
+
+        //不是该用户的评论
+        if (!commentUser.equals(username)){
+            return "permission denied";
+        }
+
+        try {
+            commentMapper.deleteByPrimaryKey(new CommentKey(username, graphid, time));
+            return "success";
+        }catch(Exception e){
+            e.printStackTrace();
+            return "fail";
+        }
+
     }
 }

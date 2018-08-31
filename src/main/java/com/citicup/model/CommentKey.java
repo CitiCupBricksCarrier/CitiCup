@@ -165,4 +165,13 @@ public class CommentKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public CommentKey(String author, String graphid, String time) {
+        this.author = author;
+        this.graphid = graphid;
+        this.time = time;
+    }
+
+    public CommentKey() {
+    }
 }
