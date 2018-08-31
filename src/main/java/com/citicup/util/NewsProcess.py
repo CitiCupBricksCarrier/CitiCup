@@ -5,6 +5,6 @@ import sys
 def NewsProcess(data):
     s = SnowNLP(data)
     print(s.words)
-    print("## "+str(s.sentiments))
+    print("##"+str(s.sentiments))
 
 NewsProcess(sys.argv[1])

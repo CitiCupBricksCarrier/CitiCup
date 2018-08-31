@@ -32,7 +32,7 @@ public class NewsAPIHelper {
 
         //逐条处理
         for(String news: newsList) {
-            String[] list = getMess(news).split("## ");
+            String[] list = getMess(news).split("##");
             double postive = Double.valueOf(list[1]);
             posList.add(postive);
             result += list[0].replace("[|]", "");
@@ -60,7 +60,7 @@ public class NewsAPIHelper {
         String result = "";
         try {
             Process process = Runtime.getRuntime().exec(arguments);
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), "GB2312"));
             String line = "";
             while ((line = in.readLine()) != null) {
                 result += line;
@@ -119,7 +119,7 @@ public class NewsAPIHelper {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, -90);
+        calendar.add(Calendar.DAY_OF_MONTH, -15);
         date = calendar.getTime();
         String pass = format.format(date);
         result[0] = pass;
