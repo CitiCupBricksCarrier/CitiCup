@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,18 +33,28 @@ public class GraphController {
     private EdgeMapper edgeMapper;
 
     @RequestMapping("/addGraph")
-    public String addGraph(@RequestParam String username, @RequestParam String linkList,
-                           @RequestParam String companyList){
+    public String addGraph(HttpServletRequest request, @RequestParam String graphJson){
 
-        //测试
-        username = "1";
+        //验证用户名
+        HttpSession session = request.getSession();
+        String username = null;
+        try {
+            username=session.getAttribute("user").toString();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        if (username == null){
+            return "logout";
+        }
 
         //建立graphid
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String graphid = username + "-" + df.format(new Date());
 
-        JSONArray links = JSON.parseArray(linkList);
-        JSONArray companys = JSON.parseArray(companyList);
+        //解析json
+        JSONObject json = JSON.parseObject(graphJson);
+        JSONArray links = json.getJSONArray("linkList");
+        JSONArray companys = json.getJSONArray("companyList");
 
         List<Edge> edges = new ArrayList<>();
         List<Point> points = new ArrayList<>();
