@@ -8,6 +8,7 @@ import com.citicup.dao.EdgeMapper;
 import com.citicup.dao.GraphMapper;
 import com.citicup.dao.PointMapper;
 import com.citicup.model.*;
+import com.citicup.util.ResponseHelper;
 import com.citicup.util.SessionHelper;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@ResponseBody
 @RestController
 @EnableAutoConfiguration
 public class GraphController {
@@ -57,7 +60,7 @@ public class GraphController {
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
         if (username == null) {
-            return "logout";
+            return JSON.toJSONString(new ResponseHelper("logout"));
         }
 
         //建立graphid
@@ -80,7 +83,7 @@ public class GraphController {
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
         if (username == null) {
-            return "logout";
+            return JSON.toJSONString(new ResponseHelper("logout"));
         }
 
         //解析json
@@ -113,7 +116,7 @@ public class GraphController {
         edgeMapper.saveEdgeList(edges);
         pointMapper.savePointList(points);
 
-        return "success";
+        return JSON.toJSONString(new ResponseHelper("success"));
     }
 
     /**
@@ -142,7 +145,7 @@ public class GraphController {
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
         if (username == null) {
-            return "logout";
+            return JSON.toJSONString(new ResponseHelper("logout"));
         }
 
         List<Graph> graphs = graphMapper.selectByAuthor(username);
@@ -168,7 +171,7 @@ public class GraphController {
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
         if (username == null) {
-            return "logout";
+            return JSON.toJSONString(new ResponseHelper("logout"));
         }
 
         JSONObject json = JSON.parseObject(data);
@@ -181,7 +184,7 @@ public class GraphController {
         Comment c = new Comment(username, graphid, time, comment);
         commentMapper.insert(c);
 
-        return "success";
+        return JSON.toJSONString(new ResponseHelper("success"));
     }
 
     @RequestMapping("/deleteComment")
@@ -190,7 +193,7 @@ public class GraphController {
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
         if (username == null) {
-            return "logout";
+            return JSON.toJSONString(new ResponseHelper("logout"));
         }
 
         JSONObject json = JSON.parseObject(data);
@@ -200,15 +203,15 @@ public class GraphController {
 
         //不是该用户的评论
         if (!commentUser.equals(username)) {
-            return "permission denied";
+            return JSON.toJSONString(new ResponseHelper("permission denied"));
         }
 
         try {
             commentMapper.deleteByPrimaryKey(new CommentKey(username, graphid, time));
-            return "success";
+            return JSON.toJSONString(new ResponseHelper("success"));
         } catch (Exception e) {
             e.printStackTrace();
-            return "fail";
+            return JSON.toJSONString(new ResponseHelper("fail"));
         }
     }
 

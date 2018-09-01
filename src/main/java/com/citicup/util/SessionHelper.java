@@ -6,6 +6,7 @@ public class SessionHelper {
 
     public static String getUserFromSession(HttpSession session){
         String username = null;
+        if (session == null) return null;
         try {
             username=session.getAttribute("user").toString();
         }catch(Exception e){
