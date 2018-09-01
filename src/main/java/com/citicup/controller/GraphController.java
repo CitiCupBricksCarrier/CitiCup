@@ -37,7 +37,7 @@ public class GraphController {
     private CommentMapper commentMapper;
 
     @RequestMapping("/getGraphDetail")
-    public String getGraphDetail(@RequestParam String graphId){
+    public String getGraphDetail(@RequestParam String graphId) {
 
         List<Edge> edges = edgeMapper.getAllById(graphId);
         List<Point> points = pointMapper.getAllById(graphId);
@@ -51,12 +51,12 @@ public class GraphController {
     }
 
     @RequestMapping("/newGraph")
-    public String newGraph(HttpServletRequest request){
+    public String newGraph(HttpServletRequest request) {
 
         //验证用户登录状态
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
-        if (username == null){
+        if (username == null) {
             return "logout";
         }
 
@@ -74,12 +74,12 @@ public class GraphController {
     }
 
     @RequestMapping("/updateGraph")
-    public String updateGraph(HttpServletRequest request, @RequestParam String graphJson){
+    public String updateGraph(HttpServletRequest request, @RequestParam String graphJson) {
 
         //验证用户登录状态
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
-        if (username == null){
+        if (username == null) {
             return "logout";
         }
 
@@ -92,7 +92,7 @@ public class GraphController {
         List<Edge> edges = new ArrayList<>();
         List<Point> points = new ArrayList<>();
 
-        for (int i = 0; i < links.size(); i++){
+        for (int i = 0; i < links.size(); i++) {
             JSONObject jo = links.getJSONObject(i);
             Edge edge = new Edge(jo.getString("begin"), jo.getString("end"), graphid,
                     (byte) 0, 0.0, 0.0, jo.getDouble("fund"), jo.getString("id"));
@@ -118,11 +118,12 @@ public class GraphController {
 
     /**
      * 得到所有的graphlist
+     *
      * @param request
      * @return json
      */
     @RequestMapping("/getAllGraphList")
-    public String getAllGraphList(HttpServletRequest request){
+    public String getAllGraphList(HttpServletRequest request) {
 
         List<Graph> graphs = graphMapper.selectAll();
         return JSONObject.toJSONString(graphs);
@@ -130,16 +131,17 @@ public class GraphController {
 
     /**
      * 得到当前用户的graphlist
+     *
      * @param request
      * @return json
      */
     @RequestMapping("/getOwnGraphList")
-    public String getOwnGraphList(HttpServletRequest request){
+    public String getOwnGraphList(HttpServletRequest request) {
 
         //验证用户登录状态
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
-        if (username == null){
+        if (username == null) {
             return "logout";
         }
 
@@ -148,7 +150,7 @@ public class GraphController {
     }
 
     @RequestMapping("/getGraphByID")
-    public String getGraphByID(@RequestParam String graghid){
+    public String getGraphByID(@RequestParam String graghid) {
 
         List<Point> points = pointMapper.getAllById(graghid);
         List<Edge> edges = edgeMapper.getAllById(graghid);
@@ -160,12 +162,12 @@ public class GraphController {
     }
 
     @RequestMapping("/addComment")
-    public String addComment(HttpServletRequest request, @RequestParam String data){
+    public String addComment(HttpServletRequest request, @RequestParam String data) {
 
         //验证用户登录状态
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
-        if (username == null){
+        if (username == null) {
             return "logout";
         }
 
@@ -183,11 +185,11 @@ public class GraphController {
     }
 
     @RequestMapping("/deleteComment")
-    public String deleteComment(HttpServletRequest request, @RequestParam String data){
+    public String deleteComment(HttpServletRequest request, @RequestParam String data) {
         //验证用户登录状态
         HttpSession session = request.getSession();
         String username = SessionHelper.getUserFromSession(session);
-        if (username == null){
+        if (username == null) {
             return "logout";
         }
 
@@ -197,17 +199,23 @@ public class GraphController {
         String commentUser = json.getString("username");
 
         //不是该用户的评论
-        if (!commentUser.equals(username)){
+        if (!commentUser.equals(username)) {
             return "permission denied";
         }
 
         try {
             commentMapper.deleteByPrimaryKey(new CommentKey(username, graphid, time));
             return "success";
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "fail";
         }
+    }
 
+    @RequestMapping("/getComments")
+    public String getComments(HttpServletRequest request, @RequestParam String graphid) {
+
+        List<Comment> comments = commentMapper.getAllById(graphid);
+        return JSONObject.toJSONString(comments);
     }
 }
