@@ -29,6 +29,7 @@ public class ContrastOfMarketPerformanceController {
         List<ContrastOfMarketPerformance_all> list = contrastOfMarketPerformance_allMapper.getAll();
         List<JSONObject> json = new ArrayList<>();
 
+        List<String> indstnam = new ArrayList<>();
         List<String> nearawkrisefal = new ArrayList<>();
         List<String> nearamthrisefal = new ArrayList<>();
         List<String> nearthrmthrisefal = new ArrayList<>();
@@ -36,6 +37,7 @@ public class ContrastOfMarketPerformanceController {
         List<String> nearayearrisefal = new ArrayList<>();
 
         for(ContrastOfMarketPerformance_all cmp : list) {
+            indstnam.add(cmp.getIndstnam());
             nearawkrisefal.add(cmp.getNearawkrisefal());
             nearamthrisefal.add(cmp.getNearamthrisefal());
             nearthrmthrisefal.add(cmp.getNearthrmthrisefal());
@@ -43,6 +45,8 @@ public class ContrastOfMarketPerformanceController {
             nearayearrisefal.add(cmp.getNearayearrisefal());
         }
 
+        JSONObject indstnamJson = new JSONObject();
+        indstnamJson.put("indstnam", indstnam);
         JSONObject nearawkrisefalJson = new JSONObject();
         nearawkrisefalJson.put("nearawkrisefal", nearawkrisefal);
         JSONObject nearamthrisefalJson = new JSONObject();
@@ -54,6 +58,7 @@ public class ContrastOfMarketPerformanceController {
         JSONObject nearayearrisefalJson = new JSONObject();
         nearayearrisefalJson.put("nearayearrisefal", nearayearrisefal);
 
+        json.add(indstnamJson);
         json.add(nearawkrisefalJson);
         json.add(nearamthrisefalJson);
         json.add(nearthrmthrisefalJson);
@@ -68,6 +73,7 @@ public class ContrastOfMarketPerformanceController {
         List<ContrastOfMarketPerformance_newThirdBoard> list = contrastOfMarketPerformance_newThirdBoardMapper.getAll();
         List<JSONObject> json = new ArrayList<>();
 
+        List<String> indstnam = new ArrayList<>();
         List<String> nearawkrisefal = new ArrayList<>();
         List<String> nearamthrisefal = new ArrayList<>();
         List<String> nearthrmthrisefal = new ArrayList<>();
@@ -75,6 +81,7 @@ public class ContrastOfMarketPerformanceController {
         List<String> nearayearrisefal = new ArrayList<>();
 
         for(ContrastOfMarketPerformance_newThirdBoard cmp : list) {
+            indstnam.add(cmp.getIndstnam());
             nearawkrisefal.add(cmp.getNearawkrisefal());
             nearamthrisefal.add(cmp.getNearamthrisefal());
             nearthrmthrisefal.add(cmp.getNearthrmthrisefal());
@@ -82,6 +89,8 @@ public class ContrastOfMarketPerformanceController {
             nearayearrisefal.add(cmp.getNearayearrisefal());
         }
 
+        JSONObject indstnamJson = new JSONObject();
+        indstnamJson.put("indstnam", indstnam);
         JSONObject nearawkrisefalJson = new JSONObject();
         nearawkrisefalJson.put("nearawkrisefal", nearawkrisefal);
         JSONObject nearamthrisefalJson = new JSONObject();
@@ -93,6 +102,7 @@ public class ContrastOfMarketPerformanceController {
         JSONObject nearayearrisefalJson = new JSONObject();
         nearayearrisefalJson.put("nearayearrisefal", nearayearrisefal);
 
+        json.add(indstnamJson);
         json.add(nearawkrisefalJson);
         json.add(nearamthrisefalJson);
         json.add(nearthrmthrisefalJson);
@@ -107,6 +117,7 @@ public class ContrastOfMarketPerformanceController {
         List<ContrastOfMarketPerformance_shanghaiAndShenzhenAShares> list = contrastOfMarketPerformance_shanghaiAndShenzhenASharesMapper.getAll();
         List<JSONObject> json = new ArrayList<>();
 
+        List<String> indstnam = new ArrayList<>();
         List<String> nearawkrisefal = new ArrayList<>();
         List<String> nearamthrisefal = new ArrayList<>();
         List<String> nearthrmthrisefal = new ArrayList<>();
@@ -114,6 +125,7 @@ public class ContrastOfMarketPerformanceController {
         List<String> nearayearrisefal = new ArrayList<>();
 
         for(ContrastOfMarketPerformance_shanghaiAndShenzhenAShares cmp : list) {
+            indstnam.add(cmp.getIndstnam());
             nearawkrisefal.add(cmp.getNearawkrisefal());
             nearamthrisefal.add(cmp.getNearamthrisefal());
             nearthrmthrisefal.add(cmp.getNearthrmthrisefal());
@@ -121,6 +133,8 @@ public class ContrastOfMarketPerformanceController {
             nearayearrisefal.add(cmp.getNearayearrisefal());
         }
 
+        JSONObject indstnamJson = new JSONObject();
+        indstnamJson.put("indstnam", indstnam);
         JSONObject nearawkrisefalJson = new JSONObject();
         nearawkrisefalJson.put("nearawkrisefal", nearawkrisefal);
         JSONObject nearamthrisefalJson = new JSONObject();
@@ -132,6 +146,7 @@ public class ContrastOfMarketPerformanceController {
         JSONObject nearayearrisefalJson = new JSONObject();
         nearayearrisefalJson.put("nearayearrisefal", nearayearrisefal);
 
+        json.add(indstnamJson);
         json.add(nearawkrisefalJson);
         json.add(nearamthrisefalJson);
         json.add(nearthrmthrisefalJson);

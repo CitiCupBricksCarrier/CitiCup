@@ -29,6 +29,7 @@ public class StatusOfIndustryListingController {
         List<StatusOfIndustryListing_all> list = statusOfIndustryListing_allMapper.getAll();
         List<JSONObject> json = new ArrayList<>();
 
+        List<String> indstnam = new ArrayList<>();
         List<String> pettm = new ArrayList<>();
         List<String> peyearfcast = new ArrayList<>();
         List<String> pblf = new ArrayList<>();
@@ -42,6 +43,7 @@ public class StatusOfIndustryListingController {
         List<String> toassets = new ArrayList<>();
 
         for(StatusOfIndustryListing_all sil : list) {
+            indstnam.add(sil.getIndstnam());
             pettm.add(sil.getPettm());
             peyearfcast.add(sil.getPeyearfcast());
             pblf.add(sil.getPblf());
@@ -55,6 +57,8 @@ public class StatusOfIndustryListingController {
             toassets.add(sil.getToassets());
         }
 
+        JSONObject indstnamJson = new JSONObject();
+        indstnamJson.put("indstnam", indstnam);
         JSONObject pettmJson = new JSONObject();
         pettmJson.put("pettm", pettm);
         JSONObject peyearfcastJson = new JSONObject();
@@ -78,6 +82,7 @@ public class StatusOfIndustryListingController {
         JSONObject toassetsJson = new JSONObject();
         toassetsJson.put("toassets", toassets);
 
+        json.add(indstnamJson);
         json.add(pettmJson);
         json.add(peyearfcastJson);
         json.add(pblfJson);
@@ -98,6 +103,7 @@ public class StatusOfIndustryListingController {
         List<StatusOfIndustryListing_newThirdBoard> list = statusOfIndustryListing_newThirdBoardMapper.getAll();
         List<JSONObject> json = new ArrayList<>();
 
+        List<String> indstnam = new ArrayList<>();
         List<String> pettm = new ArrayList<>();
         List<String> peyearfcast = new ArrayList<>();
         List<String> pblf = new ArrayList<>();
@@ -111,6 +117,7 @@ public class StatusOfIndustryListingController {
         List<String> toassets = new ArrayList<>();
 
         for(StatusOfIndustryListing_newThirdBoard sil : list) {
+            indstnam.add(sil.getIndstnam());
             pettm.add(sil.getPettm());
             peyearfcast.add(sil.getPeyearfcast());
             pblf.add(sil.getPblf());
@@ -124,6 +131,8 @@ public class StatusOfIndustryListingController {
             toassets.add(sil.getToassets());
         }
 
+        JSONObject indstnamJson = new JSONObject();
+        indstnamJson.put("indstnam", indstnam);
         JSONObject pettmJson = new JSONObject();
         pettmJson.put("pettm", pettm);
         JSONObject peyearfcastJson = new JSONObject();
@@ -147,6 +156,7 @@ public class StatusOfIndustryListingController {
         JSONObject toassetsJson = new JSONObject();
         toassetsJson.put("toassets", toassets);
 
+        json.add(indstnamJson);
         json.add(pettmJson);
         json.add(peyearfcastJson);
         json.add(pblfJson);
@@ -167,6 +177,7 @@ public class StatusOfIndustryListingController {
         List<StatusOfIndustryListing_shanghaiAndShenzhenAShares> list = statusOfIndustryListing_shanghaiAndShenzhenASharesMapper.getAll();
         List<JSONObject> json = new ArrayList<>();
 
+        List<String> indstnam = new ArrayList<>();
         List<String> pettm = new ArrayList<>();
         List<String> peyearfcast = new ArrayList<>();
         List<String> pblf = new ArrayList<>();
@@ -180,6 +191,7 @@ public class StatusOfIndustryListingController {
         List<String> toassets = new ArrayList<>();
 
         for(StatusOfIndustryListing_shanghaiAndShenzhenAShares sil : list) {
+            indstnam.add(sil.getIndstnam());
             pettm.add(sil.getPettm());
             peyearfcast.add(sil.getPeyearfcast());
             pblf.add(sil.getPblf());
@@ -193,6 +205,8 @@ public class StatusOfIndustryListingController {
             toassets.add(sil.getToassets());
         }
 
+        JSONObject indstnamJson = new JSONObject();
+        indstnamJson.put("indstnam", indstnam);
         JSONObject pettmJson = new JSONObject();
         pettmJson.put("pettm", pettm);
         JSONObject peyearfcastJson = new JSONObject();
@@ -216,6 +230,7 @@ public class StatusOfIndustryListingController {
         JSONObject toassetsJson = new JSONObject();
         toassetsJson.put("toassets", toassets);
 
+        json.add(indstnamJson);
         json.add(pettmJson);
         json.add(peyearfcastJson);
         json.add(pblfJson);
