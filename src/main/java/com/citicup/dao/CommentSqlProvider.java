@@ -38,6 +38,14 @@ public class CommentSqlProvider {
             VALUES("comment", "#{comment,jdbcType=VARCHAR}");
         }
         
+        if (record.getUp() != null) {
+            VALUES("up", "#{up,jdbcType=INTEGER}");
+        }
+        
+        if (record.getDown() != null) {
+            VALUES("down", "#{down,jdbcType=INTEGER}");
+        }
+        
         return SQL();
     }
 
@@ -53,6 +61,14 @@ public class CommentSqlProvider {
         
         if (record.getComment() != null) {
             SET("comment = #{comment,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUp() != null) {
+            SET("up = #{up,jdbcType=INTEGER}");
+        }
+        
+        if (record.getDown() != null) {
+            SET("down = #{down,jdbcType=INTEGER}");
         }
         
         WHERE("author = #{author,jdbcType=VARCHAR}");

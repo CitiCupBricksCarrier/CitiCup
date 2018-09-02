@@ -35,6 +35,7 @@
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置 -->
+        <!--ANNOTATEDMAPPER or XMLMAPPER-->
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="com.citicup.dao" implementationPackage="com.citicup.dao.impl"  targetProject="target">
             <property name="enableSubPackages" value="true" />
@@ -313,6 +314,14 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="市场表现对比-全部" domainObjectName="ContrastOfMarketPerformance_all"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="市场表现对比-沪深a股" domainObjectName="ContrastOfMarketPerformance_shanghaiAndShenzhenAShares"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="市场表现对比-新三板做市" domainObjectName="ContrastOfMarketPerformance_newThirdBoard"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -521,19 +530,19 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="comment" domainObjectName="Comment"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="graph" domainObjectName="Graph"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="point" domainObjectName="Point"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="edge" domainObjectName="Edge"
+        <!--<table tableName="point" domainObjectName="Point"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="edge" domainObjectName="Edge"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="comment" domainObjectName="Comment"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

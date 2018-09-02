@@ -71,6 +71,8 @@
         <mapper resource="mapper/DaysInInventoryMapper.xml"/>
         <mapper resource="mapper/InventoryTurnoverRatioMapper.xml"/>
         <mapper resource="mapper/ContrastOfMarketPerformance_newThirdBoardMapper.xml"/>
+        <mapper resource="mapper/ContrastOfMarketPerformance_allMapper.xml"/>
+        <mapper resource="mapper/ContrastOfMarketPerformance_shanghaiAndShenzhenASharesMapper.xml"/>
         <mapper resource="mapper/ComparisonOfMarketPerformance_codeNameMapper.xml"/>
         <mapper resource="mapper/ComparisonOfMarketPerformance_risefalMapper.xml"/>
         <mapper resource="mapper/ComparisonOfMarketPerformance_sheet2Mapper.xml"/>
