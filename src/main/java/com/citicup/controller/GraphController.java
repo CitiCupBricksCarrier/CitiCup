@@ -98,7 +98,8 @@ public class GraphController {
         for (int i = 0; i < links.size(); i++) {
             JSONObject jo = links.getJSONObject(i);
             Edge edge = new Edge(jo.getString("begin"), jo.getString("end"), graphid,
-                    (byte) 0, 0.0, 0.0, jo.getDouble("fund"), jo.getString("id"));
+                    (byte) 0, 0.0, 0.0, jo.getDouble("fund"), jo.getString("id"),
+                    jo.getString("begin"), jo.getString("end"));
             edges.add(edge);
         }
         for (int i = 0; i < companys.size(); i++) {
@@ -181,7 +182,7 @@ public class GraphController {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = df.format(new Date());
 
-        Comment c = new Comment(username, graphid, time, comment);
+        Comment c = new Comment(username, graphid, time, comment, 0, 0);
         commentMapper.insert(c);
 
         return JSON.toJSONString(new ResponseHelper("success"));
@@ -220,6 +221,36 @@ public class GraphController {
 
         List<Comment> comments = commentMapper.getAllById(graphid);
         return JSONObject.toJSONString(comments);
+    }
+
+    @RequestMapping("/commentUp")
+    public String commentUp(HttpServletRequest request, @RequestParam String data) {
+
+        JSONObject json = JSON.parseObject(data);
+        String graphid = json.getString("graphid");
+        String time = json.getString("time");
+        String commentUser = json.getString("username");
+
+        CommentKey key = new CommentKey(commentUser, graphid, time);
+        Comment comment = commentMapper.selectByPrimaryKey(key);
+        comment.setUp(comment.getUp()+1);
+
+        return JSON.toJSONString(new ResponseHelper("success"));
+    }
+
+    @RequestMapping("/commentDown")
+    public String commentDown(HttpServletRequest request, @RequestParam String data) {
+
+        JSONObject json = JSON.parseObject(data);
+        String graphid = json.getString("graphid");
+        String time = json.getString("time");
+        String commentUser = json.getString("username");
+
+        CommentKey key = new CommentKey(commentUser, graphid, time);
+        Comment comment = commentMapper.selectByPrimaryKey(key);
+        comment.setDown(comment.getDown()+1);
+
+        return JSON.toJSONString(new ResponseHelper("success"));
     }
 
     @RequestMapping("/graphUp")

@@ -172,9 +172,11 @@ public class Comment extends CommentKey implements Serializable {
         return sb.toString();
     }
 
-    public Comment(String author, String graphid, String time, String comment) {
+    public Comment(String author, String graphid, String time, String comment, Integer up, Integer down) {
         super(author, graphid, time);
         this.comment = comment;
+        this.up = up;
+        this.down = down;
     }
 
     public Comment() {
