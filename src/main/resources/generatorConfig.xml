@@ -24,7 +24,7 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
         <!-- 生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="com.citicup.model"
+        <javaModelGenerator targetPackage="com.citicup.model.dataDisplay"
                             targetProject="target">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
@@ -36,8 +36,8 @@
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置 -->
         <!--ANNOTATEDMAPPER or XMLMAPPER-->
-        <javaClientGenerator type="ANNOTATEDMAPPER"
-                             targetPackage="com.citicup.dao" implementationPackage="com.citicup.dao.impl"  targetProject="target">
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.citicup.dao.dataDisplay" implementationPackage="com.citicup.dao.dataDisplay.impl"  targetProject="target">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -50,10 +50,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="财务比率比较-全部" domainObjectName="FinancialRatioAnalysisAll"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="财务比率比较全部" domainObjectName="FinancialRatioAnalysisAll"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="公司分类" domainObjectName="CompanyType"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -246,18 +246,18 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="估值表现分析-代码+简称" domainObjectName="ComparisonOfValuationPerformance_codeName"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="估值表现分析-其他属性" domainObjectName="ComparisonOfValuationPerformance_otherAttributes"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="估值表现分析-市盈率拆分表" domainObjectName="ComparisonOfValuationPerformance_pe"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="估值表现分析代码简称" domainObjectName="ComparisonOfValuationPerformance_codeName"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="估值表现分析其他属性" domainObjectName="ComparisonOfValuationPerformance_otherAttributes"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="估值表现分析市盈率拆分表" domainObjectName="ComparisonOfValuationPerformance_pe"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="全球乘用车销量" domainObjectName="TheGlobalPassengerCarSales"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -314,30 +314,30 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="市场表现对比-全部" domainObjectName="ContrastOfMarketPerformance_all"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="市场表现对比-沪深a股" domainObjectName="ContrastOfMarketPerformance_shanghaiAndShenzhenAShares"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="市场表现对比-新三板做市" domainObjectName="ContrastOfMarketPerformance_newThirdBoard"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="市场表现比较-代码+简称" domainObjectName="ComparisonOfMarketPerformance_codeName"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="市场表现比较-risefal" domainObjectName="ComparisonOfMarketPerformance_risefal"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="市场表现比较-sheet2" domainObjectName="ComparisonOfMarketPerformance_sheet2"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="市场表现对比全部" domainObjectName="ContrastOfMarketPerformance_all"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="市场表现对比沪深a股" domainObjectName="ContrastOfMarketPerformance_shanghaiAndShenzhenAShares"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="市场表现对比新三板做市" domainObjectName="ContrastOfMarketPerformance_newThirdBoard"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="市场表现比较代码简称" domainObjectName="ComparisonOfMarketPerformance_codeName"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="市场表现比较risefal" domainObjectName="ComparisonOfMarketPerformance_risefal"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="市场表现比较sheet2" domainObjectName="ComparisonOfMarketPerformance_sheet2"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="应收账款周转天数" domainObjectName="DaysSalesOutstanding"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -394,18 +394,18 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="盈利预测比较-代码+分表" domainObjectName="ComparisonOfEarningsForecast_codeSplitTable"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="盈利预测比较-代码+简称" domainObjectName="ComparisonOfEarningsForecast_codeName"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="盈利预测比较-sheet1" domainObjectName="ComparisonOfEarningsForecast_sheet1"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="盈利预测比较代码分表" domainObjectName="ComparisonOfEarningsForecast_codeSplitTable"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="盈利预测比较代码简称" domainObjectName="ComparisonOfEarningsForecast_codeName"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="盈利预测比较sheet1" domainObjectName="ComparisonOfEarningsForecast_sheet1"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="美国汽车销量" domainObjectName="AmericanCarSales"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -438,50 +438,50 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业上市地位-全部" domainObjectName="StatusOfIndustryListing_all"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业上市地位-新三板做市" domainObjectName="StatusOfIndustryListing_newThirdBoard"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业上市地位-沪深a股" domainObjectName="StatusOfIndustryListing_shanghaiAndShenzhenAShares"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业历史比较-全部" domainObjectName="ComparisonOfIndustryHistory_all"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业历史比较-全部a股" domainObjectName="ComparisonOfIndustryHistory_allAShares"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业历史比较-新三板做市" domainObjectName="ComparisonOfIndustryHistory_newThirdBoard"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="行业历史比较-沪深a股" domainObjectName="ComparisonOfIndustryHistory_shanghaiAndShenzhenAShares"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="财务数据比较-代码简称" domainObjectName="ComparisonOfFinancialData_codeName"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="财务数据比较-拆分表" domainObjectName="ComparisonOfFinancialData_splitTable"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="财务比率比较-代号名称" domainObjectName="ComparisonOfFinancialRatio_codeName"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="财务比率比较-全部" domainObjectName="ComparisonOfFinancialRatio_all"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="行业上市地位全部" domainObjectName="StatusOfIndustryListing_all"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="行业上市地位新三板做市" domainObjectName="StatusOfIndustryListing_newThirdBoard"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="行业上市地位沪深a股" domainObjectName="StatusOfIndustryListing_shanghaiAndShenzhenAShares"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="行业历史比较全部" domainObjectName="ComparisonOfIndustryHistory_all"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="行业历史比较全部a股" domainObjectName="ComparisonOfIndustryHistory_allAShares"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="行业历史比较新三板做市" domainObjectName="ComparisonOfIndustryHistory_newThirdBoard"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="行业历史比较沪深a股" domainObjectName="ComparisonOfIndustryHistory_shanghaiAndShenzhenAShares"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="财务数据比较代码简称" domainObjectName="ComparisonOfFinancialData_codeName"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="财务数据比较拆分表" domainObjectName="ComparisonOfFinancialData_splitTable"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="财务比率比较代号名称" domainObjectName="ComparisonOfFinancialRatio_codeName"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="财务比率比较全部" domainObjectName="ComparisonOfFinancialRatio_all"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="资产负债率" domainObjectName="AssetLiabilityRatio"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -538,10 +538,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="edge" domainObjectName="Edge"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="edge" domainObjectName="Edge"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="comment" domainObjectName="Comment"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
