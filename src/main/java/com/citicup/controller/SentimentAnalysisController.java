@@ -1,5 +1,6 @@
 package com.citicup.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
 import com.citicup.util.NewsAPIHelper;
