@@ -39,7 +39,8 @@ public class RiskDiffusionController {
         for (int i = 0; i < links.size(); i++){
             JSONObject jo = links.getJSONObject(i);
             Edge edge = new Edge(jo.getString("begin"), jo.getString("end"), "",
-                    (byte) 0, 0.0, 0.0, jo.getDouble("fund"), jo.getString("id"));
+                    (byte) 0, 0.0, 0.0, jo.getDouble("fund"), jo.getString("id"),
+                    jo.getString("begin"), jo.getString("end"));
             edges.add(edge);
         }
         for (int i = 0; i < companys.size(); i++) {
