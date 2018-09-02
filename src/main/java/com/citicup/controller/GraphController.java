@@ -221,4 +221,24 @@ public class GraphController {
         List<Comment> comments = commentMapper.getAllById(graphid);
         return JSONObject.toJSONString(comments);
     }
+
+    @RequestMapping("/graphUp")
+    public String graphUp(@RequestParam String graphid) {
+
+        Graph graph = graphMapper.selectByPrimaryKey(graphid);
+        graph.setUp(graph.getUp()+1);
+        graphMapper.updateByPrimaryKey(graph);
+
+        return JSON.toJSONString(new ResponseHelper("success"));
+    }
+
+    @RequestMapping("/graphDown")
+    public String graphDown(@RequestParam String graphid) {
+
+        Graph graph = graphMapper.selectByPrimaryKey(graphid);
+        graph.setDown(graph.getDown()+1);
+        graphMapper.updateByPrimaryKey(graph);
+
+        return JSON.toJSONString(new ResponseHelper("success"));
+    }
 }
