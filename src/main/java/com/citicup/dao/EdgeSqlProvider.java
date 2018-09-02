@@ -1,7 +1,5 @@
 package com.citicup.dao;
 
-import com.citicup.model.Edge;
-
 import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
 import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
 import static org.apache.ibatis.jdbc.SqlBuilder.SET;
@@ -9,6 +7,8 @@ import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
 import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+
+import com.citicup.model.Edge;
 
 public class EdgeSqlProvider {
 
@@ -54,6 +54,14 @@ public class EdgeSqlProvider {
             VALUES("id", "#{id,jdbcType=VARCHAR}");
         }
         
+        if (record.getBegin() != null) {
+            VALUES("begin", "#{begin,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnd() != null) {
+            VALUES("end", "#{end,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -85,6 +93,14 @@ public class EdgeSqlProvider {
         
         if (record.getId() != null) {
             SET("id = #{id,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getBegin() != null) {
+            SET("begin = #{begin,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnd() != null) {
+            SET("end = #{end,jdbcType=VARCHAR}");
         }
         
         WHERE("stkcdA = #{stkcda,jdbcType=VARCHAR}");

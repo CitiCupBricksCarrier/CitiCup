@@ -32,11 +32,13 @@ public interface EdgeMapper {
         "insert into edge (stkcdA, stkcdB, ",
         "graphId, status, ",
         "propagateProbA, propagateProbB, ",
-        "fund, id)",
+        "fund, id, begin, ",
+        "end)",
         "values (#{stkcda,jdbcType=VARCHAR}, #{stkcdb,jdbcType=VARCHAR}, ",
         "#{graphid,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, ",
         "#{propagateproba,jdbcType=DOUBLE}, #{propagateprobb,jdbcType=DOUBLE}, ",
-        "#{fund,jdbcType=DOUBLE}, #{id,jdbcType=VARCHAR})"
+        "#{fund,jdbcType=DOUBLE}, #{id,jdbcType=VARCHAR}, #{begin,jdbcType=VARCHAR}, ",
+        "#{end,jdbcType=VARCHAR})"
     })
     int insert(Edge record);
 
@@ -57,7 +59,8 @@ public interface EdgeMapper {
      */
     @Select({
         "select",
-        "stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund, id",
+        "stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund, id, begin, ",
+        "end",
         "from edge",
         "where stkcdA = #{stkcda,jdbcType=VARCHAR}",
           "and stkcdB = #{stkcdb,jdbcType=VARCHAR}",
@@ -71,7 +74,9 @@ public interface EdgeMapper {
         @Result(column="propagateProbA", property="propagateproba", jdbcType=JdbcType.DOUBLE),
         @Result(column="propagateProbB", property="propagateprobb", jdbcType=JdbcType.DOUBLE),
         @Result(column="fund", property="fund", jdbcType=JdbcType.DOUBLE),
-        @Result(column="id", property="id", jdbcType=JdbcType.VARCHAR)
+        @Result(column="id", property="id", jdbcType=JdbcType.VARCHAR),
+        @Result(column="begin", property="begin", jdbcType=JdbcType.VARCHAR),
+        @Result(column="end", property="end", jdbcType=JdbcType.VARCHAR)
     })
     Edge selectByPrimaryKey(EdgeKey key);
 
@@ -96,7 +101,9 @@ public interface EdgeMapper {
           "propagateProbA = #{propagateproba,jdbcType=DOUBLE},",
           "propagateProbB = #{propagateprobb,jdbcType=DOUBLE},",
           "fund = #{fund,jdbcType=DOUBLE},",
-          "id = #{id,jdbcType=VARCHAR}",
+          "id = #{id,jdbcType=VARCHAR},",
+          "begin = #{begin,jdbcType=VARCHAR},",
+          "end = #{end,jdbcType=VARCHAR}",
         "where stkcdA = #{stkcda,jdbcType=VARCHAR}",
           "and stkcdB = #{stkcdb,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}"
@@ -106,10 +113,10 @@ public interface EdgeMapper {
     @Select({"SELECT * FROM edge WHERE graphid = #{graphId, jdbcType=VARCHAR}"})
     List<Edge> getAllById(String graphId);
 
-    @Insert({"<script> INSERT INTO edge(stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund) " +
+    @Insert({"<script> INSERT INTO edge(stkcdA, stkcdB, graphId, status, propagateProbA, propagateProbB, fund, id, begin, end) " +
             "VALUES " +
             "<foreach collection=\"list\" item=\"item\" index=\"index\"  separator=\",\"> "+
-            "(#{item.stkcdA},#{item.stkcdB},#{item.graphId},#{item.status},#{item.propagateProbA},#{item.propagateProbB},#{item.fund})"+
+            "(#{item.stkcdA},#{item.stkcdB},#{item.graphId},#{item.status},#{item.propagateProbA},#{item.propagateProbB},#{item.fund},#{item.id},#{item.begin},#{item.end})"+
             "</foreach> </script>"})
     int saveEdgeList(@Param("list") List<Edge> list);
 
