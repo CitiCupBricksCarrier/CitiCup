@@ -65,4 +65,10 @@ public interface CompanyBasicInformationMapper {
 
     @Select("SELECT * FROM citicup.公司基本信息")
     List<CompanyBasicInformation> getAll();
+
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE stkcd = #{stkcd, jdbcType=VARCHAR}")
+    List<CompanyBasicInformation> searchByStkcd(String stkcd);
+
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE name = #{name, jdbcType=VARCHAR}")
+    List<CompanyBasicInformation> searchByName(String name);
 }
