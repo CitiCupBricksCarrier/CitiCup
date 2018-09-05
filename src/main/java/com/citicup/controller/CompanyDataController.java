@@ -54,7 +54,7 @@ public class CompanyDataController {
 
             if(!map.containsKey(stkcd)){
                 CompanyBasicInformation info = companyBasicInformationMapper.selectByPrimaryKey(stkcd);
-                map.put(stkcd, info.getCompname());
+                map.put(stkcd, info.getCompnamesummary());
             }
             campanyName = map.get(stkcd);
 
