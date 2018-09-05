@@ -220,6 +220,7 @@ public class GraphController {
     public String getComments(HttpServletRequest request, @RequestParam String graphid) {
 
         List<Comment> comments = commentMapper.getAllById(graphid);
+        comments.sort(Comparator.comparing(Comment::getUp));
         return JSONObject.toJSONString(comments);
     }
 
