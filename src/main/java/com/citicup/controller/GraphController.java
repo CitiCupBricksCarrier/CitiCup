@@ -234,6 +234,7 @@ public class GraphController {
         CommentKey key = new CommentKey(commentUser, graphid, time);
         Comment comment = commentMapper.selectByPrimaryKey(key);
         comment.setUp(comment.getUp()+1);
+        commentMapper.updateByPrimaryKey(comment);
 
         return JSON.toJSONString(new ResponseHelper("success"));
     }
@@ -249,6 +250,7 @@ public class GraphController {
         CommentKey key = new CommentKey(commentUser, graphid, time);
         Comment comment = commentMapper.selectByPrimaryKey(key);
         comment.setDown(comment.getDown()+1);
+        commentMapper.updateByPrimaryKey(comment);
 
         return JSON.toJSONString(new ResponseHelper("success"));
     }
