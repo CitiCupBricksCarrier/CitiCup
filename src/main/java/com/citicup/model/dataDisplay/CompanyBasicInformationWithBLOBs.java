@@ -189,6 +189,7 @@ public class CompanyBasicInformationWithBLOBs extends CompanyBasicInformation im
             && (this.getSar() == null ? other.getSar() == null : this.getSar().equals(other.getSar()))
             && (this.getCrtindpdirector() == null ? other.getCrtindpdirector() == null : this.getCrtindpdirector().equals(other.getCrtindpdirector()))
             && (this.getFrmindpdirector() == null ? other.getFrmindpdirector() == null : this.getFrmindpdirector().equals(other.getFrmindpdirector()))
+            && (this.getCompnamesummary() == null ? other.getCompnamesummary() == null : this.getCompnamesummary().equals(other.getCompnamesummary()))
             && (this.getBusiness() == null ? other.getBusiness() == null : this.getBusiness().equals(other.getBusiness()))
             && (this.getBriefing() == null ? other.getBriefing() == null : this.getBriefing().equals(other.getBriefing()))
             && (this.getMajorproduttype() == null ? other.getMajorproduttype() == null : this.getMajorproduttype().equals(other.getMajorproduttype()))
@@ -237,6 +238,7 @@ public class CompanyBasicInformationWithBLOBs extends CompanyBasicInformation im
         result = prime * result + ((getSar() == null) ? 0 : getSar().hashCode());
         result = prime * result + ((getCrtindpdirector() == null) ? 0 : getCrtindpdirector().hashCode());
         result = prime * result + ((getFrmindpdirector() == null) ? 0 : getFrmindpdirector().hashCode());
+        result = prime * result + ((getCompnamesummary() == null) ? 0 : getCompnamesummary().hashCode());
         result = prime * result + ((getBusiness() == null) ? 0 : getBusiness().hashCode());
         result = prime * result + ((getBriefing() == null) ? 0 : getBriefing().hashCode());
         result = prime * result + ((getMajorproduttype() == null) ? 0 : getMajorproduttype().hashCode());

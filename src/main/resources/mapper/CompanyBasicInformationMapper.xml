@@ -38,6 +38,7 @@
     <result column="sar" property="sar" jdbcType="VARCHAR" />
     <result column="crtinDPDirector" property="crtindpdirector" jdbcType="VARCHAR" />
     <result column="frminDPDirector" property="frmindpdirector" jdbcType="VARCHAR" />
+    <result column="compNameSummary" property="compnamesummary" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.citicup.model.dataDisplay.CompanyBasicInformationWithBLOBs" extends="BaseResultMap" >
     <!--
@@ -57,7 +58,8 @@
     stkcd, compName, compNameEng, nature, foundDate, regCapital, chairman, fiscalDate, 
     employee, administrativeDivision, province, city, address, office, zipCode, phone, 
     fax, email, website, disclose, registerNumber, orgnizationCode, reportCur, listingOrNot, 
-    mainProduct, compPrename, boardChairmen, CEO, discloser, sar, crtinDPDirector, frminDPDirector
+    mainProduct, compPrename, boardChairmen, CEO, discloser, sar, crtinDPDirector, frminDPDirector, 
+    compNameSummary
   </sql>
   <sql id="Blob_Column_List" >
     <!--
@@ -101,9 +103,9 @@
       orgnizationCode, reportCur, listingOrNot, 
       mainProduct, compPrename, boardChairmen, 
       CEO, discloser, sar, 
-      crtinDPDirector, frminDPDirector, business, 
-      briefing, majorProdutType, majorProductName
-      )
+      crtinDPDirector, frminDPDirector, compNameSummary, 
+      business, briefing, majorProdutType, 
+      majorProductName)
     values (#{stkcd,jdbcType=VARCHAR}, #{compname,jdbcType=VARCHAR}, #{compnameeng,jdbcType=VARCHAR}, 
       #{nature,jdbcType=VARCHAR}, #{founddate,jdbcType=VARCHAR}, #{regcapital,jdbcType=VARCHAR}, 
       #{chairman,jdbcType=VARCHAR}, #{fiscaldate,jdbcType=VARCHAR}, #{employee,jdbcType=VARCHAR}, 
@@ -114,9 +116,9 @@
       #{orgnizationcode,jdbcType=VARCHAR}, #{reportcur,jdbcType=VARCHAR}, #{listingornot,jdbcType=VARCHAR}, 
       #{mainproduct,jdbcType=VARCHAR}, #{compprename,jdbcType=VARCHAR}, #{boardchairmen,jdbcType=VARCHAR}, 
       #{ceo,jdbcType=VARCHAR}, #{discloser,jdbcType=VARCHAR}, #{sar,jdbcType=VARCHAR}, 
-      #{crtindpdirector,jdbcType=VARCHAR}, #{frmindpdirector,jdbcType=VARCHAR}, #{business,jdbcType=LONGVARCHAR}, 
-      #{briefing,jdbcType=LONGVARCHAR}, #{majorproduttype,jdbcType=LONGVARCHAR}, #{majorproductname,jdbcType=LONGVARCHAR}
-      )
+      #{crtindpdirector,jdbcType=VARCHAR}, #{frmindpdirector,jdbcType=VARCHAR}, #{compnamesummary,jdbcType=VARCHAR}, 
+      #{business,jdbcType=LONGVARCHAR}, #{briefing,jdbcType=LONGVARCHAR}, #{majorproduttype,jdbcType=LONGVARCHAR}, 
+      #{majorproductname,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.citicup.model.dataDisplay.CompanyBasicInformationWithBLOBs" >
     <!--
@@ -220,6 +222,9 @@
       </if>
       <if test="frmindpdirector != null" >
         frminDPDirector,
+      </if>
+      <if test="compnamesummary != null" >
+        compNameSummary,
       </if>
       <if test="business != null" >
         business,
@@ -330,6 +335,9 @@
       </if>
       <if test="frmindpdirector != null" >
         #{frmindpdirector,jdbcType=VARCHAR},
+      </if>
+      <if test="compnamesummary != null" >
+        #{compnamesummary,jdbcType=VARCHAR},
       </if>
       <if test="business != null" >
         #{business,jdbcType=LONGVARCHAR},
@@ -445,6 +453,9 @@
       <if test="frmindpdirector != null" >
         frminDPDirector = #{frmindpdirector,jdbcType=VARCHAR},
       </if>
+      <if test="compnamesummary != null" >
+        compNameSummary = #{compnamesummary,jdbcType=VARCHAR},
+      </if>
       <if test="business != null" >
         business = #{business,jdbcType=LONGVARCHAR},
       </if>
@@ -497,6 +508,7 @@
       sar = #{sar,jdbcType=VARCHAR},
       crtinDPDirector = #{crtindpdirector,jdbcType=VARCHAR},
       frminDPDirector = #{frmindpdirector,jdbcType=VARCHAR},
+      compNameSummary = #{compnamesummary,jdbcType=VARCHAR},
       business = #{business,jdbcType=LONGVARCHAR},
       briefing = #{briefing,jdbcType=LONGVARCHAR},
       majorProdutType = #{majorproduttype,jdbcType=LONGVARCHAR},
@@ -539,7 +551,8 @@
       discloser = #{discloser,jdbcType=VARCHAR},
       sar = #{sar,jdbcType=VARCHAR},
       crtinDPDirector = #{crtindpdirector,jdbcType=VARCHAR},
-      frminDPDirector = #{frmindpdirector,jdbcType=VARCHAR}
+      frminDPDirector = #{frmindpdirector,jdbcType=VARCHAR},
+      compNameSummary = #{compnamesummary,jdbcType=VARCHAR}
     where stkcd = #{stkcd,jdbcType=VARCHAR}
   </update>
 </mapper>
