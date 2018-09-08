@@ -33,7 +33,6 @@ public class SentimentAnalysisController {
         JSONArray posList = retJson.getJSONArray("posList");
         JSONArray wordList = retJson.getJSONArray("wordList");
 
-
         int posMap[] = new int[5];
         Map<String, Integer> wordMap = new HashMap<>();
 
@@ -52,8 +51,9 @@ public class SentimentAnalysisController {
 
             if (s.startsWith("<") || s.startsWith("c"))
                 continue;
-            if (s.indexOf(0) < 128)
+            if (s.indexOf(0) < 128 && s.indexOf(0) > 0) {
                 continue;
+            }
             if (!wordMap.containsKey(s)){
                 wordMap.put(s, 1);
             }else{
@@ -97,8 +97,9 @@ public class SentimentAnalysisController {
         }
 
         JSONObject returnJson = new JSONObject();
-        returnJson.put("sitimentIndex", sitimentIndex);
+        returnJson.put("sentimentIndex", sitimentIndex);
         returnJson.put("wordCloud", wordCloud);
+        returnJson.put("sentimentIndexList", posList)
         returnJson.put("news", retJson.getJSONObject("news"));
 
         return returnJson.toJSONString();
