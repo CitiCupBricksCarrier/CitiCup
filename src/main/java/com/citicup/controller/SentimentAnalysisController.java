@@ -52,6 +52,8 @@ public class SentimentAnalysisController {
 
             if (s.startsWith("<") || s.startsWith("c"))
                 continue;
+            if (s.indexOf(0) < 128)
+                continue;
             if (!wordMap.containsKey(s)){
                 wordMap.put(s, 1);
             }else{
