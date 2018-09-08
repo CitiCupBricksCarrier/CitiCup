@@ -99,7 +99,7 @@ public class SentimentAnalysisController {
         JSONObject returnJson = new JSONObject();
         returnJson.put("sentimentIndex", sitimentIndex);
         returnJson.put("wordCloud", wordCloud);
-        returnJson.put("sentimentIndexList", posList)
+        returnJson.put("sentimentIndexList", posList);
         returnJson.put("news", retJson.getJSONObject("news"));
 
         return returnJson.toJSONString();
