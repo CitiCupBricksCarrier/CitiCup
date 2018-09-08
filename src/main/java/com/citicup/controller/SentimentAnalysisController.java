@@ -32,17 +32,33 @@ public class SentimentAnalysisController {
         JSONObject retJson = apiHelper.getNewsProcess(stkid, stkName);
         JSONArray posList = retJson.getJSONArray("posList");
         JSONArray wordList = retJson.getJSONArray("wordList");
+        List<String> sentimentIndexList = new ArrayList<>();
 
         int posMap[] = new int[5];
         Map<String, Integer> wordMap = new HashMap<>();
 
         for (int i = 0; i < posList.size(); i++) {
             Double t = posList.getDouble(i);
-            if (t>=0.8) posMap[0] += 1;
-            else if (t>=0.6) posMap[1] += 1;
-            else if (t>=0.4) posMap[2] += 1;
-            else if (t>=0.2) posMap[3] += 1;
-            else if (t>=0.0) posMap[4] += 1;
+            if (t>=0.8){
+                posMap[0] += 1;
+                sentimentIndexList.add("非常积极");
+            }
+            else if (t>=0.6){
+                posMap[1] += 1;
+                sentimentIndexList.add("积极");
+            }
+            else if (t>=0.4){
+                posMap[2] += 1;
+                sentimentIndexList.add("中立");
+            }
+            else if (t>=0.2){
+                posMap[3] += 1;
+                sentimentIndexList.add("消极");
+            }
+            else if (t>=0.0){
+                posMap[4] += 1;
+                sentimentIndexList.add("非常消极");
+            }
         }
 
         for (int i = 0; i < wordList.size(); i++) {
@@ -98,12 +114,29 @@ public class SentimentAnalysisController {
         JSONObject returnJson = new JSONObject();
         returnJson.put("sentimentIndex", sitimentIndex);
         returnJson.put("wordCloud", wordCloud);
-        returnJson.put("sentimentIndexList", posList);
+        returnJson.put("sentimentIndexList", sentimentIndexList);
         returnJson.put("news", retJson.getJSONObject("news"));
 
         return returnJson.toJSONString();
     }
 
-
-
+    /**
+     * 去掉字符串里面的html代码。<br>
+     * 要求数据要规范，比如大于小于号要配套,否则会被集体误杀。
+     *
+     * @param content
+     * 内容
+     * @return 去掉后的内容
+     */
+    public static String stripHtml(String content) {
+        // <p>段落替换为换行
+        content = content.replaceAll("<p .*?>", "\r\n");
+        // <br><br/>替换为换行
+        content = content.replaceAll("<br\\s*/?>", "\r\n");
+        // 去掉其它的<>之间的东西
+        content = content.replaceAll("\\<.*?>", "");
+        // 还原HTML
+        // content = HTMLDecoder.decode(content);
+        return content;
+    }
 }

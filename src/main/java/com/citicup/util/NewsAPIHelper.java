@@ -30,6 +30,11 @@ public class NewsAPIHelper {
         JSONArray jsonArray = (JSONArray)newsJson.get("data");
         List<String> newsList = jsonArray.toJavaList(String.class);
 
+        for (Object news : jsonArray){
+            String s = ((JSONObject) news).getString("content");
+            ((JSONObject) news).put("content", stripHtml(s));
+        }
+
         //逐条处理
         for(String news: newsList) {
             String afterProcess = getMess(news);
@@ -51,6 +56,26 @@ public class NewsAPIHelper {
         return jsonObject;
     }
 
+    /**
+     * 去掉字符串里面的html代码。<br>
+     * 要求数据要规范，比如大于小于号要配套,否则会被集体误杀。
+     *
+     * @param content
+     * 内容
+     * @return 去掉后的内容
+     */
+    public static String stripHtml(String content) {
+        // <p>段落替换为换行
+        content = content.replaceAll("<p .*?>", "\r\n");
+        // <br><br/>替换为换行
+        content = content.replaceAll("<br\\s*/?>", "\r\n");
+        // 去掉其它的<>之间的东西
+        content = content.replaceAll("\\<.*?>", "");
+        // 还原HTML
+        // content = HTMLDecoder.decode(content);
+        return content;
+    }
+
     private static String getMess(String news) {
         String title = JSON.parseObject(news).getString("title");
         String content = JSON.parseObject(news).getString("content");
@@ -58,6 +83,7 @@ public class NewsAPIHelper {
     }
 
     private static String callPyFunc(String news) {
+        news = stripHtml(news);
         String path = System.getProperty("user.dir")+sep+"src"+sep+"main"+sep+"java"+sep+"com"+sep+"citicup"+sep+"util"+sep+"NewsProcess.py";
         String[] arguments = new String[] {"python", path, news};
         String result = "";
