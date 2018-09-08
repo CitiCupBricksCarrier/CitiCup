@@ -47,13 +47,12 @@ public class SentimentAnalysisController {
 
         for (int i = 0; i < wordList.size(); i++) {
             String s = wordList.getString(i);
-            s = s.substring(2,s.length()-1);
 
-            if (s.startsWith("<") || s.startsWith("c"))
+            s=s.replaceAll("[^\u4E00-\u9FA5]", "");
+
+            if (s.equals(""))
                 continue;
-            if (s.indexOf(0) < 128 && s.indexOf(0) > 0) {
-                continue;
-            }
+
             if (!wordMap.containsKey(s)){
                 wordMap.put(s, 1);
             }else{
