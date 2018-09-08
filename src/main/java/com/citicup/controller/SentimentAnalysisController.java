@@ -48,9 +48,9 @@ public class SentimentAnalysisController {
 
         for (int i = 0; i < wordList.size(); i++) {
             String s = wordList.getString(i);
-            s = s.substring(1,s.length()-1);
+            s = s.substring(2,s.length()-1);
 
-            if (s.indexOf(0) < 128)
+            if (s.startsWith("<") || s.startsWith("c"))
                 continue;
             if (!wordMap.containsKey(s)){
                 wordMap.put(s, 1);
