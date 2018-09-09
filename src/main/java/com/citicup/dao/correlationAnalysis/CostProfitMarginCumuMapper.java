@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.CostProfitMarginCumu;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface CostProfitMarginCumuMapper {
     /**
@@ -18,4 +21,7 @@ public interface CostProfitMarginCumuMapper {
      * @mbggenerated
      */
     int insertSelective(CostProfitMarginCumu record);
+
+    @Select("SELECT * FROM citicup.盈利质量-累计成本费用利润率")
+    List<CostProfitMarginCumu> getAll();
 }

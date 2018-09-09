@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.TenoreRatio_60D;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TenoreRatio_60DMapper {
     /**
@@ -18,4 +21,7 @@ public interface TenoreRatio_60DMapper {
      * @mbggenerated
      */
     int insertSelective(TenoreRatio_60D record);
+
+    @Select("SELECT * FROM citicup.价量-60日特诺雷比率")
+    List<TenoreRatio_60D> getAll();
 }

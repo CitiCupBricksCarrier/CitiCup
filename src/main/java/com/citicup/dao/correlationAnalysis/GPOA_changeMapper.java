@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.GPOA_change;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface GPOA_changeMapper {
     /**
@@ -18,4 +21,7 @@ public interface GPOA_changeMapper {
      * @mbggenerated
      */
     int insertSelective(GPOA_change record);
+
+    @Select("SELECT * FROM citicup.成长类-gpoa变动")
+    List<GPOA_change> getAll();
 }

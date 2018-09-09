@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.ConsistenceExpectationPredictProfit;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ConsistenceExpectationPredictProfitMapper {
     /**
@@ -18,4 +21,7 @@ public interface ConsistenceExpectationPredictProfitMapper {
      * @mbggenerated
      */
     int insertSelective(ConsistenceExpectationPredictProfit record);
+
+    @Select("SELECT * FROM citicup.分析师类-一致预期预测营业收入")
+    List<ConsistenceExpectationPredictProfit> getAll();
 }

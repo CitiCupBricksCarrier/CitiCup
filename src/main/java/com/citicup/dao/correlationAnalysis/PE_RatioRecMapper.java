@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.PE_RatioRec;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface PE_RatioRecMapper {
     /**
@@ -18,4 +21,7 @@ public interface PE_RatioRecMapper {
      * @mbggenerated
      */
     int insertSelective(PE_RatioRec record);
+
+    @Select("SELECT * FROM citicup.估值类-市盈率的倒数")
+    List<PE_RatioRec> getAll();
 }

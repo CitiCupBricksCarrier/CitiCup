@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.InventoryTurnover;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface InventoryTurnoverMapper {
     /**
@@ -18,4 +21,7 @@ public interface InventoryTurnoverMapper {
      * @mbggenerated
      */
     int insertSelective(InventoryTurnover record);
+
+    @Select("SELECT * FROM citicup.安全性-存货周转率")
+    List<InventoryTurnover> getAll();
 }

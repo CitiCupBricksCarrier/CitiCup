@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.IncometaxProfitPercent;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface IncometaxProfitPercentMapper {
     /**
@@ -18,4 +21,7 @@ public interface IncometaxProfitPercentMapper {
      * @mbggenerated
      */
     int insertSelective(IncometaxProfitPercent record);
+
+    @Select("SELECT * FROM citicup.盈利质量-所得税占盈利总额百分比")
+    List<IncometaxProfitPercent> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.ProfitGrowthRate;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ProfitGrowthRateMapper {
     /**
@@ -18,4 +21,7 @@ public interface ProfitGrowthRateMapper {
      * @mbggenerated
      */
     int insertSelective(ProfitGrowthRate record);
+
+    @Select("SELECT * FROM citicup.成长类-毛利润增长率")
+    List<ProfitGrowthRate> getAll();
 }

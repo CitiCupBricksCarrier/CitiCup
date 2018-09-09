@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.TurnoverStd_6D;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TurnoverStd_6DMapper {
     /**
@@ -18,4 +21,7 @@ public interface TurnoverStd_6DMapper {
      * @mbggenerated
      */
     int insertSelective(TurnoverStd_6D record);
+
+    @Select("SELECT * FROM citicup.价量-6日成交额标准差")
+    List<TurnoverStd_6D> getAll();
 }

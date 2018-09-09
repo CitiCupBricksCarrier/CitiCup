@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.Quick_Ratio;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface Quick_RatioMapper {
     /**
@@ -18,4 +21,7 @@ public interface Quick_RatioMapper {
      * @mbggenerated
      */
     int insertSelective(Quick_Ratio record);
+
+    @Select("SELECT * FROM citicup.安全性类-速动比率")
+    List<Quick_Ratio> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.ConsistenceExpectation;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ConsistenceExpectationMapper {
     /**
@@ -18,4 +21,7 @@ public interface ConsistenceExpectationMapper {
      * @mbggenerated
      */
     int insertSelective(ConsistenceExpectation record);
+
+    @Select("SELECT * FROM citicup.分析师类-一致预期pb")
+    List<ConsistenceExpectation> getAll();
 }

@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.DividendRate;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface DividendRateMapper {
     /**
@@ -18,4 +21,7 @@ public interface DividendRateMapper {
      * @mbggenerated
      */
     int insertSelective(DividendRate record);
+
+    @Select("SELECT * FROM citicup.估值类-股息率")
+    List<DividendRate> getAll();
 }

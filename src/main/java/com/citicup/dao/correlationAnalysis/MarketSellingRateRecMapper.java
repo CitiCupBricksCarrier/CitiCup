@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.MarketSellingRateRec;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface MarketSellingRateRecMapper {
     /**
@@ -18,4 +21,7 @@ public interface MarketSellingRateRecMapper {
      * @mbggenerated
      */
     int insertSelective(MarketSellingRateRec record);
+
+    @Select("SELECT * FROM citicup.估值类-市销率的倒数")
+    List<MarketSellingRateRec> getAll();
 }

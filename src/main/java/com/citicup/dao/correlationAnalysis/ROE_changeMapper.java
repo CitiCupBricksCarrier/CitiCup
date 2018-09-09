@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.ROE_change;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface ROE_changeMapper {
     /**
@@ -18,4 +21,7 @@ public interface ROE_changeMapper {
      * @mbggenerated
      */
     int insertSelective(ROE_change record);
+
+    @Select("SELECT * FROM citicup.成长-roe变动")
+    List<ROE_change> getAll();
 }
