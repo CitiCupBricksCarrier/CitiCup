@@ -31,4 +31,10 @@ public class StockAPIHelper {
         }
         return result;
     }
+
+    public static void main(String[] args) {
+        String result = callPyFunc("2018", "2");
+        System.out.println(result);
+    }
+
 }
