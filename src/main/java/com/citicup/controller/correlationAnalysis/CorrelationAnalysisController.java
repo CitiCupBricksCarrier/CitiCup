@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @EnableAutoConfiguration
@@ -121,6 +118,15 @@ public class CorrelationAnalysisController {
         return JSONObject.toJSONString(json);
     }
 
+    @RequestMapping("/AnalysisIndustry")
+    public String selectAnalysisIndustry(String index, String analysisMethod) {
+        return null;
+    }
+
+    /**
+     * 标准化
+     * @return
+     */
     private List<String> standardize(List<Index> list) {
         List<String> series = new ArrayList<>();
         for(int i = 0; i<list.size(); i++){
@@ -131,7 +137,7 @@ public class CorrelationAnalysisController {
             for(int j = 0; j<list.size()-1; j++) {
                 double a = Double.parseDouble(list.get(j).getValue());
                 double b = Double.parseDouble(list.get(j+1).getValue());
-                if(a > b) { //降序排列
+                if(a > b) {
                     String tmp = series.get(j);
                     series.set(j, series.get(j+1));
                     series.set(j+1, tmp);
@@ -142,12 +148,37 @@ public class CorrelationAnalysisController {
         return series;
     }
 
-    private double getIC(List<Index> list) {
+    /**
+     * 计算 某一周期 IC值
+     * @return
+     */
+    private double getIC(List<Double> list) {
+        int size = list.size() / 10; //表示行业股票池中，10%股票的数目
+        List<Double> top = new ArrayList<>();
+        List<Double> bottom = new ArrayList<>();
+        for(int i = 0, j = list.size() - size; i<size && j<list.size(); i++, j++) {
+            top.add(list.get(i));
+            bottom.add(list.get(j));
+        }
 
+        double a = 0.0, b = 0.0, c = 0.0;
+        double aveOfTop = 0.0, aveOfBot = 0.0, stdOfTop = 0.0, stdOfBot = 0.0;
+        for(int i = 0; i<size; i++) {
+            a += top.get(i) * bottom.get(i);
+            b += top.get(i);
+            c += bottom.get(i);
+        }
+        aveOfTop = b / size;
+        aveOfBot = c / size;
+        for(int i = 0; i<size; i++) {
+            stdOfTop += Math.pow(top.get(i) - aveOfTop, 2);
+            stdOfBot += Math.pow(bottom.get(i) - aveOfBot, 2);
+        }
+        stdOfTop = Math.sqrt(stdOfTop / size);
+        stdOfBot = Math.sqrt(stdOfBot / size);
+        double result = (a - (b*c)/size) / (stdOfTop * stdOfBot);
 
-
-
-        return 0.0;
+        return result;
     }
 
     /**
@@ -156,10 +187,28 @@ public class CorrelationAnalysisController {
      */
     @RequestMapping("/IC_Mean")
     public String getIC_Mean(@RequestParam String index) {
+        increaseIndexClicks(index);
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
+        int periodNumber = 0; // 周期数
+        for(int i = 0; i < stockEPSList.size(); i++ ) { //计算非空有效数据的周期数（按季度为单位）
+            if(stockEPSList.get(i).getValue() != null || !stockEPSList.get(i).getValue().equals("")) {
+                periodNumber++;
+            }
+            else {
+                stockEPSList.remove(i);
+                i--;
+            }
+        }
+
         switch(index){
             case "安全性-存货周转率":
                 List<InventoryTurnover> list = inventoryTurnoverMapper.getAll();
-
+                for(int i = 0; i < list.size(); i++) {
+                    if(list.get(i).getValue() == null || list.get(i).getValue().equals("")) {
+                        list.remove(i);
+                        i--;
+                    }
+                }
                 break;
             case "安全性类-速动比率":
                 break;
@@ -203,6 +252,16 @@ public class CorrelationAnalysisController {
 
         return null;
     }
+
+    /**
+     * 计算 IC-std 指标
+     * @return
+     */
+    @RequestMapping("/IC_Mean")
+    public String getIC_std(@RequestParam String index) {
+        return "hello";
+    }
+
 
 
 }
