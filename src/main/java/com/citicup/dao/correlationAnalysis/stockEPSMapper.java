@@ -1,6 +1,9 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.stockEPS;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface stockEPSMapper {
     /**
@@ -18,4 +21,7 @@ public interface stockEPSMapper {
      * @mbggenerated
      */
     int insertSelective(stockEPS record);
+
+    @Select("SELECT * FROM citicup.stockeps")
+    List<stockEPS> getAll();
 }
