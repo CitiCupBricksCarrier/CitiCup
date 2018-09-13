@@ -13,9 +13,8 @@ import java.util.List;
 @EnableAutoConfiguration
 @RequestMapping("/CorrelationAnalysis")
 public class CorrelationAnalysisController {
-    private static InventoryTurnoverMapper inventoryTurnoverMapper;
-//    @Autowired
-//    private InventoryTurnoverMapper inventoryTurnoverMapper;
+    @Autowired
+    private InventoryTurnoverMapper inventoryTurnoverMapper;
     @Autowired
     private Quick_RatioMapper quick_ratioMapper;
     @Autowired
@@ -50,16 +49,6 @@ public class CorrelationAnalysisController {
     private CostProfitMarginCumuMapper costProfitMarginCumuMapper;
     @Autowired
     private IncometaxProfitPercentMapper incometaxProfitPercentMapper;
-
-    public static void main(String [] args) {
-        List<InventoryTurnover> list = inventoryTurnoverMapper.getAll();
-        for(InventoryTurnover it : list) {
-            if(it.getStkcd().equals("2475") && it.getDate().equals("2007/2/1")) {
-                System.out.println(it.getValue());
-            }
-        }
-    }
-
 
 
 }
