@@ -123,5 +123,26 @@
         <mapper resource="mapper/AverageNumberOfEmployeesInChinaAutoIndustryMapper.xml"/>
         <mapper resource="mapper/CashFlowLiabilityRatioOfAutomobileEnterprisesInChinaMapper.xml"/>
         <mapper resource="mapper/ChinaAutoIndustryFinishedGoodsInventoryMapper.xml"/>
+        <mapper resource="mapper/InventoryTurnoverMapper.xml"/>
+        <mapper resource="mapper/Quick_RatioMapper.xml"/>
+        <mapper resource="mapper/TurnoverOfTotalAssetsMapper.xml"/>
+        <mapper resource="mapper/ROE_changeMapper.xml"/>
+        <mapper resource="mapper/GPOA_changeMapper.xml"/>
+        <mapper resource="mapper/ProfitGrowthRateMapper.xml"/>
+        <mapper resource="mapper/ConsistenceExpectationMapper.xml"/>
+        <mapper resource="mapper/ConsistenceExpectationPredictProfitMapper.xml"/>
+        <mapper resource="mapper/DealersNumChange_1MMapper.xml"/>
+        <mapper resource="mapper/DividendRateMapper.xml"/>
+        <mapper resource="mapper/MarketSellingRateRecMapper.xml"/>
+        <mapper resource="mapper/PE_RatioRecMapper.xml"/>
+        <mapper resource="mapper/TurnoverStd_6DMapper.xml"/>
+        <mapper resource="mapper/TurnoverMean_6DMapper.xml"/>
+        <mapper resource="mapper/TenoreRatio_20DMapper.xml"/>
+        <mapper resource="mapper/TenoreRatio_60DMapper.xml"/>
+        <mapper resource="mapper/CostProfitMarginCumuMapper.xml"/>
+        <mapper resource="mapper/IncometaxProfitPercentMapper.xml"/>
+        <mapper resource="mapper/AnalysisIndexVisitorMapper.xml"/>
+        <mapper resource="mapper/stockEPSMapper.xml"/>
+        <mapper resource="mapper/stockPriceMapper.xml"/>
     </mappers>
 </configuration>
