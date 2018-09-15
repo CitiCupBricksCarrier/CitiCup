@@ -18,26 +18,48 @@ import java.util.*;
 @RequestMapping("/CorrelationAnalysis")
 public class CorrelationAnalysisController {
 
+    @Autowired
     private InventoryTurnoverMapper inventoryTurnoverMapper;
+    @Autowired
     private Quick_RatioMapper quick_ratioMapper;
+    @Autowired
     private TurnoverOfTotalAssetsMapper turnoverOfTotalAssetsMapper;
+    @Autowired
     private ROE_changeMapper roe_changeMapper;
+    @Autowired
     private GPOA_changeMapper gpoa_changeMapper;
+    @Autowired
     private ProfitGrowthRateMapper profitGrowthRateMapper;
+    @Autowired
     private ConsistenceExpectationMapper consistenceExpectationMapper;
+    @Autowired
     private ConsistenceExpectationPredictProfitMapper consistenceExpectationPredictProfitMapper;
+    @Autowired
     private DealersNumChange_1MMapper dealersNumChange_1MMapper;
+    @Autowired
     private DividendRateMapper dividendRateMapper;
+    @Autowired
     private MarketSellingRateRecMapper marketSellingRateRecMapper;
+    @Autowired
     private PE_RatioRecMapper pe_ratioRecMapper;
+    @Autowired
     private TurnoverStd_6DMapper turnoverStd_6DMapper;
+    @Autowired
     private TurnoverMean_6DMapper turnoverMean_6DMapper;
+    @Autowired
     private TenoreRatio_20DMapper tenoreRatio_20DMapper;
+    @Autowired
     private TenoreRatio_60DMapper tenoreRatio_60DMapper;
+    @Autowired
     private CostProfitMarginCumuMapper costProfitMarginCumuMapper;
+    @Autowired
     private IncometaxProfitPercentMapper incometaxProfitPercentMapper;
+    @Autowired
     private AnalysisIndexVisitorMapper analysisIndexVisitorMapper;
+    @Autowired
     private stockEPSMapper stockEPSMapper;
+    @Autowired
+    private stockPriceMapper stockPriceMapper;
 
     private static final String[] indexsName = new String[]{"ConsistenceExpectation", "ConsistenceExpectationPredictProfit",
             "CostProfitMarginCumu", "DealersNumChange_1M", "DividendRate", "GPOA_change", "IncometaxProfitPercent",
@@ -64,7 +86,9 @@ public class CorrelationAnalysisController {
                 AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
                 key.setAnalysisindex(idx);
                 key.setDate(date);
-                if(analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber() == null) {
+//                AnalysisIndexVisitor a = analysisIndexVisitorMapper.selectByPrimaryKey(key);
+//                System.out.println(a.getVistornumber() == null);
+                if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
                     counter += 0;
                 }
                 else {
@@ -88,7 +112,7 @@ public class CorrelationAnalysisController {
     public String selectAnalysisIndustry(@RequestParam String index, @RequestParam String analysisMethod) {
         increaseIndexClicks(index);
         List<Index> list = new ArrayList<>();
-
+        System.out.println(index);
         switch (index){
             case "安全性-存货周转率":
                 List<InventoryTurnover> inv = inventoryTurnoverMapper.getAll();
@@ -326,18 +350,186 @@ public class CorrelationAnalysisController {
     public String selectCompositionalIndexAnalysis(@RequestParam List<String> indexes, @RequestParam String analysisMethod,
                                                    @RequestParam List<Integer> ratio) {
 
-        List<Index> list = new ArrayList<>();
+        List<List<Index>> composite = new ArrayList<>();
         for(String index : indexes) {
             increaseIndexClicks(index);
+            List<Index> list = new ArrayList<>();
+            switch (index){
+                case "安全性-存货周转率":
+                    List<InventoryTurnover> inv = inventoryTurnoverMapper.getAll();
+                    for (InventoryTurnover anInv : inv) {
+                        if (anInv.getValue() != null && !anInv.getValue().equals("")) {
+                            list.add(new Index(anInv.getStkcd(), anInv.getDate(), anInv.getValue()));
+                        }
+                    }
 
+                    break;
+                case "安全性类-速动比率":
+                    List<Quick_Ratio> qui = quick_ratioMapper.getAll();
+                    for(Quick_Ratio q : qui) {
+                        if (q.getValue() != null && !q.getValue().equals("")) {
+                            list.add(new Index(q.getStkcd(), q.getDate(), q.getValue()));
+                        }
+                    }
 
+                    break;
+                case "安全性类-总资产周转率":
+                    List<TurnoverOfTotalAssets> turn = turnoverOfTotalAssetsMapper.getAll();
+                    for(TurnoverOfTotalAssets total : turn) {
+                        if(total.getValue() != null && !total.getValue().equals("")) {
+                            list.add(new Index(total.getStkcd(), total.getDate(), total.getValue()));
+                        }
+                    }
+
+                    break;
+                case "成长-ROE变动":
+                    List<ROE_change> roe = roe_changeMapper.getAll();
+                    for(ROE_change r : roe) {
+                        if(r.getValue() != null && !r.getValue().equals("")) {
+                            list.add(new Index(r.getStkcd(), r.getDate(), r.getValue()));
+                        }
+                    }
+
+                    break;
+                case "成长类-GPOA变动":
+                    List<GPOA_change> gpoa_change = gpoa_changeMapper.getAll();
+                    for(GPOA_change gpoa : gpoa_change) {
+                        if(gpoa.getValue() != null && !gpoa.getValue().equals("")) {
+                            list.add(new Index(gpoa.getStkcd(), gpoa.getDate(), gpoa.getValue()));
+                        }
+                    }
+
+                    break;
+                case "成长类-毛利润增长率":
+                    List<ProfitGrowthRate> profit = profitGrowthRateMapper.getAll();
+                    for(ProfitGrowthRate p : profit) {
+                        if(p.getValue() != null &&  !p.getValue().equals("")) {
+                            list.add(new Index(p.getStkcd(), p.getDate(), p.getValue()));
+                        }
+                    }
+
+                    break;
+                case "分析师类-一致预期PB":
+                    List<ConsistenceExpectation> conExp = consistenceExpectationMapper.getAll();
+                    for(ConsistenceExpectation con : conExp) {
+                        if(con.getValue() != null && !con.getValue().equals("")) {
+                            list.add(new Index(con.getStkcd(), con.getDate(), con.getValue()));
+                        }
+                    }
+
+                    break;
+                case "分析师类-一致预期预测营业收入":
+                    List<ConsistenceExpectationPredictProfit> conExpPrePro = consistenceExpectationPredictProfitMapper.getAll();
+                    for(ConsistenceExpectationPredictProfit con : conExpPrePro) {
+                        if(con.getValue() != null && !con.getValue().equals("")) {
+                            list.add(new Index(con.getStkcd(), con.getDate(), con.getValue()));
+                        }
+                    }
+
+                    break;
+                case "分析师类-最近一个月券商覆盖数量（券商家数）变化":
+                    List<DealersNumChange_1M> dealers = dealersNumChange_1MMapper.getAll();
+                    for(DealersNumChange_1M deal : dealers) {
+                        if(deal.getValue() != null && !deal.getValue().equals("")) {
+                            list.add(new Index(deal.getStkcd(), deal.getDate(), deal.getValue()));
+                        }
+                    }
+
+                    break;
+                case "估值类-股息率":
+                    List<DividendRate> dividendRates = dividendRateMapper.getAll();
+                    for(DividendRate dividend : dividendRates) {
+                        if(dividend.getValue() != null && !dividend.getValue().equals("")) {
+                            list.add(new Index(dividend.getStkcd(), dividend.getDate(), dividend.getValue()));
+                        }
+                    }
+
+                    break;
+                case "估值类-市销率的倒数":
+                    List<MarketSellingRateRec> marketSellingRateRecs = marketSellingRateRecMapper.getAll();
+                    for(MarketSellingRateRec market : marketSellingRateRecs) {
+                        if(market.getValue() != null && !market.getValue().equals("")) {
+                            list.add(new Index(market.getStkcd(), market.getDate(), market.getValue()));
+                        }
+                    }
+
+                    break;
+                case "估值类-市盈率的倒数":
+                    List<PE_RatioRec> pe_ratioRec = pe_ratioRecMapper.getAll();
+                    for(PE_RatioRec pe : pe_ratioRec) {
+                        if(pe.getValue() != null && !pe.getValue().equals("")) {
+                            list.add(new Index(pe.getStkcd(), pe.getDate(), pe.getValue()));
+                        }
+                    }
+
+                    break;
+                case "价量-6日成交额标准差":
+                    List<TurnoverStd_6D> turnoverStd_6D = turnoverStd_6DMapper.getAll();
+                    for(TurnoverStd_6D std : turnoverStd_6D) {
+                        if(std.getValue() != null && !std.getValue().equals("")) {
+                            list.add(new Index(std.getStkcd(), std.getDate(), std.getValue()));
+                        }
+                    }
+
+                    break;
+                case "价量-6日成交额均值（千元）":
+                    List<TurnoverMean_6D> turnoverMean_6D = turnoverMean_6DMapper.getAll();
+                    for(TurnoverMean_6D mean : turnoverMean_6D) {
+                        if(mean.getValue() != null && !mean.getValue().equals("")) {
+                            list.add(new Index(mean.getStkcd(), mean.getDate(), mean.getValue()));
+                        }
+                    }
+
+                    break;
+                case "价量-20日特诺雷比率":
+                    List<TenoreRatio_20D> tenoreRatio_20D = tenoreRatio_20DMapper.getAll();
+                    for(TenoreRatio_20D t : tenoreRatio_20D) {
+                        if(t.getValue() != null && !t.getValue().equals("")) {
+                            list.add(new Index(t.getStkcd(), t.getDate(), t.getValue()));
+                        }
+                    }
+
+                    break;
+                case "价量-60日特诺雷比率":
+                    List<TenoreRatio_60D> tenoreRatio_60D = tenoreRatio_60DMapper.getAll();
+                    for(TenoreRatio_60D t : tenoreRatio_60D) {
+                        if(t.getValue() != null && !t.getValue().equals("")) {
+                            list.add(new Index(t.getStkcd(), t.getDate(), t.getValue()));
+                        }
+                    }
+
+                    break;
+                case "盈利质量-累计成本费用利润率":
+                    List<CostProfitMarginCumu> cost = costProfitMarginCumuMapper.getAll();
+                    for(CostProfitMarginCumu c : cost) {
+                        if(c.getValue() != null && !c.getValue().equals("")) {
+                            list.add(new Index(c.getStkcd(), c.getDate(), c.getValue()));
+                        }
+                    }
+
+                    break;
+                case "盈利质量-所得税占盈利总额百分比":
+                    List<IncometaxProfitPercent> income = incometaxProfitPercentMapper.getAll();
+                    for(IncometaxProfitPercent percent : income) {
+                        if(percent.getValue() != null && percent.getValue().equals("")) {
+                            list.add(new Index(percent.getStkcd(), percent.getDate(), percent.getValue()));
+                        }
+                    }
+
+                    break;
+                default:
+                    return "查找错误";
+            }
+
+            composite.add(list);
         }
 
+        List<Index> compositeList = new ArrayList<>();
         String reply = "";
         double result = 0.0;
         switch (analysisMethod) {
             case "IC-mean":
-                result = Math.abs(getIC_Mean(list));
+                result = Math.abs(getIC_Mean(compositeList));
                 if(result > 0.1) {
                     reply = "您所选择的指标和行业股票的收益率之间有较强的相关性。";
                 }
@@ -352,7 +544,7 @@ public class CorrelationAnalysisController {
                 }
                 break;
             case "IC-IR":
-                result = Math.abs(getIC_IR(list));
+                result = Math.abs(getIC_IR(compositeList));
                 if(result > 0.7) {
                     reply = "您所选择的指标和行业股票的收益率之间有较强的相关性，且相关性稳定。";
                 }
@@ -367,7 +559,7 @@ public class CorrelationAnalysisController {
                 }
                 break;
             case "IC-T":
-                result = Math.abs(getIC_T(list));
+                result = Math.abs(getIC_T(compositeList));
                 if(result > 0.7) {
                     reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
                 }
@@ -478,7 +670,7 @@ public class CorrelationAnalysisController {
      * @return IC-mean 指标
      */
     private double getIC_Mean(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
+        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
         double sumOfIC = 0.0;
 
@@ -552,7 +744,7 @@ public class CorrelationAnalysisController {
      * @return IC-IR 指标
      */
     private double getIC_IR(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
+        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
         double sumOfIC = 0.0;
         double sumOfPowIC = 0.0;
@@ -626,7 +818,7 @@ public class CorrelationAnalysisController {
      * @return IC-T 指标
      */
     private double getIC_T(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
+        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
         double sumOfIC = 0.0;
         double sumOfPowIC = 0.0;
@@ -701,7 +893,7 @@ public class CorrelationAnalysisController {
      * @return 多空收益 指标
      */
     private double getLong_Short_Earnings(List<Index> list) {
-
+        List<stockPrice> stockPriceList = stockPriceMapper.getAll();
 
 
 
@@ -718,8 +910,9 @@ public class CorrelationAnalysisController {
         return null;
     }
 
-//    public static void main(String[] args) {
-//        System.out.println("hello");
-//    }
+    public static void main(String[] args) {
+        CorrelationAnalysisController controller = new CorrelationAnalysisController();
+        controller.selectAnalysisIndustry("安全性-存货周转率", "IC-mean");
+    }
 
 }

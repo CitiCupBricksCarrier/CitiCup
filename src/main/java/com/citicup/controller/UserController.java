@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.UserMapper;
 import com.citicup.model.User;
+import com.citicup.util.CitiAPIHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,15 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @RequestMapping("getLoginParams")
+    public String getLoginParams() throws IOException{
+
+        String accesstoken = CitiAPIHelper.getAccessToken();
+        String params = CitiAPIHelper.getBitToken(accesstoken);
+
+        return params;
+    }
 
     @RequestMapping("login")
     public void login(HttpServletRequest request, HttpServletResponse response)
