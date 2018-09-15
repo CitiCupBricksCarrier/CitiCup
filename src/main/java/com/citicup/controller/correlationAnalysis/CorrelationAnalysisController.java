@@ -64,7 +64,12 @@ public class CorrelationAnalysisController {
                 AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
                 key.setAnalysisindex(idx);
                 key.setDate(date);
-                counter += analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber(); //统计前三天的访问量
+                if(analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber() == null) {
+                    counter += 0;
+                }
+                else {
+                    counter += analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber(); //统计前三天的访问量
+                }
             }
 
             JSONObject t = new JSONObject();
@@ -73,30 +78,6 @@ public class CorrelationAnalysisController {
         }
 
         return JSONObject.toJSONString(json);
-    }
-
-    /**
-     * 单个指标当天增加一次访问量
-     *
-     */
-    private void increaseIndexClicks(String analysisIndex){
-        Date today = new Date(); // 获取当日日期
-        AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
-        key.setAnalysisindex(analysisIndex);
-        key.setDate(today);
-        if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
-            AnalysisIndexVisitor analysisIndexVisitor = new AnalysisIndexVisitor();
-            analysisIndexVisitor.setAnalysisindex(analysisIndex);
-            analysisIndexVisitor.setDate(today);
-            analysisIndexVisitor.setVistornumber(1);
-            analysisIndexVisitorMapper.insert(analysisIndexVisitor);
-        }
-        else {
-            AnalysisIndexVisitor analysisIndexVisitor = analysisIndexVisitorMapper.selectByPrimaryKey(key);
-            int newValue = analysisIndexVisitor.getVistornumber() + 1;
-            analysisIndexVisitor.setVistornumber(newValue);
-            analysisIndexVisitorMapper.updateByPrimaryKeySelective(analysisIndexVisitor);
-        }
     }
 
     /**
@@ -119,38 +100,157 @@ public class CorrelationAnalysisController {
 
                 break;
             case "安全性类-速动比率":
+                List<Quick_Ratio> qui = quick_ratioMapper.getAll();
+                for(Quick_Ratio q : qui) {
+                    if (q.getValue() != null && !q.getValue().equals("")) {
+                        list.add(new Index(q.getStkcd(), q.getDate(), q.getValue()));
+                    }
+                }
+
                 break;
             case "安全性类-总资产周转率":
+                List<TurnoverOfTotalAssets> turn = turnoverOfTotalAssetsMapper.getAll();
+                for(TurnoverOfTotalAssets total : turn) {
+                    if(total.getValue() != null && !total.getValue().equals("")) {
+                        list.add(new Index(total.getStkcd(), total.getDate(), total.getValue()));
+                    }
+                }
+
                 break;
             case "成长-ROE变动":
+                List<ROE_change> roe = roe_changeMapper.getAll();
+                for(ROE_change r : roe) {
+                    if(r.getValue() != null && !r.getValue().equals("")) {
+                        list.add(new Index(r.getStkcd(), r.getDate(), r.getValue()));
+                    }
+                }
+
                 break;
             case "成长类-GPOA变动":
+                List<GPOA_change> gpoa_change = gpoa_changeMapper.getAll();
+                for(GPOA_change gpoa : gpoa_change) {
+                    if(gpoa.getValue() != null && !gpoa.getValue().equals("")) {
+                        list.add(new Index(gpoa.getStkcd(), gpoa.getDate(), gpoa.getValue()));
+                    }
+                }
+
                 break;
             case "成长类-毛利润增长率":
+                List<ProfitGrowthRate> profit = profitGrowthRateMapper.getAll();
+                for(ProfitGrowthRate p : profit) {
+                    if(p.getValue() != null &&  !p.getValue().equals("")) {
+                        list.add(new Index(p.getStkcd(), p.getDate(), p.getValue()));
+                    }
+                }
+
                 break;
             case "分析师类-一致预期PB":
+                List<ConsistenceExpectation> conExp = consistenceExpectationMapper.getAll();
+                for(ConsistenceExpectation con : conExp) {
+                    if(con.getValue() != null && !con.getValue().equals("")) {
+                        list.add(new Index(con.getStkcd(), con.getDate(), con.getValue()));
+                    }
+                }
+
                 break;
             case "分析师类-一致预期预测营业收入":
+                List<ConsistenceExpectationPredictProfit> conExpPrePro = consistenceExpectationPredictProfitMapper.getAll();
+                for(ConsistenceExpectationPredictProfit con : conExpPrePro) {
+                    if(con.getValue() != null && !con.getValue().equals("")) {
+                        list.add(new Index(con.getStkcd(), con.getDate(), con.getValue()));
+                    }
+                }
+
                 break;
             case "分析师类-最近一个月券商覆盖数量（券商家数）变化":
+                List<DealersNumChange_1M> dealers = dealersNumChange_1MMapper.getAll();
+                for(DealersNumChange_1M deal : dealers) {
+                    if(deal.getValue() != null && !deal.getValue().equals("")) {
+                        list.add(new Index(deal.getStkcd(), deal.getDate(), deal.getValue()));
+                    }
+                }
+
                 break;
             case "估值类-股息率":
+                List<DividendRate> dividendRates = dividendRateMapper.getAll();
+                for(DividendRate dividend : dividendRates) {
+                    if(dividend.getValue() != null && !dividend.getValue().equals("")) {
+                        list.add(new Index(dividend.getStkcd(), dividend.getDate(), dividend.getValue()));
+                    }
+                }
+
                 break;
             case "估值类-市销率的倒数":
+                List<MarketSellingRateRec> marketSellingRateRecs = marketSellingRateRecMapper.getAll();
+                for(MarketSellingRateRec market : marketSellingRateRecs) {
+                    if(market.getValue() != null && !market.getValue().equals("")) {
+                        list.add(new Index(market.getStkcd(), market.getDate(), market.getValue()));
+                    }
+                }
+
                 break;
             case "估值类-市盈率的倒数":
+                List<PE_RatioRec> pe_ratioRec = pe_ratioRecMapper.getAll();
+                for(PE_RatioRec pe : pe_ratioRec) {
+                    if(pe.getValue() != null && !pe.getValue().equals("")) {
+                        list.add(new Index(pe.getStkcd(), pe.getDate(), pe.getValue()));
+                    }
+                }
+
                 break;
             case "价量-6日成交额标准差":
+                List<TurnoverStd_6D> turnoverStd_6D = turnoverStd_6DMapper.getAll();
+                for(TurnoverStd_6D std : turnoverStd_6D) {
+                    if(std.getValue() != null && !std.getValue().equals("")) {
+                        list.add(new Index(std.getStkcd(), std.getDate(), std.getValue()));
+                    }
+                }
+
                 break;
             case "价量-6日成交额均值（千元）":
+                List<TurnoverMean_6D> turnoverMean_6D = turnoverMean_6DMapper.getAll();
+                for(TurnoverMean_6D mean : turnoverMean_6D) {
+                    if(mean.getValue() != null && !mean.getValue().equals("")) {
+                        list.add(new Index(mean.getStkcd(), mean.getDate(), mean.getValue()));
+                    }
+                }
+
                 break;
             case "价量-20日特诺雷比率":
+                List<TenoreRatio_20D> tenoreRatio_20D = tenoreRatio_20DMapper.getAll();
+                for(TenoreRatio_20D t : tenoreRatio_20D) {
+                    if(t.getValue() != null && !t.getValue().equals("")) {
+                        list.add(new Index(t.getStkcd(), t.getDate(), t.getValue()));
+                    }
+                }
+
                 break;
             case "价量-60日特诺雷比率":
+                List<TenoreRatio_60D> tenoreRatio_60D = tenoreRatio_60DMapper.getAll();
+                for(TenoreRatio_60D t : tenoreRatio_60D) {
+                    if(t.getValue() != null && !t.getValue().equals("")) {
+                        list.add(new Index(t.getStkcd(), t.getDate(), t.getValue()));
+                    }
+                }
+
                 break;
             case "盈利质量-累计成本费用利润率":
+                List<CostProfitMarginCumu> cost = costProfitMarginCumuMapper.getAll();
+                for(CostProfitMarginCumu c : cost) {
+                    if(c.getValue() != null && !c.getValue().equals("")) {
+                        list.add(new Index(c.getStkcd(), c.getDate(), c.getValue()));
+                    }
+                }
+
                 break;
             case "盈利质量-所得税占盈利总额百分比":
+                List<IncometaxProfitPercent> income = incometaxProfitPercentMapper.getAll();
+                for(IncometaxProfitPercent percent : income) {
+                    if(percent.getValue() != null && percent.getValue().equals("")) {
+                        list.add(new Index(percent.getStkcd(), percent.getDate(), percent.getValue()));
+                    }
+                }
+
                 break;
             default:
                 return "查找错误";
@@ -160,7 +260,7 @@ public class CorrelationAnalysisController {
         double result = 0.0;
         switch (analysisMethod) {
             case "IC-mean":
-                result = getIC_Mean(list);
+                result = Math.abs(getIC_Mean(list));
                 if(result > 0.1) {
                     reply = "您所选择的指标和行业股票的收益率之间有较强的相关性。";
                 }
@@ -175,7 +275,7 @@ public class CorrelationAnalysisController {
                 }
                 break;
             case "IC-IR":
-                result = getIC_IR(list);
+                result = Math.abs(getIC_IR(list));
                 if(result > 0.7) {
                     reply = "您所选择的指标和行业股票的收益率之间有较强的相关性，且相关性稳定。";
                 }
@@ -190,7 +290,7 @@ public class CorrelationAnalysisController {
                 }
                 break;
             case "IC-T":
-                result = getIC_T(list);
+                result = Math.abs(getIC_T(list));
                 if(result > 0.7) {
                     reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
                 }
@@ -216,6 +316,101 @@ public class CorrelationAnalysisController {
         }
 
         return JSONObject.toJSONString(reply);
+    }
+
+    /**
+     * 复合因子的IC对行业的分析
+     * @return 分析结果
+     */
+    @RequestMapping("/CompositionalIndexAnalysis")
+    public String selectCompositionalIndexAnalysis(@RequestParam List<String> indexes, @RequestParam String analysisMethod,
+                                                   @RequestParam List<Integer> ratio) {
+
+        List<Index> list = new ArrayList<>();
+        for(String index : indexes) {
+            increaseIndexClicks(index);
+
+
+        }
+
+        String reply = "";
+        double result = 0.0;
+        switch (analysisMethod) {
+            case "IC-mean":
+                result = Math.abs(getIC_Mean(list));
+                if(result > 0.1) {
+                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性。";
+                }
+                else if(0.1 >=result && result > 0.05) {
+                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
+                }
+                else if(0.05 >= result && result >0.02) {
+                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱。";
+                }
+                else {
+                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
+                }
+                break;
+            case "IC-IR":
+                result = Math.abs(getIC_IR(list));
+                if(result > 0.7) {
+                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性，且相关性稳定。";
+                }
+                else if(0.7 >=result && result > 0.5) {
+                    reply = "您所选择的指标和行业股票的收益率之间有相关性，且相关性较稳定。";
+                }
+                else if(0.5 >= result && result >0.2) {
+                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱，且相关性不太稳定。";
+                }
+                else {
+                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
+                }
+                break;
+            case "IC-T":
+                result = Math.abs(getIC_T(list));
+                if(result > 0.7) {
+                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
+                }
+                else if(0.7 >=result && result > 0.5) {
+                    reply = "您所选择的指标和行业股票的收益率之间相关性较不显著。";
+                }
+                else if(0.5 >= result && result >0.2) {
+                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
+                }
+                else {
+                    reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
+                }
+                break;
+            default:
+                return "无此方法";
+        }
+
+        return JSONObject.toJSONString(reply);
+    }
+
+
+    /**
+     * 单个指标当天增加一次访问量
+     *
+     */
+    private void increaseIndexClicks(String analysisIndex){
+        Date today = new Date(); // 获取当日日期
+        AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
+        key.setAnalysisindex(analysisIndex);
+        key.setDate(today);
+        if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
+            AnalysisIndexVisitor analysisIndexVisitor = new AnalysisIndexVisitor();
+            analysisIndexVisitor.setAnalysisindex(analysisIndex);
+            analysisIndexVisitor.setDate(today);
+            analysisIndexVisitor.setVistornumber(1);
+            analysisIndexVisitorMapper.insert(analysisIndexVisitor);
+        }
+        else {
+            AnalysisIndexVisitor analysisIndexVisitor = analysisIndexVisitorMapper.selectByPrimaryKey(key);
+            int newValue = analysisIndexVisitor.getVistornumber() + 1;
+            analysisIndexVisitor.setVistornumber(newValue);
+            analysisIndexVisitorMapper.updateByPrimaryKeySelective(analysisIndexVisitor);
+        }
     }
 
     /**
@@ -249,6 +444,7 @@ public class CorrelationAnalysisController {
      */
     private double getIC(List<Double> list) {
         int size = list.size() / 10; //表示行业股票池中，10%股票的数目
+        if(size == 0) {size = 2; }
         List<Double> top = new ArrayList<>();
         List<Double> bottom = new ArrayList<>();
         for(int i = 0, j = list.size() - size; i<size && j<list.size(); i++, j++) {
@@ -305,24 +501,24 @@ public class CorrelationAnalysisController {
             List<Index> tmp = new ArrayList<>();
             for(Index idx : list) {
                 String[] date = idx.getDate().split("/");
-                if(quarter.substring(0,4).equals(date[0])){
-                    switch (quarter.substring(4,6)){
-                        case "01":
+                if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
+                    switch (quarter.substring(4,6)){ // 匹配月份和季度
+                        case "01": // 第一季度
                             if(date[1].equals("2")){
                                 tmp.add(idx);
                             }
                             break;
-                        case "02":
+                        case "02": // 第二季度
                             if(date[1].equals("5")){
                                 tmp.add(idx);
                             }
                             break;
-                        case "03":
+                        case "03": // 第三季度
                             if(date[1].equals("8")){
                                 tmp.add(idx);
                             }
                             break;
-                        case "04":
+                        case "04": // 第四季度
                             if(date[1].equals("11")){
                                 tmp.add(idx);
                             }
@@ -356,8 +552,73 @@ public class CorrelationAnalysisController {
      * @return IC-IR 指标
      */
     private double getIC_IR(List<Index> list) {
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
+        Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
+        double sumOfIC = 0.0;
+        double sumOfPowIC = 0.0;
 
-        return 0.0;
+        for(stockEPS s : stockEPSList){
+            String date = s.getDate();
+            Index index = stockEPS2Index(s);
+            if(epsPerQuarter.containsKey(date)) {
+                epsPerQuarter.get(date).add(index);
+            }
+            else {
+                List<Index> listOfIndexes = new ArrayList<>();
+                listOfIndexes.add(index);
+                epsPerQuarter.put(date, listOfIndexes);
+            }
+        }
+
+        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空"); System.exit(0);}
+
+        for(String quarter : epsPerQuarter.keySet()) {
+            List<Index> tmp = new ArrayList<>();
+            for(Index idx : list) {
+                String[] date = idx.getDate().split("/");
+                if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
+                    switch (quarter.substring(4,6)){ // 匹配月份和季度
+                        case "01": // 第一季度
+                            if(date[1].equals("2")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "02": // 第二季度
+                            if(date[1].equals("5")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "03": // 第三季度
+                            if(date[1].equals("8")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "04": // 第四季度
+                            if(date[1].equals("11")){
+                                tmp.add(idx);
+                            }
+                            break;
+                    }
+                }
+            }
+            List<String> standardizedIndexes = standardize(tmp);
+            List<String> standardizedEps = standardize(epsPerQuarter.get(quarter));
+            List<Double> series = new ArrayList<>();
+            for (String standardizedIndex : standardizedIndexes) {
+                for (int j = 0; j < standardizedEps.size(); j++) {
+                    if (standardizedIndex.equals(standardizedEps.get(j))) {
+                        series.add((double) j);
+                    }
+                }
+            }
+            sumOfIC += getIC(series);
+            sumOfPowIC += Math.pow(getIC(series), 2);
+        }
+
+        double IC_std = Math.sqrt(sumOfPowIC - ((Math.pow(sumOfIC, 2) / epsPerQuarter.size())));
+        double IC_IR = (sumOfIC / epsPerQuarter.size()) / IC_std;
+
+        return IC_IR;
     }
 
     /**
@@ -365,7 +626,74 @@ public class CorrelationAnalysisController {
      * @return IC-T 指标
      */
     private double getIC_T(List<Index> list) {
-        return 0.0;
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
+        Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
+        double sumOfIC = 0.0;
+        double sumOfPowIC = 0.0;
+
+        for(stockEPS s : stockEPSList){
+            String date = s.getDate();
+            Index index = stockEPS2Index(s);
+            if(epsPerQuarter.containsKey(date)) {
+                epsPerQuarter.get(date).add(index);
+            }
+            else {
+                List<Index> listOfIndexes = new ArrayList<>();
+                listOfIndexes.add(index);
+                epsPerQuarter.put(date, listOfIndexes);
+            }
+        }
+
+        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空"); System.exit(0);}
+
+        for(String quarter : epsPerQuarter.keySet()) {
+            List<Index> tmp = new ArrayList<>();
+            for(Index idx : list) {
+                String[] date = idx.getDate().split("/");
+                if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
+                    switch (quarter.substring(4,6)){ // 匹配月份和季度
+                        case "01": // 第一季度
+                            if(date[1].equals("2")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "02": // 第二季度
+                            if(date[1].equals("5")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "03": // 第三季度
+                            if(date[1].equals("8")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "04": // 第四季度
+                            if(date[1].equals("11")){
+                                tmp.add(idx);
+                            }
+                            break;
+                    }
+                }
+            }
+            List<String> standardizedIndexes = standardize(tmp);
+            List<String> standardizedEps = standardize(epsPerQuarter.get(quarter));
+            List<Double> series = new ArrayList<>();
+            for (String standardizedIndex : standardizedIndexes) {
+                for (int j = 0; j < standardizedEps.size(); j++) {
+                    if (standardizedIndex.equals(standardizedEps.get(j))) {
+                        series.add((double) j);
+                    }
+                }
+            }
+            sumOfIC += getIC(series);
+            sumOfPowIC += Math.pow(getIC(series), 2);
+        }
+
+        double IC_Var = sumOfPowIC - Math.pow((sumOfIC / epsPerQuarter.size()), 2);
+        double IC_Mean = sumOfIC / epsPerQuarter.size();
+        double IC_T = (IC_Mean - 0) / (Math.sqrt((IC_Var / epsPerQuarter.size())));
+
+        return IC_T;
     }
 
     /**
@@ -373,6 +701,10 @@ public class CorrelationAnalysisController {
      * @return 多空收益 指标
      */
     private double getLong_Short_Earnings(List<Index> list) {
+
+
+
+
         return 0.0;
     }
 
@@ -381,6 +713,8 @@ public class CorrelationAnalysisController {
      * @return 一元线性回归
      */
     private String getLinearRegression(List<Index> list) {
+
+
         return null;
     }
 
