@@ -86,8 +86,6 @@ public class CorrelationAnalysisController {
                 AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
                 key.setAnalysisindex(idx);
                 key.setDate(date);
-//                AnalysisIndexVisitor a = analysisIndexVisitorMapper.selectByPrimaryKey(key);
-//                System.out.println(a.getVistornumber() == null);
                 if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
                     counter += 0;
                 }
@@ -346,12 +344,20 @@ public class CorrelationAnalysisController {
      * 复合因子的IC对行业的分析
      * @return 分析结果
      */
-    @RequestMapping("/CompositionalIndexAnalysis")
-    public String selectCompositionalIndexAnalysis(@RequestParam List<String> indexes, @RequestParam String analysisMethod,
+    @RequestMapping("/Multi_FactorsAnalysis")
+    public String selectMulti_FactorsAnalysis(@RequestParam List<String> indexes, @RequestParam String analysisMethod,
                                                    @RequestParam List<Integer> ratio) {
 
+        if(indexes.size() != ratio.size()) { System.out.println("指标数与权重数不一致"); System.exit(0);}
+
         List<List<Index>> composite = new ArrayList<>();
-        for(String index : indexes) {
+        int ceiling = 0;
+        for(int r : ratio) {
+            ceiling += r;
+        }
+
+        for(int i = 0; i<indexes.size(); i++) {
+            String index = indexes.get(i);
             increaseIndexClicks(index);
             List<Index> list = new ArrayList<>();
             switch (index){
@@ -359,172 +365,185 @@ public class CorrelationAnalysisController {
                     List<InventoryTurnover> inv = inventoryTurnoverMapper.getAll();
                     for (InventoryTurnover anInv : inv) {
                         if (anInv.getValue() != null && !anInv.getValue().equals("")) {
-                            list.add(new Index(anInv.getStkcd(), anInv.getDate(), anInv.getValue()));
+                            double newValue = Double.parseDouble(anInv.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(anInv.getStkcd(), anInv.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "安全性类-速动比率":
                     List<Quick_Ratio> qui = quick_ratioMapper.getAll();
                     for(Quick_Ratio q : qui) {
                         if (q.getValue() != null && !q.getValue().equals("")) {
-                            list.add(new Index(q.getStkcd(), q.getDate(), q.getValue()));
+                            double newValue = Double.parseDouble(q.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(q.getStkcd(), q.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "安全性类-总资产周转率":
                     List<TurnoverOfTotalAssets> turn = turnoverOfTotalAssetsMapper.getAll();
                     for(TurnoverOfTotalAssets total : turn) {
                         if(total.getValue() != null && !total.getValue().equals("")) {
-                            list.add(new Index(total.getStkcd(), total.getDate(), total.getValue()));
+                            double newValue = Double.parseDouble(total.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(total.getStkcd(), total.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "成长-ROE变动":
                     List<ROE_change> roe = roe_changeMapper.getAll();
                     for(ROE_change r : roe) {
                         if(r.getValue() != null && !r.getValue().equals("")) {
-                            list.add(new Index(r.getStkcd(), r.getDate(), r.getValue()));
+                            double newValue = Double.parseDouble(r.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(r.getStkcd(), r.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "成长类-GPOA变动":
                     List<GPOA_change> gpoa_change = gpoa_changeMapper.getAll();
                     for(GPOA_change gpoa : gpoa_change) {
                         if(gpoa.getValue() != null && !gpoa.getValue().equals("")) {
-                            list.add(new Index(gpoa.getStkcd(), gpoa.getDate(), gpoa.getValue()));
+                            double newValue = Double.parseDouble(gpoa.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(gpoa.getStkcd(), gpoa.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "成长类-毛利润增长率":
                     List<ProfitGrowthRate> profit = profitGrowthRateMapper.getAll();
                     for(ProfitGrowthRate p : profit) {
                         if(p.getValue() != null &&  !p.getValue().equals("")) {
-                            list.add(new Index(p.getStkcd(), p.getDate(), p.getValue()));
+                            double newValue = Double.parseDouble(p.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(p.getStkcd(), p.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "分析师类-一致预期PB":
                     List<ConsistenceExpectation> conExp = consistenceExpectationMapper.getAll();
                     for(ConsistenceExpectation con : conExp) {
                         if(con.getValue() != null && !con.getValue().equals("")) {
-                            list.add(new Index(con.getStkcd(), con.getDate(), con.getValue()));
+                            double newValue = Double.parseDouble(con.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(con.getStkcd(), con.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "分析师类-一致预期预测营业收入":
                     List<ConsistenceExpectationPredictProfit> conExpPrePro = consistenceExpectationPredictProfitMapper.getAll();
                     for(ConsistenceExpectationPredictProfit con : conExpPrePro) {
                         if(con.getValue() != null && !con.getValue().equals("")) {
-                            list.add(new Index(con.getStkcd(), con.getDate(), con.getValue()));
+                            double newValue = Double.parseDouble(con.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(con.getStkcd(), con.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "分析师类-最近一个月券商覆盖数量（券商家数）变化":
                     List<DealersNumChange_1M> dealers = dealersNumChange_1MMapper.getAll();
                     for(DealersNumChange_1M deal : dealers) {
                         if(deal.getValue() != null && !deal.getValue().equals("")) {
-                            list.add(new Index(deal.getStkcd(), deal.getDate(), deal.getValue()));
+                            double newValue = Double.parseDouble(deal.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(deal.getStkcd(), deal.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "估值类-股息率":
                     List<DividendRate> dividendRates = dividendRateMapper.getAll();
                     for(DividendRate dividend : dividendRates) {
                         if(dividend.getValue() != null && !dividend.getValue().equals("")) {
-                            list.add(new Index(dividend.getStkcd(), dividend.getDate(), dividend.getValue()));
+                            double newValue = Double.parseDouble(dividend.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(dividend.getStkcd(), dividend.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "估值类-市销率的倒数":
                     List<MarketSellingRateRec> marketSellingRateRecs = marketSellingRateRecMapper.getAll();
                     for(MarketSellingRateRec market : marketSellingRateRecs) {
                         if(market.getValue() != null && !market.getValue().equals("")) {
-                            list.add(new Index(market.getStkcd(), market.getDate(), market.getValue()));
+                            double newValue = Double.parseDouble(market.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(market.getStkcd(), market.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "估值类-市盈率的倒数":
                     List<PE_RatioRec> pe_ratioRec = pe_ratioRecMapper.getAll();
                     for(PE_RatioRec pe : pe_ratioRec) {
                         if(pe.getValue() != null && !pe.getValue().equals("")) {
-                            list.add(new Index(pe.getStkcd(), pe.getDate(), pe.getValue()));
+                            double newValue = Double.parseDouble(pe.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(pe.getStkcd(), pe.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "价量-6日成交额标准差":
                     List<TurnoverStd_6D> turnoverStd_6D = turnoverStd_6DMapper.getAll();
                     for(TurnoverStd_6D std : turnoverStd_6D) {
                         if(std.getValue() != null && !std.getValue().equals("")) {
-                            list.add(new Index(std.getStkcd(), std.getDate(), std.getValue()));
+                            double newValue = Double.parseDouble(std.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(std.getStkcd(), std.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "价量-6日成交额均值（千元）":
                     List<TurnoverMean_6D> turnoverMean_6D = turnoverMean_6DMapper.getAll();
                     for(TurnoverMean_6D mean : turnoverMean_6D) {
                         if(mean.getValue() != null && !mean.getValue().equals("")) {
-                            list.add(new Index(mean.getStkcd(), mean.getDate(), mean.getValue()));
+                            double newValue = Double.parseDouble(mean.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(mean.getStkcd(), mean.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "价量-20日特诺雷比率":
                     List<TenoreRatio_20D> tenoreRatio_20D = tenoreRatio_20DMapper.getAll();
                     for(TenoreRatio_20D t : tenoreRatio_20D) {
                         if(t.getValue() != null && !t.getValue().equals("")) {
-                            list.add(new Index(t.getStkcd(), t.getDate(), t.getValue()));
+                            double newValue = Double.parseDouble(t.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(t.getStkcd(), t.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "价量-60日特诺雷比率":
                     List<TenoreRatio_60D> tenoreRatio_60D = tenoreRatio_60DMapper.getAll();
                     for(TenoreRatio_60D t : tenoreRatio_60D) {
                         if(t.getValue() != null && !t.getValue().equals("")) {
-                            list.add(new Index(t.getStkcd(), t.getDate(), t.getValue()));
+                            double newValue = Double.parseDouble(t.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(t.getStkcd(), t.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "盈利质量-累计成本费用利润率":
                     List<CostProfitMarginCumu> cost = costProfitMarginCumuMapper.getAll();
                     for(CostProfitMarginCumu c : cost) {
                         if(c.getValue() != null && !c.getValue().equals("")) {
-                            list.add(new Index(c.getStkcd(), c.getDate(), c.getValue()));
+                            double newValue = Double.parseDouble(c.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(c.getStkcd(), c.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 case "盈利质量-所得税占盈利总额百分比":
                     List<IncometaxProfitPercent> income = incometaxProfitPercentMapper.getAll();
                     for(IncometaxProfitPercent percent : income) {
                         if(percent.getValue() != null && percent.getValue().equals("")) {
-                            list.add(new Index(percent.getStkcd(), percent.getDate(), percent.getValue()));
+                            double newValue = Double.parseDouble(percent.getValue()) * ratio.get(i) / ceiling;
+                            list.add(new Index(percent.getStkcd(), percent.getDate(), newValue+""));
                         }
                     }
-
                     break;
                 default:
                     return "查找错误";
             }
-
             composite.add(list);
         }
 
-        List<Index> compositeList = new ArrayList<>();
+        List<Index> compositeList = composite.get(0);
+        for(int i = 1; i<composite.size(); i++) {
+            for (int j = 0; j<composite.get(i).size(); j++) {
+                for (int k = 0; k<compositeList.size(); k++) {
+                    Index idxk = compositeList.get(k);
+                    Index idxj = composite.get(i).get(j);
+                    if(idxk.getStkcd().equals(idxj.getStkcd()) && idxk.getDate().equals(idxj.getDate())) {
+                        double value = Double.parseDouble(idxk.getValue()) + Double.parseDouble(idxj.getValue());
+                        Index idx = new Index(idxk.getStkcd(), idxk.getDate(), value+"");
+                        compositeList.set(k, idx);
+                    }
+                }
+            }
+        }
+
         String reply = "";
         double result = 0.0;
         switch (analysisMethod) {
@@ -572,6 +591,10 @@ public class CorrelationAnalysisController {
                 else {
                     reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
                 }
+                break;
+            case "多空收益":
+                result = getLong_Short_Earnings(compositeList);
+                reply = "多空收益可用来探究您选择的因子对整个行业股票收益率的影响；你所选择的因子对应的多空收益为："+result;
                 break;
             default:
                 return "无此方法";
@@ -893,26 +916,108 @@ public class CorrelationAnalysisController {
      * @return 多空收益 指标
      */
     private double getLong_Short_Earnings(List<Index> list) {
-        List<stockPrice> stockPriceList = stockPriceMapper.getAll();
+        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
+        Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
+        double sumOfRS = 0.0;
 
+        for(stockEPS s : stockEPSList){
+            String date = s.getDate();
+            Index index = stockEPS2Index(s);
+            if(epsPerQuarter.containsKey(date)) {
+                epsPerQuarter.get(date).add(index);
+            }
+            else {
+                List<Index> listOfIndexes = new ArrayList<>();
+                listOfIndexes.add(index);
+                epsPerQuarter.put(date, listOfIndexes);
+            }
+        }
 
+        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空"); System.exit(0);}
 
-        return 0.0;
+        for(String quarter : epsPerQuarter.keySet()) {
+            List<Index> tmp = new ArrayList<>();
+            for(Index idx : list) {
+                String[] date = idx.getDate().split("/");
+                if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
+                    switch (quarter.substring(4,6)){ // 匹配月份和季度
+                        case "01": // 第一季度
+                            if(date[1].equals("2")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "02": // 第二季度
+                            if(date[1].equals("5")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "03": // 第三季度
+                            if(date[1].equals("8")){
+                                tmp.add(idx);
+                            }
+                            break;
+                        case "04": // 第四季度
+                            if(date[1].equals("11")){
+                                tmp.add(idx);
+                            }
+                            break;
+                    }
+                }
+            }
+            List<String> standardizedIndexes = standardize(tmp);
+            List<Double> series = new ArrayList<>();
+            for (String standardizedIndex : standardizedIndexes) {
+                for (int j = 0; j < epsPerQuarter.get(quarter).size(); j++) {
+                    if (standardizedIndex.equals(epsPerQuarter.get(quarter).get(j).getStkcd())) {
+                        series.add(Double.parseDouble(epsPerQuarter.get(quarter).get(j).getValue()));
+                    }
+                }
+            }
+            sumOfRS += getRS(series);
+        }
+
+        double RS = sumOfRS / epsPerQuarter.size();
+        return RS;
     }
 
     /**
-     * 计算 一元线性回归
-     * @return 一元线性回归
+     * 计算 单周期多空收益
+     * @return 单周期多空收益
      */
-    private String getLinearRegression(List<Index> list) {
+    private double getRS(List<Double> list) {
+        int size = list.size() / 10; //表示行业股票池中，10%股票的数目
+        if(size == 0) {size = 2; }
+        List<Double> top = new ArrayList<>();
+        List<Double> bottom = new ArrayList<>();
+        for(int i = 0, j = list.size() - size; i<size && j<list.size(); i++, j++) {
+            top.add(list.get(i));
+            bottom.add(list.get(j));
+        }
 
-
-        return null;
+        double a = 0.0, b = 0.0;
+        double aveOfTop = 0.0, aveOfBot = 0.0;
+        for(int i = 0; i<size; i++) {
+            a += top.get(i);
+            b += bottom.get(i);
+        }
+        aveOfTop = a / size;
+        aveOfBot = b / size;
+        double result = aveOfTop - aveOfBot;
+        return result;
     }
+
+//    /**
+//     * 计算 一元线性回归
+//     * @return 一元线性回归
+//     */
+//    private String getLinearRegression(List<Index> list) {
+//        return null;
+//    }
 
     public static void main(String[] args) {
         CorrelationAnalysisController controller = new CorrelationAnalysisController();
-        controller.selectAnalysisIndustry("安全性-存货周转率", "IC-mean");
+//        controller.selectAnalysisIndustry("安全性-存货周转率", "IC-mean");
+        controller.selectIndexClicks();
     }
 
 }
