@@ -91,6 +91,27 @@ public class UserController {
 
         }
     }
+
+    @RequestMapping("getUserInfo")
+    public void getUserInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session=request.getSession();
+        PrintWriter out=response.getWriter();
+        String res=null;
+        try {
+            res=session.getAttribute("userinfo").toString();
+        }catch(Exception e){
+
+        }
+        if(res==null){
+            out.print("null");
+        }else {
+            out.print(res);
+        }
+        out.close();
+    }
+
     @RequestMapping("getSession")
     public void getUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
