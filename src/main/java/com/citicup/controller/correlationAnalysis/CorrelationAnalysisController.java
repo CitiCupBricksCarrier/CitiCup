@@ -4,14 +4,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.correlationAnalysis.*;
 import com.citicup.model.Index;
 import com.citicup.model.correlationAnalysis.*;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 @RestController
 @EnableAutoConfiguration
@@ -58,8 +61,6 @@ public class CorrelationAnalysisController {
     private AnalysisIndexVisitorMapper analysisIndexVisitorMapper;
     @Autowired
     private stockEPSMapper stockEPSMapper;
-    @Autowired
-    private stockPriceMapper stockPriceMapper;
 
     private static final String[] indexsName = new String[]{"ConsistenceExpectation", "ConsistenceExpectationPredictProfit",
             "CostProfitMarginCumu", "DealersNumChange_1M", "DividendRate", "GPOA_change", "IncometaxProfitPercent",
@@ -110,7 +111,7 @@ public class CorrelationAnalysisController {
     public String selectAnalysisIndustry(@RequestParam String index, @RequestParam String analysisMethod) {
         increaseIndexClicks(index);
         List<Index> list = new ArrayList<>();
-        System.out.println(index);
+        //System.out.println(index);
         switch (index){
             case "安全性-存货周转率":
                 List<InventoryTurnover> inv = inventoryTurnoverMapper.getAll();
@@ -277,7 +278,8 @@ public class CorrelationAnalysisController {
             default:
                 return "查找错误";
         }
-
+        System.out.println("list.size() = " + list.size() + "in selectAnalysisIndustry()");
+        if(list.size() == 0) { System.out.println("list长度为0"); return "查找指标为空";}
         String reply = getAnalysis(list, analysisMethod);
         return JSONObject.toJSONString(reply);
     }
@@ -290,7 +292,7 @@ public class CorrelationAnalysisController {
     public String selectMulti_FactorsAnalysis(@RequestParam List<String> indexes, @RequestParam String analysisMethod,
                                                    @RequestParam List<Integer> ratio) {
 
-        if(indexes.size() != ratio.size()) { System.out.println("指标数与权重数不一致"); System.exit(0);}
+        if(indexes.size() != ratio.size()) { System.out.println("指标数与权重数不一致"); }
 
         List<List<Index>> composite = new ArrayList<>();
         int ceiling = 0;
@@ -487,6 +489,7 @@ public class CorrelationAnalysisController {
             }
         }
 
+        if(compositeList.size() == 0) { System.out.println("list长度为0"); return "查找指标为空";}
         String reply = getAnalysis(compositeList, analysisMethod);
         return JSONObject.toJSONString(reply);
     }
@@ -545,6 +548,7 @@ public class CorrelationAnalysisController {
      * @return IC值
      */
     private double getIC(List<Double> list) {
+        System.out.println("list.size() = " + list.size() + "in getIC()");
         int size = list.size() / 10; //表示行业股票池中，10%股票的数目
         if(size == 0) {size = 2; }
         List<Double> top = new ArrayList<>();
@@ -580,11 +584,17 @@ public class CorrelationAnalysisController {
      * @return IC-mean 指标
      */
     private double getIC_Mean(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
+        System.out.println("list.size() = " + list.size() + "in getIC_Mean()");
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
+        System.out.println("stockEPSList.size(): " + stockEPSList.size());
         double sumOfIC = 0.0;
 
         for(stockEPS s : stockEPSList){
+            System.out.println(s.getValue());
+            if(s.getValue() == null && !s.getValue().equals("")) {
+                continue;
+            }
             String date = s.getDate();
             Index index = new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
@@ -596,27 +606,29 @@ public class CorrelationAnalysisController {
                 epsPerQuarter.put(date, listOfIndexes);
             }
         }
-
-        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空"); System.exit(0);}
+        System.out.println("epsPerQuarter.size(): " + epsPerQuarter.size());
+        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空");}
 
         for(String quarter : epsPerQuarter.keySet()) {
             List<Index> tmp = new ArrayList<>();
             for(Index idx : list) {
-                String[] date = idx.getDate().split("/");
+//                System.out.println("quarter: "+quarter);
+//                System.out.println("idx.getDate(): "+idx.getDate());
+                String[] date = idx.getDate().split("-");
                 if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
                     switch (quarter.substring(4,6)){ // 匹配月份和季度
                         case "01": // 第一季度
-                            if(date[1].equals("2")){
+                            if(date[1].equals("02")){
                                 tmp.add(idx);
                             }
                             break;
                         case "02": // 第二季度
-                            if(date[1].equals("5")){
+                            if(date[1].equals("05")){
                                 tmp.add(idx);
                             }
                             break;
                         case "03": // 第三季度
-                            if(date[1].equals("8")){
+                            if(date[1].equals("08")){
                                 tmp.add(idx);
                             }
                             break;
@@ -628,8 +640,11 @@ public class CorrelationAnalysisController {
                     }
                 }
             }
+            System.out.println("tmp.size() = " + tmp.size() + "in getIC_Mean()");
             List<String> standardizedIndexes = standardize(tmp);
             List<String> standardizedEps = standardize(epsPerQuarter.get(quarter));
+            System.out.println("standardizedIndexes.size(): " + standardizedIndexes.size());
+            System.out.println("standardizedEps.size(): " + standardizedEps.size());
             List<Double> series = new ArrayList<>();
             for (String standardizedIndex : standardizedIndexes) {
                 for (int j = 0; j < standardizedEps.size(); j++) {
@@ -650,7 +665,7 @@ public class CorrelationAnalysisController {
      * @return IC-IR 指标
      */
     private double getIC_IR(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
         double sumOfIC = 0.0;
         double sumOfPowIC = 0.0;
@@ -673,21 +688,21 @@ public class CorrelationAnalysisController {
         for(String quarter : epsPerQuarter.keySet()) {
             List<Index> tmp = new ArrayList<>();
             for(Index idx : list) {
-                String[] date = idx.getDate().split("/");
+                String[] date = idx.getDate().split("-");
                 if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
                     switch (quarter.substring(4,6)){ // 匹配月份和季度
                         case "01": // 第一季度
-                            if(date[1].equals("2")){
+                            if(date[1].equals("02")){
                                 tmp.add(idx);
                             }
                             break;
                         case "02": // 第二季度
-                            if(date[1].equals("5")){
+                            if(date[1].equals("05")){
                                 tmp.add(idx);
                             }
                             break;
                         case "03": // 第三季度
-                            if(date[1].equals("8")){
+                            if(date[1].equals("08")){
                                 tmp.add(idx);
                             }
                             break;
@@ -724,7 +739,7 @@ public class CorrelationAnalysisController {
      * @return IC-T 指标
      */
     private double getIC_T(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
         double sumOfIC = 0.0;
         double sumOfPowIC = 0.0;
@@ -747,21 +762,21 @@ public class CorrelationAnalysisController {
         for(String quarter : epsPerQuarter.keySet()) {
             List<Index> tmp = new ArrayList<>();
             for(Index idx : list) {
-                String[] date = idx.getDate().split("/");
+                String[] date = idx.getDate().split("-");
                 if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
                     switch (quarter.substring(4,6)){ // 匹配月份和季度
                         case "01": // 第一季度
-                            if(date[1].equals("2")){
+                            if(date[1].equals("02")){
                                 tmp.add(idx);
                             }
                             break;
                         case "02": // 第二季度
-                            if(date[1].equals("5")){
+                            if(date[1].equals("05")){
                                 tmp.add(idx);
                             }
                             break;
                         case "03": // 第三季度
-                            if(date[1].equals("8")){
+                            if(date[1].equals("08")){
                                 tmp.add(idx);
                             }
                             break;
@@ -799,7 +814,7 @@ public class CorrelationAnalysisController {
      * @return 多空收益 指标
      */
     private double getLong_Short_Earnings(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getGroupsBy();
+        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
         double sumOfRS = 0.0;
 
@@ -821,21 +836,21 @@ public class CorrelationAnalysisController {
         for(String quarter : epsPerQuarter.keySet()) {
             List<Index> tmp = new ArrayList<>();
             for(Index idx : list) {
-                String[] date = idx.getDate().split("/");
+                String[] date = idx.getDate().split("-");
                 if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
                     switch (quarter.substring(4,6)){ // 匹配月份和季度
                         case "01": // 第一季度
-                            if(date[1].equals("2")){
+                            if(date[1].equals("02")){
                                 tmp.add(idx);
                             }
                             break;
                         case "02": // 第二季度
-                            if(date[1].equals("5")){
+                            if(date[1].equals("05")){
                                 tmp.add(idx);
                             }
                             break;
                         case "03": // 第三季度
-                            if(date[1].equals("8")){
+                            if(date[1].equals("08")){
                                 tmp.add(idx);
                             }
                             break;
@@ -890,6 +905,7 @@ public class CorrelationAnalysisController {
     }
 
     private String getAnalysis(List<Index> list, String analysisMethod) {
+        System.out.println("list.size() = " + list.size() + "in getAnalysis()");
         String reply = "";
         double result = 0.0;
         switch (analysisMethod) {
@@ -937,9 +953,6 @@ public class CorrelationAnalysisController {
                 else {
                     reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
                 }
-                break;
-            case "一元线性回归":
-
                 break;
             case "多空收益":
                 result = getLong_Short_Earnings(list);
