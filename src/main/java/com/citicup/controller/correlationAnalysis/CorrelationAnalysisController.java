@@ -88,9 +88,11 @@ public class CorrelationAnalysisController {
                 key.setAnalysisindex(idx);
                 key.setDate(date);
                 if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
+                    System.out.println("分析指标点击量为空");
                     counter += 0;
                 }
                 else {
+                    System.out.println("分析指标点击量非空");
                     counter += analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber(); //统计前三天的访问量
                 }
             }
@@ -111,7 +113,7 @@ public class CorrelationAnalysisController {
     public String selectAnalysisIndustry(@RequestParam String index, @RequestParam String analysisMethod) {
         increaseIndexClicks(index);
         List<Index> list = new ArrayList<>();
-        //System.out.println(index);
+
         switch (index){
             case "安全性-存货周转率":
                 List<InventoryTurnover> inv = inventoryTurnoverMapper.getAll();
@@ -268,8 +270,9 @@ public class CorrelationAnalysisController {
                 break;
             case "盈利质量-所得税占盈利总额百分比":
                 List<IncometaxProfitPercent> income = incometaxProfitPercentMapper.getAll();
+                System.out.println("income.size(): "+income.size());
                 for(IncometaxProfitPercent percent : income) {
-                    if(percent.getValue() != null && percent.getValue().equals("")) {
+                    if(percent.getValue() != null && !percent.getValue().equals("")) {
                         list.add(new Index(percent.getStkcd(), percent.getDate(), percent.getValue()));
                     }
                 }
@@ -278,7 +281,6 @@ public class CorrelationAnalysisController {
             default:
                 return "查找错误";
         }
-        System.out.println("list.size() = " + list.size() + "in selectAnalysisIndustry()");
         if(list.size() == 0) { System.out.println("list长度为0"); return "查找指标为空";}
         String reply = getAnalysis(list, analysisMethod);
         return JSONObject.toJSONString(reply);
@@ -524,8 +526,13 @@ public class CorrelationAnalysisController {
      */
     private List<String> standardize(List<Index> list) {
         List<String> series = new ArrayList<>();
-        for (Index aList : list) {
-            series.add(aList.getStkcd());
+        for (int i = 0; i<list.size(); i++) {
+            if(list.get(i) == null || list.get(i).getValue() == null || list.get(i).getValue().equals("inf")) {
+                list.remove(i);
+                i--;
+                continue;
+            }
+            series.add(list.get(i).getStkcd());
         }
 
         for(int i = 0; i<list.size()-1; i++) {
@@ -548,9 +555,8 @@ public class CorrelationAnalysisController {
      * @return IC值
      */
     private double getIC(List<Double> list) {
-        System.out.println("list.size() = " + list.size() + "in getIC()");
         int size = list.size() / 10; //表示行业股票池中，10%股票的数目
-        if(size == 0) {size = 2; }
+        if(size == 0) {size = 3; System.out.println("list.size() = "+list.size());}
         List<Double> top = new ArrayList<>();
         List<Double> bottom = new ArrayList<>();
         for(int i = 0, j = list.size() - size; i<size && j<list.size(); i++, j++) {
@@ -573,7 +579,7 @@ public class CorrelationAnalysisController {
         }
         stdOfTop = Math.sqrt(stdOfTop / size);
         stdOfBot = Math.sqrt(stdOfBot / size);
-        if(stdOfTop * stdOfBot == 0) { System.out.println("除零错误"); System.exit(0);}
+        if(stdOfTop * stdOfBot == 0) { System.out.println("除零错误"); }
         double result = (a - (b*c)/size) / (stdOfTop * stdOfBot);
 
         return result;
@@ -584,15 +590,12 @@ public class CorrelationAnalysisController {
      * @return IC-mean 指标
      */
     private double getIC_Mean(List<Index> list) {
-        System.out.println("list.size() = " + list.size() + "in getIC_Mean()");
         List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
-        System.out.println("stockEPSList.size(): " + stockEPSList.size());
         double sumOfIC = 0.0;
 
         for(stockEPS s : stockEPSList){
-            System.out.println(s.getValue());
-            if(s.getValue() == null && !s.getValue().equals("")) {
+            if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
                 continue;
             }
             String date = s.getDate();
@@ -606,14 +609,11 @@ public class CorrelationAnalysisController {
                 epsPerQuarter.put(date, listOfIndexes);
             }
         }
-        System.out.println("epsPerQuarter.size(): " + epsPerQuarter.size());
         if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空");}
 
         for(String quarter : epsPerQuarter.keySet()) {
             List<Index> tmp = new ArrayList<>();
             for(Index idx : list) {
-//                System.out.println("quarter: "+quarter);
-//                System.out.println("idx.getDate(): "+idx.getDate());
                 String[] date = idx.getDate().split("-");
                 if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
                     switch (quarter.substring(4,6)){ // 匹配月份和季度
@@ -640,11 +640,9 @@ public class CorrelationAnalysisController {
                     }
                 }
             }
-            System.out.println("tmp.size() = " + tmp.size() + "in getIC_Mean()");
+
             List<String> standardizedIndexes = standardize(tmp);
             List<String> standardizedEps = standardize(epsPerQuarter.get(quarter));
-            System.out.println("standardizedIndexes.size(): " + standardizedIndexes.size());
-            System.out.println("standardizedEps.size(): " + standardizedEps.size());
             List<Double> series = new ArrayList<>();
             for (String standardizedIndex : standardizedIndexes) {
                 for (int j = 0; j < standardizedEps.size(); j++) {
@@ -671,6 +669,9 @@ public class CorrelationAnalysisController {
         double sumOfPowIC = 0.0;
 
         for(stockEPS s : stockEPSList){
+            if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
+                continue;
+            }
             String date = s.getDate();
             Index index = new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
@@ -745,6 +746,9 @@ public class CorrelationAnalysisController {
         double sumOfPowIC = 0.0;
 
         for(stockEPS s : stockEPSList){
+            if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
+                continue;
+            }
             String date = s.getDate();
             Index index =  new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
@@ -819,6 +823,9 @@ public class CorrelationAnalysisController {
         double sumOfRS = 0.0;
 
         for(stockEPS s : stockEPSList){
+            if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
+                continue;
+            }
             String date = s.getDate();
             Index index =  new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
@@ -905,7 +912,6 @@ public class CorrelationAnalysisController {
     }
 
     private String getAnalysis(List<Index> list, String analysisMethod) {
-        System.out.println("list.size() = " + list.size() + "in getAnalysis()");
         String reply = "";
         double result = 0.0;
         switch (analysisMethod) {
@@ -956,7 +962,7 @@ public class CorrelationAnalysisController {
                 break;
             case "多空收益":
                 result = getLong_Short_Earnings(list);
-                reply = "多空收益可用来探究您选择的因子对整个行业股票收益率的影响；你所选择的因子对应的多空收益为："+result;
+                reply = "多空收益可用来探究您选择的因子对整个行业股票收益率的影响；你所选择的因子对应的多空收益为：" + String.format("%.4f", result);
                 break;
             default:
                 return "无此方法";
