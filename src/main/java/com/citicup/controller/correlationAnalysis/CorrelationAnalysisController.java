@@ -66,7 +66,7 @@ public class CorrelationAnalysisController {
             "CostProfitMarginCumu", "DealersNumChange_1M", "DividendRate", "GPOA_change", "IncometaxProfitPercent",
             "InventoryTurnover", "MarketSellingRateRec", "PE_RatioRec", "ProfitGrowthRate", "Quick_Ratio", "ROE_change",
             "TenoreRatio_20D", "TenoreRatio_60D", "TurnoverMean_6D", "TurnoverOfTotalAssets", "TurnoverStd_6D"};
-    private static final int dayGap = 2;
+    private static final int dayGap = 3;
 
     /**
      * 获取各指标最近3天的选择人数（所有指标一起）
@@ -75,24 +75,27 @@ public class CorrelationAnalysisController {
     @RequestMapping("/IndexClicks")
     public String selectIndexClicks() {
         Map<String, Integer> idxClks = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date(); // 获取当日日期
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(today);
         for(String idx : indexsName) {
             int counter = 0;
-            for(int i = dayGap; i >= 0; i--) { //获取往前两天的日期
+            for(int i = 0; i < dayGap; i++) { //获取往前两天的日期
+                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime(today);
                 calendar.add(Calendar.DATE, -i);
                 Date date = calendar.getTime();
+                String d = sdf.format(date);
                 AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
                 key.setAnalysisindex(idx);
-                key.setDate(date);
+                key.setDate(d);
+                System.out.println(d);
                 if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
                     System.out.println("分析指标点击量为空");
                     counter += 0;
                 }
                 else {
-                    System.out.println("分析指标点击量非空");
                     counter += analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber(); //统计前三天的访问量
+                    System.out.println("counter: "+counter);
                 }
             }
 
@@ -498,19 +501,23 @@ public class CorrelationAnalysisController {
      *
      */
     private void increaseIndexClicks(String analysisIndex){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date(); // 获取当日日期
         AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
         key.setAnalysisindex(analysisIndex);
-        key.setDate(today);
+        key.setDate(sdf.format(today));
         if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
             AnalysisIndexVisitor analysisIndexVisitor = new AnalysisIndexVisitor();
             analysisIndexVisitor.setAnalysisindex(analysisIndex);
-            analysisIndexVisitor.setDate(today);
+            analysisIndexVisitor.setDate(sdf.format(today));
             analysisIndexVisitor.setVistornumber(1);
             analysisIndexVisitorMapper.insert(analysisIndexVisitor);
+            System.out.println("创建新的记录");
         }
         else {
             AnalysisIndexVisitor analysisIndexVisitor = analysisIndexVisitorMapper.selectByPrimaryKey(key);
+            System.out.println("date"+analysisIndexVisitor.getDate());
+            System.out.println("number"+analysisIndexVisitor.getVistornumber());
             int newValue = analysisIndexVisitor.getVistornumber() + 1;
             analysisIndexVisitor.setVistornumber(newValue);
             analysisIndexVisitorMapper.updateByPrimaryKeySelective(analysisIndexVisitor);
@@ -967,10 +974,15 @@ public class CorrelationAnalysisController {
         return reply;
     }
 
-//    public static void main(String[] args) {
-//        CorrelationAnalysisController controller = new CorrelationAnalysisController();
-//        controller.selectAnalysisIndustry("安全性-存货周转率", "IC-mean");
-//        controller.selectIndexClicks();
-//    }
+    public static void main(String[] args) {
+        CorrelationAnalysisController controller = new CorrelationAnalysisController();
+        List<String> indexes = new ArrayList<>();
+        indexes.add("安全性-存货周转率");
+        indexes.add("安全性类-速动比率");
+        List<Integer> ratio = new ArrayList<>();
+        ratio.add(50);
+        ratio.add(50);
+        controller.selectMulti_FactorsAnalysis(indexes, "IC-mean", ratio);
+    }
 
 }
