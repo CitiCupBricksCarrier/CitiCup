@@ -74,8 +74,7 @@ public class CorrelationAnalysisController {
      */
     @RequestMapping("/IndexClicks")
     public String selectIndexClicks() {
-        List<JSONObject> json = new ArrayList<>();
-
+        Map<String, Integer> idxClks = new HashMap<>();
         Date today = new Date(); // 获取当日日期
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
@@ -97,12 +96,10 @@ public class CorrelationAnalysisController {
                 }
             }
 
-            JSONObject t = new JSONObject();
-            t.put(idx, counter);
-            json.add(t);
+            idxClks.put(idx, counter);
         }
 
-        return JSONObject.toJSONString(json);
+        return JSONObject.toJSONString(idxClks);
     }
 
     /**
