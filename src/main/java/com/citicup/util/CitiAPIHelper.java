@@ -15,6 +15,52 @@ public class CitiAPIHelper {
     private static String encode_key = clinetID + ":" + clinetSecret;
     private static String authorization = "Basic " + Base64.encodeBase64String(encode_key.getBytes());
 
+    public static String getUserinfo(String acstoken) throws IOException{
+        String authorization = "Bearer " + acstoken;
+        System.out.println("authorization:"+authorization);
+
+        String uuid = UUID.randomUUID().toString().replaceAll("-","");
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://sandbox.apihub.citi.com/gcb/api/v1/accounts")
+                .get()
+                .addHeader("accept", "application/json")
+                .addHeader("authorization", authorization)
+                .addHeader("client_id", clinetID)
+                .addHeader("uuid", uuid)
+                .addHeader("content-type", "application/x-www-form-urlencoded")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
+    public static String getPswdAccessToken(String biztoken, String username, String password) throws IOException{
+        String uuid = UUID.randomUUID().toString().replaceAll("-","");
+
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        RequestBody requestBody = RequestBody.create(mediaType, "grant_type=password&scope=/api&username="+username+"&password="+password);
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://sandbox.apihub.citi.com/gcb/api/password/oauth2/token/au/gcb")
+                .post(requestBody)
+                .addHeader("accept", "application/json")
+                .addHeader("authorization", authorization)
+                .addHeader("bizToken", biztoken)
+                .addHeader("uuid", uuid)
+                .addHeader("content-type", "application/x-www-form-urlencoded")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        if (response.isSuccessful()){
+        }
+        String message = response.message();
+        String body = response.body().string();
+//		System.out.println(body);
+        JSONObject json = JSON.parseObject(body);
+        return json.getString("access_token");
+    }
+
     public static String getBitToken(String accessToken) throws IOException {
 
         String authorization = "Bearer " + accessToken;

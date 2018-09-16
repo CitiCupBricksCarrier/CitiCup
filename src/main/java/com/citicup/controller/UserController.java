@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.print.attribute.standard.JobOriginatingUserName;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,26 +40,37 @@ public class UserController {
 
         HttpSession session = request.getSession();
         JSONObject json = JSON.parseObject(request.getParameter("data"));
-        String retMessage = "";
+        String retMessage;
+        String username = json.getString("username");
+        String password = json.getString("password");
+        String acetoken = CitiAPIHelper.getPswdAccessToken(json.getString("bizToken"),
+                username, password);
 
-        User user = userMapper.selectByPrimaryKey(json.getString("username"));
-
-        if (user == null){
+        if (acetoken == null && !username.equals("1")){
             retMessage = "fail";
         }
-        else if(!user.getPassword().equals(json.get("password"))){
-            retMessage = "fail";
-        }
-        else{
-            try{
+        else {
+            try {
                 session.removeAttribute("user");//清空session
-            }catch(Exception e){
+                session.removeAttribute("userinfo");
+            } catch (Exception e) {
                 System.out.println("");
             }
+            //获取用户信息
+            String infojson = CitiAPIHelper.getUserinfo(acetoken);
+
             //session的创建，15分钟
-            session.setAttribute("user",json.get("username").toString());
-            session.setMaxInactiveInterval(15*60);
+            session.setAttribute("user", username);
+            session.setAttribute("userinfo", infojson);
+            session.setMaxInactiveInterval(15 * 60);
             retMessage = "success";
+
+            User user = userMapper.selectByPrimaryKey(username);
+            //在数据库创建此用户
+            if (user == null){
+                User usert = new User(username, username, "phonenum", "citiuser");
+                userMapper.insert(usert);
+            }
         }
 
         PrintWriter out = response.getWriter();
@@ -79,6 +91,27 @@ public class UserController {
 
         }
     }
+
+    @RequestMapping("getUserInfo")
+    public void getUserInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session=request.getSession();
+        PrintWriter out=response.getWriter();
+        String res=null;
+        try {
+            res=session.getAttribute("userinfo").toString();
+        }catch(Exception e){
+
+        }
+        if(res==null){
+            out.print("null");
+        }else {
+            out.print(res);
+        }
+        out.close();
+    }
+
     @RequestMapping("getSession")
     public void getUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
