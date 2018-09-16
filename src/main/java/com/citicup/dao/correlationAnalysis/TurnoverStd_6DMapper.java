@@ -55,6 +55,6 @@ public interface TurnoverStd_6DMapper {
      */
     int updateByPrimaryKey(TurnoverStd_6D record);
 
-    @Select("SELECT * FROM citicup.价量6日成交额标准差")
+    @Select("SELECT * FROM citicup.价量6日成交额标准差 WHERE value is not NULL")
     List<TurnoverStd_6D> getAll();
 }

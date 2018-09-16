@@ -55,6 +55,6 @@ public interface TenoreRatio_60DMapper {
      */
     int updateByPrimaryKey(TenoreRatio_60D record);
 
-    @Select("SELECT * FROM citicup.价量60日特诺雷比率")
+    @Select("SELECT * FROM citicup.价量60日特诺雷比率 WHERE value is not NULL")
     List<TenoreRatio_60D> getAll();
 }

@@ -55,6 +55,6 @@ public interface TurnoverOfTotalAssetsMapper {
      */
     int updateByPrimaryKey(TurnoverOfTotalAssets record);
 
-    @Select("SELECT * FROM citicup.安全性类总资产周转率")
+    @Select("SELECT * FROM citicup.安全性类总资产周转率 WHERE value is not NULL")
     List<TurnoverOfTotalAssets> getAll();
 }

@@ -55,6 +55,6 @@ public interface ConsistenceExpectationPredictProfitMapper {
      */
     int updateByPrimaryKey(ConsistenceExpectationPredictProfit record);
 
-    @Select("SELECT * FROM citicup.分析师类一致预期预测营业收入")
+    @Select("SELECT * FROM citicup.分析师类一致预期预测营业收入 WHERE value is not NULL")
     List<ConsistenceExpectationPredictProfit> getAll();
 }

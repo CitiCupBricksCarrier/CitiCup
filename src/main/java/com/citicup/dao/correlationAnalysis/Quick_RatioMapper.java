@@ -55,6 +55,6 @@ public interface Quick_RatioMapper {
      */
     int updateByPrimaryKey(Quick_Ratio record);
 
-    @Select("SELECT * FROM citicup.安全性类速动比率")
+    @Select("SELECT * FROM citicup.安全性类速动比率 WHERE value is not NULL")
     List<Quick_Ratio> getAll();
 }

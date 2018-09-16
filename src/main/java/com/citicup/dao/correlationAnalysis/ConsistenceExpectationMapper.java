@@ -55,6 +55,6 @@ public interface ConsistenceExpectationMapper {
      */
     int updateByPrimaryKey(ConsistenceExpectation record);
 
-    @Select("SELECT * FROM citicup.分析师类一致预期pb")
+    @Select("SELECT * FROM citicup.分析师类一致预期pb WHERE value is not NULL")
     List<ConsistenceExpectation> getAll();
 }

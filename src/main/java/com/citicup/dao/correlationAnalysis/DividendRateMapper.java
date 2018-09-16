@@ -55,6 +55,6 @@ public interface DividendRateMapper {
      */
     int updateByPrimaryKey(DividendRate record);
 
-    @Select("SELECT * FROM citicup.估值类股息率")
+    @Select("SELECT * FROM citicup.估值类股息率 WHERE value is not NULL")
     List<DividendRate> getAll();
 }

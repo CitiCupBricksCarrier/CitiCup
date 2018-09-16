@@ -55,6 +55,6 @@ public interface DealersNumChange_1MMapper {
      */
     int updateByPrimaryKey(DealersNumChange_1M record);
 
-    @Select("SELECT * FROM citicup.分析师类最近一个月券商覆盖数量券商家数变化")
+    @Select("SELECT * FROM citicup.分析师类最近一个月券商覆盖数量券商家数变化 WHERE value is not NULL")
     List<DealersNumChange_1M> getAll();
 }

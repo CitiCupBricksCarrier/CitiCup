@@ -55,6 +55,6 @@ public interface TurnoverMean_6DMapper {
      */
     int updateByPrimaryKey(TurnoverMean_6D record);
 
-    @Select("SELECT * FROM citicup.价量6日成交额均值千元")
+    @Select("SELECT * FROM citicup.价量6日成交额均值千元 WHERE value is not NULL")
     List<TurnoverMean_6D> getAll();
 }

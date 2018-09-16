@@ -22,7 +22,7 @@ public interface stockEPSMapper {
      */
     int insertSelective(stockEPS record);
 
-    @Select("SELECT * FROM citicup.stockeps")
+    @Select("SELECT * FROM citicup.stockeps WHERE value is not NULL")
     List<stockEPS> getAll();
 
     @Select("SELECT * FROM citicup.stockeps s GROUP BY s.date ORDER BY stkcd ASC")

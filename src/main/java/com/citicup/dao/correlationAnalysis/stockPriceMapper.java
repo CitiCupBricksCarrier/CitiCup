@@ -22,7 +22,7 @@ public interface stockPriceMapper {
      */
     int insertSelective(stockPrice record);
 
-    @Select("SELECT * FROM citicup.stockprice")
+    @Select("SELECT * FROM citicup.stockprice WHERE value is not NULL")
     List<stockPrice> getAll();
 
     @Select("SELECT * FROM citicup.stockprice s GROUP BY s.date ORDER BY stkcd ASC")

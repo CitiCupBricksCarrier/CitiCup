@@ -55,6 +55,6 @@ public interface MarketSellingRateRecMapper {
      */
     int updateByPrimaryKey(MarketSellingRateRec record);
 
-    @Select("SELECT * FROM citicup.估值类市销率的倒数")
+    @Select("SELECT * FROM citicup.估值类市销率的倒数 WHERE value is not NULL")
     List<MarketSellingRateRec> getAll();
 }

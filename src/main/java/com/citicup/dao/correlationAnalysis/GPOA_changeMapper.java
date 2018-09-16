@@ -55,6 +55,6 @@ public interface GPOA_changeMapper {
      */
     int updateByPrimaryKey(GPOA_change record);
 
-    @Select("SELECT * FROM citicup.成长类gpoa变动")
+    @Select("SELECT * FROM citicup.成长类gpoa变动 WHERE value is not NULL")
     List<GPOA_change> getAll();
 }

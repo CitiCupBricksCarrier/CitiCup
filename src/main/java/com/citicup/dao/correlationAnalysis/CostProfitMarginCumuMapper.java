@@ -55,6 +55,6 @@ public interface CostProfitMarginCumuMapper {
      */
     int updateByPrimaryKey(CostProfitMarginCumu record);
 
-    @Select("SELECT * FROM citicup.盈利质量累计成本费用利润率")
+    @Select("SELECT * FROM citicup.盈利质量累计成本费用利润率 WHERE value is not NULL")
     List<CostProfitMarginCumu> getAll();
 }

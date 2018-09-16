@@ -55,6 +55,6 @@ public interface InventoryTurnoverMapper {
      */
     int updateByPrimaryKey(InventoryTurnover record);
 
-    @Select("SELECT * FROM citicup.安全性存货周转率")
+    @Select("SELECT * FROM citicup.安全性存货周转率 WHERE value is not NULL")
     List<InventoryTurnover> getAll();
 }

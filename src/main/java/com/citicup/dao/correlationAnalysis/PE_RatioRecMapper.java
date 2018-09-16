@@ -55,6 +55,6 @@ public interface PE_RatioRecMapper {
      */
     int updateByPrimaryKey(PE_RatioRec record);
 
-    @Select("SELECT * FROM citicup.估值类市盈率的倒数")
+    @Select("SELECT * FROM citicup.估值类市盈率的倒数 WHERE value is not NULL")
     List<PE_RatioRec> getAll();
 }

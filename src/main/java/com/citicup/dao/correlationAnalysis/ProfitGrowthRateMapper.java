@@ -55,6 +55,6 @@ public interface ProfitGrowthRateMapper {
      */
     int updateByPrimaryKey(ProfitGrowthRate record);
 
-    @Select("SELECT * FROM citicup.成长类毛利润增长率")
+    @Select("SELECT * FROM citicup.成长类毛利润增长率 WHERE value is not NULL")
     List<ProfitGrowthRate> getAll();
 }

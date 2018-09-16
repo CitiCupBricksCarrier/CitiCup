@@ -55,6 +55,6 @@ public interface ROE_changeMapper {
      */
     int updateByPrimaryKey(ROE_change record);
 
-    @Select("SELECT * FROM citicup.成长roe变动")
+    @Select("SELECT * FROM citicup.成长roe变动 WHERE value is not NULL")
     List<ROE_change> getAll();
 }

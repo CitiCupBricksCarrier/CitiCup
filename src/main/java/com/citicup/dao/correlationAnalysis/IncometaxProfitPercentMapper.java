@@ -55,6 +55,6 @@ public interface IncometaxProfitPercentMapper {
      */
     int updateByPrimaryKey(IncometaxProfitPercent record);
 
-    @Select("SELECT * FROM citicup.盈利质量所得税占盈利总额百分比")
+    @Select("SELECT * FROM citicup.盈利质量所得税占盈利总额百分比 WHERE value is not NULL")
     List<IncometaxProfitPercent> getAll();
 }
