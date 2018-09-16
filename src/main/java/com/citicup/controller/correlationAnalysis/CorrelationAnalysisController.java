@@ -278,65 +278,7 @@ public class CorrelationAnalysisController {
                 return "查找错误";
         }
 
-        String reply = "";
-        double result = 0.0;
-        switch (analysisMethod) {
-            case "IC-mean":
-                result = Math.abs(getIC_Mean(list));
-                if(result > 0.1) {
-                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性。";
-                }
-                else if(0.1 >=result && result > 0.05) {
-                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
-                }
-                else if(0.05 >= result && result >0.02) {
-                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱。";
-                }
-                else {
-                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
-                }
-                break;
-            case "IC-IR":
-                result = Math.abs(getIC_IR(list));
-                if(result > 0.7) {
-                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性，且相关性稳定。";
-                }
-                else if(0.7 >=result && result > 0.5) {
-                    reply = "您所选择的指标和行业股票的收益率之间有相关性，且相关性较稳定。";
-                }
-                else if(0.5 >= result && result >0.2) {
-                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱，且相关性不太稳定。";
-                }
-                else {
-                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
-                }
-                break;
-            case "IC-T":
-                result = Math.abs(getIC_T(list));
-                if(result > 0.7) {
-                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
-                }
-                else if(0.7 >=result && result > 0.5) {
-                    reply = "您所选择的指标和行业股票的收益率之间相关性较不显著。";
-                }
-                else if(0.5 >= result && result >0.2) {
-                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
-                }
-                else {
-                    reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
-                }
-                break;
-            case "一元线性回归":
-
-                break;
-            case "多空收益":
-                result = getLong_Short_Earnings(list);
-                reply = "多空收益可用来探究您选择的因子对整个行业股票收益率的影响；你所选择的因子对应的多空收益为："+result;
-                break;
-            default:
-                return "无此方法";
-        }
-
+        String reply = getAnalysis(list, analysisMethod);
         return JSONObject.toJSONString(reply);
     }
 
@@ -529,6 +471,7 @@ public class CorrelationAnalysisController {
             composite.add(list);
         }
 
+        // 加权计算
         List<Index> compositeList = composite.get(0);
         for(int i = 1; i<composite.size(); i++) {
             for (int j = 0; j<composite.get(i).size(); j++) {
@@ -544,65 +487,9 @@ public class CorrelationAnalysisController {
             }
         }
 
-        String reply = "";
-        double result = 0.0;
-        switch (analysisMethod) {
-            case "IC-mean":
-                result = Math.abs(getIC_Mean(compositeList));
-                if(result > 0.1) {
-                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性。";
-                }
-                else if(0.1 >=result && result > 0.05) {
-                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
-                }
-                else if(0.05 >= result && result >0.02) {
-                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱。";
-                }
-                else {
-                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
-                }
-                break;
-            case "IC-IR":
-                result = Math.abs(getIC_IR(compositeList));
-                if(result > 0.7) {
-                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性，且相关性稳定。";
-                }
-                else if(0.7 >=result && result > 0.5) {
-                    reply = "您所选择的指标和行业股票的收益率之间有相关性，且相关性较稳定。";
-                }
-                else if(0.5 >= result && result >0.2) {
-                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱，且相关性不太稳定。";
-                }
-                else {
-                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
-                }
-                break;
-            case "IC-T":
-                result = Math.abs(getIC_T(compositeList));
-                if(result > 0.7) {
-                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
-                }
-                else if(0.7 >=result && result > 0.5) {
-                    reply = "您所选择的指标和行业股票的收益率之间相关性较不显著。";
-                }
-                else if(0.5 >= result && result >0.2) {
-                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
-                }
-                else {
-                    reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
-                }
-                break;
-            case "多空收益":
-                result = getLong_Short_Earnings(compositeList);
-                reply = "多空收益可用来探究您选择的因子对整个行业股票收益率的影响；你所选择的因子对应的多空收益为："+result;
-                break;
-            default:
-                return "无此方法";
-        }
-
+        String reply = getAnalysis(compositeList, analysisMethod);
         return JSONObject.toJSONString(reply);
     }
-
 
     /**
      * 单个指标当天增加一次访问量
@@ -699,7 +586,7 @@ public class CorrelationAnalysisController {
 
         for(stockEPS s : stockEPSList){
             String date = s.getDate();
-            Index index = stockEPS2Index(s);
+            Index index = new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
                 epsPerQuarter.get(date).add(index);
             }
@@ -758,10 +645,6 @@ public class CorrelationAnalysisController {
         return IC_Mean;
     }
 
-    private Index stockEPS2Index(stockEPS s){
-         return  new Index(s.getStkcd(),s.getDate(),s.getValue());
-    }
-
     /**
      * 计算 IC-IR 指标
      * @return IC-IR 指标
@@ -774,7 +657,7 @@ public class CorrelationAnalysisController {
 
         for(stockEPS s : stockEPSList){
             String date = s.getDate();
-            Index index = stockEPS2Index(s);
+            Index index = new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
                 epsPerQuarter.get(date).add(index);
             }
@@ -848,7 +731,7 @@ public class CorrelationAnalysisController {
 
         for(stockEPS s : stockEPSList){
             String date = s.getDate();
-            Index index = stockEPS2Index(s);
+            Index index =  new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
                 epsPerQuarter.get(date).add(index);
             }
@@ -922,7 +805,7 @@ public class CorrelationAnalysisController {
 
         for(stockEPS s : stockEPSList){
             String date = s.getDate();
-            Index index = stockEPS2Index(s);
+            Index index =  new Index(s.getStkcd(),s.getDate(),s.getValue());
             if(epsPerQuarter.containsKey(date)) {
                 epsPerQuarter.get(date).add(index);
             }
@@ -1006,18 +889,72 @@ public class CorrelationAnalysisController {
         return result;
     }
 
-//    /**
-//     * 计算 一元线性回归
-//     * @return 一元线性回归
-//     */
-//    private String getLinearRegression(List<Index> list) {
-//        return null;
-//    }
+    private String getAnalysis(List<Index> list, String analysisMethod) {
+        String reply = "";
+        double result = 0.0;
+        switch (analysisMethod) {
+            case "IC-mean":
+                result = Math.abs(getIC_Mean(list));
+                if(result > 0.1) {
+                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性。";
+                }
+                else if(0.1 >=result && result > 0.05) {
+                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
+                }
+                else if(0.05 >= result && result >0.02) {
+                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱。";
+                }
+                else {
+                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
+                }
+                break;
+            case "IC-IR":
+                result = Math.abs(getIC_IR(list));
+                if(result > 0.7) {
+                    reply = "您所选择的指标和行业股票的收益率之间有较强的相关性，且相关性稳定。";
+                }
+                else if(0.7 >=result && result > 0.5) {
+                    reply = "您所选择的指标和行业股票的收益率之间有相关性，且相关性较稳定。";
+                }
+                else if(0.5 >= result && result >0.2) {
+                    reply = "您所选择的指标和行业股票的收益率之间相关性较弱，且相关性不太稳定。";
+                }
+                else {
+                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
+                }
+                break;
+            case "IC-T":
+                result = Math.abs(getIC_T(list));
+                if(result > 0.7) {
+                    reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
+                }
+                else if(0.7 >=result && result > 0.5) {
+                    reply = "您所选择的指标和行业股票的收益率之间相关性较不显著。";
+                }
+                else if(0.5 >= result && result >0.2) {
+                    reply = "您所选择的指标和行业股票的收益率之间有相关性。";
+                }
+                else {
+                    reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
+                }
+                break;
+            case "一元线性回归":
 
-    public static void main(String[] args) {
-        CorrelationAnalysisController controller = new CorrelationAnalysisController();
-//        controller.selectAnalysisIndustry("安全性-存货周转率", "IC-mean");
-        controller.selectIndexClicks();
+                break;
+            case "多空收益":
+                result = getLong_Short_Earnings(list);
+                reply = "多空收益可用来探究您选择的因子对整个行业股票收益率的影响；你所选择的因子对应的多空收益为："+result;
+                break;
+            default:
+                return "无此方法";
+        }
+        return reply;
     }
+
+//    public static void main(String[] args) {
+//        CorrelationAnalysisController controller = new CorrelationAnalysisController();
+//        controller.selectAnalysisIndustry("安全性-存货周转率", "IC-mean");
+//        controller.selectIndexClicks();
+//    }
 
 }
