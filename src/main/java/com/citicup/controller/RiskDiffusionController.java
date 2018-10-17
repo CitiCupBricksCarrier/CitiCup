@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.dataDisplay.*;
 import com.citicup.model.*;
+import com.citicup.model.correlationAnalysis.InventoryTurnover;
 import com.citicup.model.dataDisplay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -62,6 +63,7 @@ public class RiskDiffusionController {
             resjson.put(i*10+"", tjson);
         }
 
+        String s = resjson.toJSONString();
         return resjson.toJSONString();
     }
 
@@ -161,18 +163,19 @@ public class RiskDiffusionController {
     public void initial(Point c){
         Double t = 0.0;
         try {
-            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2017/9/30")).getInvturnrate());
-            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2016/9/30")).getInvturnrate());
-            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2015/9/30")).getInvturnrate());
-            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2017/9/30")).getEquityturn());
-            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2016/9/30")).getEquityturn());
-            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2015/9/30")).getEquityturn());
-            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2017/9/30")).getTurnrateofmobileassets());
-            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2016/9/30")).getTurnrateofmobileassets());
-            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2015/9/30")).getTurnrateofmobileassets());
-            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2017/9/30")).getAccrecturnrate());
-            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2016/9/30")).getAccrecturnrate());
-            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2015/9/30")).getAccrecturnrate());
+//            InventoryTurnoverRatio i = inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2017-09-30"));
+            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2017-09-30")).getInvturnrate());
+            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2016-09-30")).getInvturnrate());
+            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2015-09-30")).getInvturnrate());
+            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2017-09-30")).getEquityturn());
+            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2016-09-30")).getEquityturn());
+            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2015-09-30")).getEquityturn());
+            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2017-09-30")).getTurnrateofmobileassets());
+            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2016-09-30")).getTurnrateofmobileassets());
+            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2015-09-30")).getTurnrateofmobileassets());
+            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2017-09-30")).getAccrecturnrate());
+            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2016-09-30")).getAccrecturnrate());
+            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2015-09-30")).getAccrecturnrate());
         }catch (Exception e){
             //有数据缺失，设为默认值0.5
             t = 0.5;
@@ -180,12 +183,12 @@ public class RiskDiffusionController {
 
         int days = 0;
         try {
-            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2017/9/30")).getInvturndays());
-            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2016/9/30")).getInvturndays());
-            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2015/9/30")).getInvturndays());
-            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2017/9/30")).getSalesoutstandingdays());
-            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2016/9/30")).getSalesoutstandingdays());
-            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2015/9/30")).getSalesoutstandingdays());
+            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2017-09-30")).getInvturndays());
+            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2016-09-30")).getInvturndays());
+            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2015-09-30")).getInvturndays());
+            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2017-09-30")).getSalesoutstandingdays());
+            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2016-09-30")).getSalesoutstandingdays());
+            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2015-09-30")).getSalesoutstandingdays());
         }catch (Exception e){
             //有数据缺失，设为默认值40
             days = 40;
