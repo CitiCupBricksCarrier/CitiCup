@@ -114,8 +114,10 @@ public class GraphController {
         //删除原节点和边，插入新的节点和边
         edgeMapper.deleteByGraphId(graphid);
         pointMapper.deleteByGraphId(graphid);
-        edgeMapper.saveEdgeList(edges);
-        pointMapper.savePointList(points);
+        if(!edges.isEmpty())
+            edgeMapper.saveEdgeList(edges);
+        if(!points.isEmpty())
+            pointMapper.savePointList(points);
 
         return JSON.toJSONString(new ResponseHelper("success"));
     }
