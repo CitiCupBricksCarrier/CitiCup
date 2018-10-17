@@ -121,10 +121,10 @@ public interface PointMapper {
     @Select({"SELECT * FROM point WHERE graphid = #{graphId, jdbcType=VARCHAR}"})
     List<Point> getAllById(String graphId);
 
-    @Insert({"<script> INSERT INTO point(stkcd,graphid,status,defectprob,infectprob,infectprobtemp,infecttime,timeleft,color,role,posx,posy,name) " +
+    @Insert({"<script> INSERT INTO point(stkcd,graphid,status,defectprob,infectprob,infectprobtemp,infecttime,timeleft,color,role,posx,posy,name,id) " +
             "VALUES " +
             "<foreach collection=\"list\" item=\"item\" index=\"index\"  separator=\",\"> "+
-            "(#{item.stkcd},#{item.graphid},#{item.status},#{item.defectprob},#{item.infectprob},#{item.infectprobtemp},#{item.infecttime},#{item.timeleft},#{item.color},#{item.role},#{item.posx},#{item.posy},#{item.name})"+
+            "(#{item.stkcd},#{item.graphid},#{item.status},#{item.defectprob},#{item.infectprob},#{item.infectprobtemp},#{item.infecttime},#{item.timeleft},#{item.color},#{item.role},#{item.posx},#{item.posy},#{item.name},#{item.id})"+
             "</foreach> </script>"})
     int savePointList(@Param("list") List<Point> list);
 
