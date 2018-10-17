@@ -61,7 +61,7 @@ public class TurnoverOfCurrentAssets extends TurnoverOfCurrentAssetsKey implemen
             return false;
         }
         TurnoverOfCurrentAssets other = (TurnoverOfCurrentAssets) that;
-        return (this.get﻿stkcd() == null ? other.get﻿stkcd() == null : this.get﻿stkcd().equals(other.get﻿stkcd()))
+        return (this.getStkcd() == null ? other.getStkcd() == null : this.getStkcd().equals(other.getStkcd()))
             && (this.getAcceper() == null ? other.getAcceper() == null : this.getAcceper().equals(other.getAcceper()))
             && (this.getTurnrateofmobileassets() == null ? other.getTurnrateofmobileassets() == null : this.getTurnrateofmobileassets().equals(other.getTurnrateofmobileassets()));
     }
@@ -76,7 +76,7 @@ public class TurnoverOfCurrentAssets extends TurnoverOfCurrentAssetsKey implemen
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((get﻿stkcd() == null) ? 0 : get﻿stkcd().hashCode());
+        result = prime * result + ((getStkcd() == null) ? 0 : getStkcd().hashCode());
         result = prime * result + ((getAcceper() == null) ? 0 : getAcceper().hashCode());
         result = prime * result + ((getTurnrateofmobileassets() == null) ? 0 : getTurnrateofmobileassets().hashCode());
         return result;

@@ -61,7 +61,7 @@ public class DaysSalesOutstanding extends DaysSalesOutstandingKey implements Ser
             return false;
         }
         DaysSalesOutstanding other = (DaysSalesOutstanding) that;
-        return (this.get﻿stkcd() == null ? other.get﻿stkcd() == null : this.get﻿stkcd().equals(other.get﻿stkcd()))
+        return (this.getStkcd() == null ? other.getStkcd() == null : this.getStkcd().equals(other.getStkcd()))
             && (this.getAcceper() == null ? other.getAcceper() == null : this.getAcceper().equals(other.getAcceper()))
             && (this.getSalesoutstandingdays() == null ? other.getSalesoutstandingdays() == null : this.getSalesoutstandingdays().equals(other.getSalesoutstandingdays()));
     }
@@ -76,7 +76,7 @@ public class DaysSalesOutstanding extends DaysSalesOutstandingKey implements Ser
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((get﻿stkcd() == null) ? 0 : get﻿stkcd().hashCode());
+        result = prime * result + ((getStkcd() == null) ? 0 : getStkcd().hashCode());
         result = prime * result + ((getAcceper() == null) ? 0 : getAcceper().hashCode());
         result = prime * result + ((getSalesoutstandingdays() == null) ? 0 : getSalesoutstandingdays().hashCode());
         return result;

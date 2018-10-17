@@ -61,7 +61,7 @@ public class AverageAccountsReceivableTurnoverRatio extends AverageAccountsRecei
             return false;
         }
         AverageAccountsReceivableTurnoverRatio other = (AverageAccountsReceivableTurnoverRatio) that;
-        return (this.get﻿stkcd() == null ? other.get﻿stkcd() == null : this.get﻿stkcd().equals(other.get﻿stkcd()))
+        return (this.getStkcd() == null ? other.getStkcd() == null : this.getStkcd().equals(other.getStkcd()))
             && (this.getAcceper() == null ? other.getAcceper() == null : this.getAcceper().equals(other.getAcceper()))
             && (this.getAccrecturnrate() == null ? other.getAccrecturnrate() == null : this.getAccrecturnrate().equals(other.getAccrecturnrate()));
     }
@@ -76,7 +76,7 @@ public class AverageAccountsReceivableTurnoverRatio extends AverageAccountsRecei
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((get﻿stkcd() == null) ? 0 : get﻿stkcd().hashCode());
+        result = prime * result + ((getStkcd() == null) ? 0 : getStkcd().hashCode());
         result = prime * result + ((getAcceper() == null) ? 0 : getAcceper().hashCode());
         result = prime * result + ((getAccrecturnrate() == null) ? 0 : getAccrecturnrate().hashCode());
         return result;
