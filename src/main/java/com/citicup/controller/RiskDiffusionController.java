@@ -22,12 +22,12 @@ import java.util.Map;
 public class RiskDiffusionController {
 
     @RequestMapping("/riskDiffusion")
-    public String riskDiffusion(@RequestParam String riskCompany, @RequestParam String linkList,
-                                @RequestParam String companyList) {
+    public String riskDiffusion(@RequestParam String data) {
 
-        JSONArray links = JSON.parseArray(linkList);
-        JSONArray companys = JSON.parseArray(companyList);
-        JSONObject jsonCompany = JSON.parseObject(riskCompany);
+        JSONObject dataJson = JSON.parseObject(data);
+        JSONArray links = dataJson.getJSONArray("linkList");
+        JSONArray companys = dataJson.getJSONArray("companyList");
+        JSONObject jsonCompany = dataJson.getJSONObject("riskCompany");
 
         List<Edge> edges = new ArrayList<>();
         Map<String, Point> points = new HashMap<>();
