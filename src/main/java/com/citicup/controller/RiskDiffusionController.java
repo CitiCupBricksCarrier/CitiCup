@@ -55,15 +55,20 @@ public class RiskDiffusionController {
 
         beginRisk(company, edges, points);
         JSONObject resjson = new JSONObject();
+        List<String> tjsons = new ArrayList<>();
         for (int i = 1; i <= 10; i++){
             risk(edges ,points);
             JSONObject tjson = new JSONObject();
             tjson.put("linkList", edges);
             tjson.put("companyList" ,points);
-            resjson.put(i*10+"", tjson);
+
+            tjsons.add(tjson.toJSONString());
         }
 
-        String s = resjson.toJSONString();
+        for (int i = 1; i <= 10; i++){
+            resjson.put(i*10+"", JSONObject.parseObject(tjsons.get(i-1)));
+        }
+
         return resjson.toJSONString();
     }
 
@@ -194,7 +199,7 @@ public class RiskDiffusionController {
             days = 40;
         }
 
-        c.setDefectprob(t);
+        c.setDefectprob(t/100);
         c.setInfecttime(days);
     }
 
@@ -205,12 +210,12 @@ public class RiskDiffusionController {
                 if (l.getStkcda().equals(comp.getStkcd())){
                     prob += l.getPropagateproba() * companyList.get(l.getStkcdb()).getInfectprob();
                 }
-                else{
+                else if(l.getStkcdb().equals(comp.getStkcd())){
                     prob += l.getPropagateprobb() * companyList.get(l.getStkcda()).getInfectprob();
                 }
             }
         }
-        return prob;
+        return prob*10;
     }
 
     private static void infectEdgeMark(List<Edge> linkList, Map<String, Point> companyList){
