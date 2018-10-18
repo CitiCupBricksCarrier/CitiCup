@@ -26,9 +26,9 @@
     <result column="parentcompanynetprofit" jdbcType="VARCHAR" property="parentcompanynetprofit" />
     <result column="minorityinterest" jdbcType="VARCHAR" property="minorityinterest" />
     <result column="eps" jdbcType="VARCHAR" property="eps" />
-    <result column="sellingexpenses/revenue" jdbcType="VARCHAR" property="sellingexpensesRevenue" />
-    <result column="managementcost/revenue" jdbcType="VARCHAR" property="managementcostRevenue" />
-    <result column="financialcost/revenue" jdbcType="VARCHAR" property="financialcostRevenue" />
+    <result column="sellingexpensesrevenue" jdbcType="VARCHAR" property="sellingexpensesRevenue" />
+    <result column="managementcostrevenue" jdbcType="VARCHAR" property="managementcostRevenue" />
+    <result column="financialcostrevenue" jdbcType="VARCHAR" property="financialcostRevenue" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -38,7 +38,7 @@
     stkcd, time, income, cost, taxandadditional, sellingexpenses, managementcost, financialcost, 
     assetsimpairmentloss, otherbusinesscosts, fairvaluechangeincome, investmentincome, 
     operatingprofit, nonoperatingincome, totalprofit, incometaxexpense, netprofit, parentcompanynetprofit, 
-    minorityinterest, eps, sellingexpenses/revenue, managementcost/revenue, financialcost/revenue
+    minorityinterest, eps, sellingexpensesrevenue, managementcostrevenue, financialcostrevenue
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.citicup.model.correlationAnalysis.DisposedProfitKey" resultMap="BaseResultMap">
     <!--
@@ -72,8 +72,8 @@
       investmentincome, operatingprofit, nonoperatingincome, 
       totalprofit, incometaxexpense, netprofit, 
       parentcompanynetprofit, minorityinterest, 
-      eps, sellingexpenses/revenue, managementcost/revenue, 
-      financialcost/revenue)
+      eps, sellingexpensesrevenue, managementcostrevenue,
+      financialcostrevenue)
     values (#{stkcd,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{income,jdbcType=VARCHAR}, 
       #{cost,jdbcType=VARCHAR}, #{taxandadditional,jdbcType=VARCHAR}, #{sellingexpenses,jdbcType=VARCHAR}, 
       #{managementcost,jdbcType=VARCHAR}, #{financialcost,jdbcType=VARCHAR}, #{assetsimpairmentloss,jdbcType=VARCHAR}, 
@@ -152,13 +152,13 @@
         eps,
       </if>
       <if test="sellingexpensesRevenue != null">
-        sellingexpenses/revenue,
+        sellingexpensesrevenue,
       </if>
       <if test="managementcostRevenue != null">
-        managementcost/revenue,
+        managementcostrevenue,
       </if>
       <if test="financialcostRevenue != null">
-        financialcost/revenue,
+        financialcostrevenue,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -295,13 +295,13 @@
         eps = #{eps,jdbcType=VARCHAR},
       </if>
       <if test="sellingexpensesRevenue != null">
-        sellingexpenses/revenue = #{sellingexpensesRevenue,jdbcType=VARCHAR},
+        sellingexpensesrevenue = #{sellingexpensesRevenue,jdbcType=VARCHAR},
       </if>
       <if test="managementcostRevenue != null">
-        managementcost/revenue = #{managementcostRevenue,jdbcType=VARCHAR},
+        managementcostrevenue = #{managementcostRevenue,jdbcType=VARCHAR},
       </if>
       <if test="financialcostRevenue != null">
-        financialcost/revenue = #{financialcostRevenue,jdbcType=VARCHAR},
+        financialcostrevenue = #{financialcostRevenue,jdbcType=VARCHAR},
       </if>
     </set>
     where stkcd = #{stkcd,jdbcType=VARCHAR}
@@ -331,9 +331,9 @@
       parentcompanynetprofit = #{parentcompanynetprofit,jdbcType=VARCHAR},
       minorityinterest = #{minorityinterest,jdbcType=VARCHAR},
       eps = #{eps,jdbcType=VARCHAR},
-      sellingexpenses/revenue = #{sellingexpensesRevenue,jdbcType=VARCHAR},
-      managementcost/revenue = #{managementcostRevenue,jdbcType=VARCHAR},
-      financialcost/revenue = #{financialcostRevenue,jdbcType=VARCHAR}
+      sellingexpensesrevenue = #{sellingexpensesRevenue,jdbcType=VARCHAR},
+      managementcostrevenue = #{managementcostRevenue,jdbcType=VARCHAR},
+      financialcostrevenue = #{financialcostRevenue,jdbcType=VARCHAR}
     where stkcd = #{stkcd,jdbcType=VARCHAR}
       and time = #{time,jdbcType=VARCHAR}
   </update>
