@@ -145,5 +145,6 @@
         <mapper resource="mapper/stockEPSMapper.xml"/>
         <mapper resource="mapper/stockPriceMapper.xml"/>
         <mapper resource="mapper/DisposedProfitMapper.xml"/>
+        <mapper resource="mapper/stockPEMapper.xml"/>
     </mappers>
 </configuration>
