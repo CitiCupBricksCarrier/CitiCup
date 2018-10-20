@@ -2,6 +2,9 @@ package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.DisposedProfit;
 import com.citicup.model.correlationAnalysis.DisposedProfitKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface DisposedProfitMapper {
     /**
@@ -51,4 +54,7 @@ public interface DisposedProfitMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(DisposedProfit record);
+
+    @Select("SELECT * FROM citicup.处理后利润表")
+    List<DisposedProfit> getAll();
 }
