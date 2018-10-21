@@ -61,7 +61,7 @@ public class NetProfitGrowthRate extends NetProfitGrowthRateKey implements Seria
             return false;
         }
         NetProfitGrowthRate other = (NetProfitGrowthRate) that;
-        return (this.get﻿stkcd() == null ? other.get﻿stkcd() == null : this.get﻿stkcd().equals(other.get﻿stkcd()))
+        return (this.getStkcd() == null ? other.getStkcd() == null : this.getStkcd().equals(other.getStkcd()))
             && (this.getFiscalyear() == null ? other.getFiscalyear() == null : this.getFiscalyear().equals(other.getFiscalyear()))
             && (this.getNetprogrowthrate() == null ? other.getNetprogrowthrate() == null : this.getNetprogrowthrate().equals(other.getNetprogrowthrate()));
     }
@@ -76,7 +76,7 @@ public class NetProfitGrowthRate extends NetProfitGrowthRateKey implements Seria
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((get﻿stkcd() == null) ? 0 : get﻿stkcd().hashCode());
+        result = prime * result + ((getStkcd() == null) ? 0 : getStkcd().hashCode());
         result = prime * result + ((getFiscalyear() == null) ? 0 : getFiscalyear().hashCode());
         result = prime * result + ((getNetprogrowthrate() == null) ? 0 : getNetprogrowthrate().hashCode());
         return result;

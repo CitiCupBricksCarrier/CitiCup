@@ -61,7 +61,7 @@ public class RevenueGrowth extends RevenueGrowthKey implements Serializable {
             return false;
         }
         RevenueGrowth other = (RevenueGrowth) that;
-        return (this.get﻿stkcd() == null ? other.get﻿stkcd() == null : this.get﻿stkcd().equals(other.get﻿stkcd()))
+        return (this.getStkcd() == null ? other.getStkcd() == null : this.getStkcd().equals(other.getStkcd()))
             && (this.getFiscalyear() == null ? other.getFiscalyear() == null : this.getFiscalyear().equals(other.getFiscalyear()))
             && (this.getGrowthrateofoperincome() == null ? other.getGrowthrateofoperincome() == null : this.getGrowthrateofoperincome().equals(other.getGrowthrateofoperincome()));
     }
@@ -76,7 +76,7 @@ public class RevenueGrowth extends RevenueGrowthKey implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((get﻿stkcd() == null) ? 0 : get﻿stkcd().hashCode());
+        result = prime * result + ((getStkcd() == null) ? 0 : getStkcd().hashCode());
         result = prime * result + ((getFiscalyear() == null) ? 0 : getFiscalyear().hashCode());
         result = prime * result + ((getGrowthrateofoperincome() == null) ? 0 : getGrowthrateofoperincome().hashCode());
         return result;

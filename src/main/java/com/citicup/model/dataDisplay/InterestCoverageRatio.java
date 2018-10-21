@@ -61,7 +61,7 @@ public class InterestCoverageRatio extends InterestCoverageRatioKey implements S
             return false;
         }
         InterestCoverageRatio other = (InterestCoverageRatio) that;
-        return (this.get﻿stkcd() == null ? other.get﻿stkcd() == null : this.get﻿stkcd().equals(other.get﻿stkcd()))
+        return (this.getStkcd() == null ? other.getStkcd() == null : this.getStkcd().equals(other.getStkcd()))
             && (this.getAcceper() == null ? other.getAcceper() == null : this.getAcceper().equals(other.getAcceper()))
             && (this.getIntercovratio() == null ? other.getIntercovratio() == null : this.getIntercovratio().equals(other.getIntercovratio()));
     }
@@ -76,7 +76,7 @@ public class InterestCoverageRatio extends InterestCoverageRatioKey implements S
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((get﻿stkcd() == null) ? 0 : get﻿stkcd().hashCode());
+        result = prime * result + ((getStkcd() == null) ? 0 : getStkcd().hashCode());
         result = prime * result + ((getAcceper() == null) ? 0 : getAcceper().hashCode());
         result = prime * result + ((getIntercovratio() == null) ? 0 : getIntercovratio().hashCode());
         return result;
