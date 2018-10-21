@@ -39,7 +39,7 @@ public class PEValuationController {
         double code = Double.parseDouble(stkcd);
         stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
         double pe = stockPE.getPe();
-        return JSONObject.toJSONString(pe);
+        return JSONObject.toJSONString(String.format("%.2f", pe));
     }
 
     /**
@@ -69,7 +69,8 @@ public class PEValuationController {
         }
 
         double percentile = (index + 1) / list.size();
-        return JSONObject.toJSONString(percentile);
+        String result = String.format("%.2f", percentile * 100) + "%";
+        return JSONObject.toJSONString(result);
     }
 
     /**
@@ -142,6 +143,7 @@ public class PEValuationController {
      */
     @RequestMapping("/getHistoryPE")
     public String getHistoryPE(@RequestParam String stkcd) {
+
         return "";
     }
 
