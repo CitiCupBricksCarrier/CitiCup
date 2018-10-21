@@ -2,6 +2,9 @@ package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.AnalysisIndexVisitor;
 import com.citicup.model.correlationAnalysis.AnalysisIndexVisitorKey;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface AnalysisIndexVisitorMapper {
     /**
@@ -51,4 +54,7 @@ public interface AnalysisIndexVisitorMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AnalysisIndexVisitor record);
+
+    @Select("SELECT * FROM citicup.分析指标每日选择人数")
+    List<AnalysisIndexVisitor> getAll();
 }
