@@ -1,9 +1,6 @@
 package com.citicup.dao.correlationAnalysis;
 
 import com.citicup.model.correlationAnalysis.stockPE;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 public interface stockPEMapper {
     /**
@@ -53,7 +50,4 @@ public interface stockPEMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(stockPE record);
-
-    @Select("SELECT * FROM citicup.stockpe")
-    List<stockPE> getAll();
 }
