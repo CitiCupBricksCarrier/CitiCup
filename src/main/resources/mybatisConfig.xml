@@ -144,5 +144,9 @@
         <mapper resource="mapper/AnalysisIndexVisitorMapper.xml"/>
         <mapper resource="mapper/stockEPSMapper.xml"/>
         <mapper resource="mapper/stockPriceMapper.xml"/>
+        <mapper resource="mapper/DisposedProfitMapper.xml"/>
+        <mapper resource="mapper/stockPEMapper.xml"/>
+        <mapper resource="mapper/stockTotalsMapper.xml"/>
+        <mapper resource="mapper/stockNetProfitsMapper.xml"/>
     </mappers>
 </configuration>

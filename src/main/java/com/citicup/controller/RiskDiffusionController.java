@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.dataDisplay.*;
 import com.citicup.model.*;
+import com.citicup.model.correlationAnalysis.InventoryTurnover;
 import com.citicup.model.dataDisplay.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -54,12 +55,18 @@ public class RiskDiffusionController {
 
         beginRisk(company, edges, points);
         JSONObject resjson = new JSONObject();
+        List<String> tjsons = new ArrayList<>();
         for (int i = 1; i <= 10; i++){
             risk(edges ,points);
             JSONObject tjson = new JSONObject();
             tjson.put("linkList", edges);
             tjson.put("companyList" ,points);
-            resjson.put(i*10+"", tjson);
+
+            tjsons.add(tjson.toJSONString());
+        }
+
+        for (int i = 1; i <= 10; i++){
+            resjson.put(i*10+"", JSONObject.parseObject(tjsons.get(i-1)));
         }
 
         return resjson.toJSONString();
@@ -161,18 +168,19 @@ public class RiskDiffusionController {
     public void initial(Point c){
         Double t = 0.0;
         try {
-            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2017/9/30")).getInvturnrate());
-            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2016/9/30")).getInvturnrate());
-            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2015/9/30")).getInvturnrate());
-            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2017/9/30")).getEquityturn());
-            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2016/9/30")).getEquityturn());
-            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2015/9/30")).getEquityturn());
-            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2017/9/30")).getTurnrateofmobileassets());
-            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2016/9/30")).getTurnrateofmobileassets());
-            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2015/9/30")).getTurnrateofmobileassets());
-            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2017/9/30")).getAccrecturnrate());
-            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2016/9/30")).getAccrecturnrate());
-            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2015/9/30")).getAccrecturnrate());
+//            InventoryTurnoverRatio i = inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2017-09-30"));
+            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2017-09-30")).getInvturnrate());
+            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2016-09-30")).getInvturnrate());
+            t += Double.parseDouble(inventoryTurnoverRatioMapper.selectByPrimaryKey(new InventoryTurnoverRatioKey(c.getStkcd(), "2015-09-30")).getInvturnrate());
+            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2017-09-30")).getEquityturn());
+            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2016-09-30")).getEquityturn());
+            t += Double.parseDouble(equityTurnoverMapper.selectByPrimaryKey(new EquityTurnoverKey(c.getStkcd(), "2015-09-30")).getEquityturn());
+            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2017-09-30")).getTurnrateofmobileassets());
+            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2016-09-30")).getTurnrateofmobileassets());
+            t += Double.parseDouble(turnoverOfCurrentAssetsMapper.selectByPrimaryKey(new TurnoverOfCurrentAssetsKey(c.getStkcd(), "2015-09-30")).getTurnrateofmobileassets());
+            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2017-09-30")).getAccrecturnrate());
+            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2016-09-30")).getAccrecturnrate());
+            t += Double.parseDouble(averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(new AverageAccountsReceivableTurnoverRatioKey(c.getStkcd(), "2015-09-30")).getAccrecturnrate());
         }catch (Exception e){
             //有数据缺失，设为默认值0.5
             t = 0.5;
@@ -180,18 +188,18 @@ public class RiskDiffusionController {
 
         int days = 0;
         try {
-            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2017/9/30")).getInvturndays());
-            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2016/9/30")).getInvturndays());
-            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2015/9/30")).getInvturndays());
-            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2017/9/30")).getSalesoutstandingdays());
-            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2016/9/30")).getSalesoutstandingdays());
-            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2015/9/30")).getSalesoutstandingdays());
+            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2017-09-30")).getInvturndays());
+            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2016-09-30")).getInvturndays());
+            days += Double.parseDouble(daysInInventoryMapper.selectByPrimaryKey(new DaysInInventoryKey(c.getStkcd(), "2015-09-30")).getInvturndays());
+            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2017-09-30")).getSalesoutstandingdays());
+            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2016-09-30")).getSalesoutstandingdays());
+            days += Double.parseDouble(daysSalesOutstandingMapper.selectByPrimaryKey(new DaysSalesOutstandingKey(c.getStkcd(), "2015-09-30")).getSalesoutstandingdays());
         }catch (Exception e){
             //有数据缺失，设为默认值40
             days = 40;
         }
 
-        c.setDefectprob(t);
+        c.setDefectprob(t/100);
         c.setInfecttime(days);
     }
 
@@ -202,12 +210,12 @@ public class RiskDiffusionController {
                 if (l.getStkcda().equals(comp.getStkcd())){
                     prob += l.getPropagateproba() * companyList.get(l.getStkcdb()).getInfectprob();
                 }
-                else{
+                else if(l.getStkcdb().equals(comp.getStkcd())){
                     prob += l.getPropagateprobb() * companyList.get(l.getStkcda()).getInfectprob();
                 }
             }
         }
-        return prob;
+        return prob*10;
     }
 
     private static void infectEdgeMark(List<Edge> linkList, Map<String, Point> companyList){

@@ -2,8 +2,10 @@ package com.citicup.controller.correlationAnalysis;
 
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.correlationAnalysis.*;
+import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
 import com.citicup.model.Index;
 import com.citicup.model.correlationAnalysis.*;
+import com.citicup.model.dataDisplay.CompanyBasicInformation;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -81,24 +83,20 @@ public class CorrelationAnalysisController {
             int counter = 0;
             for(int i = 0; i < dayGap; i++) { //获取往前两天的日期
                 Calendar calendar = Calendar.getInstance();
-//                calendar.setTime(today);
+                calendar.setTime(today);
                 calendar.add(Calendar.DATE, -i);
                 Date date = calendar.getTime();
                 String d = sdf.format(date);
                 AnalysisIndexVisitorKey key = new AnalysisIndexVisitorKey();
                 key.setAnalysisindex(idx);
                 key.setDate(d);
-                System.out.println(d);
                 if(null == analysisIndexVisitorMapper.selectByPrimaryKey(key)) {
-                    System.out.println("分析指标点击量为空");
                     counter += 0;
                 }
                 else {
                     counter += analysisIndexVisitorMapper.selectByPrimaryKey(key).getVistornumber(); //统计前三天的访问量
-                    System.out.println("counter: "+counter);
                 }
             }
-
             idxClks.put(idx, counter);
         }
 
@@ -270,7 +268,6 @@ public class CorrelationAnalysisController {
                 break;
             case "盈利质量-所得税占盈利总额百分比":
                 List<IncometaxProfitPercent> income = incometaxProfitPercentMapper.getAll();
-                System.out.println("income.size(): "+income.size());
                 for(IncometaxProfitPercent percent : income) {
                     if(percent.getValue() != null && !percent.getValue().equals("")) {
                         list.add(new Index(percent.getStkcd(), percent.getDate(), percent.getValue()));
@@ -512,12 +509,9 @@ public class CorrelationAnalysisController {
             analysisIndexVisitor.setDate(sdf.format(today));
             analysisIndexVisitor.setVistornumber(1);
             analysisIndexVisitorMapper.insert(analysisIndexVisitor);
-            System.out.println("创建新的记录");
         }
         else {
             AnalysisIndexVisitor analysisIndexVisitor = analysisIndexVisitorMapper.selectByPrimaryKey(key);
-            System.out.println("date"+analysisIndexVisitor.getDate());
-            System.out.println("number"+analysisIndexVisitor.getVistornumber());
             int newValue = analysisIndexVisitor.getVistornumber() + 1;
             analysisIndexVisitor.setVistornumber(newValue);
             analysisIndexVisitorMapper.updateByPrimaryKeySelective(analysisIndexVisitor);
@@ -659,7 +653,7 @@ public class CorrelationAnalysisController {
         }
         double IC_Mean = sumOfIC / epsPerQuarter.size();
 
-        return IC_Mean;
+        return IC_Mean - Math.floor(IC_Mean);
     }
 
     /**
@@ -734,7 +728,7 @@ public class CorrelationAnalysisController {
         }
 
         double IC_std = Math.sqrt(sumOfPowIC - ((Math.pow(sumOfIC, 2) / epsPerQuarter.size())));
-        double IC_IR = (sumOfIC / epsPerQuarter.size()) / IC_std;
+        double IC_IR = (sumOfIC / epsPerQuarter.size()) / IC_std * 10;
 
         return IC_IR;
     }
@@ -933,6 +927,7 @@ public class CorrelationAnalysisController {
                 else {
                     reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
                 }
+                reply = reply + "IC-mean值为：" + String.format("%.4f", result);
                 break;
             case "IC-IR":
                 result = Math.abs(getIC_IR(list));
@@ -948,6 +943,7 @@ public class CorrelationAnalysisController {
                 else {
                     reply = "您所选择的指标和行业股票的收益率之间几乎没有相关性。";
                 }
+                reply = reply + "IC-IR值为：" + String.format("%.4f", result);
                 break;
             case "IC-T":
                 result = Math.abs(getIC_T(list));
@@ -963,6 +959,7 @@ public class CorrelationAnalysisController {
                 else {
                     reply = "您所选择的指标和行业股票的收益率之间有较显著的相关性。";
                 }
+                reply = reply + "IC-T值为：" + String.format("%.4f", result);
                 break;
             case "多空收益":
                 result = getLong_Short_Earnings(list);
@@ -975,14 +972,6 @@ public class CorrelationAnalysisController {
     }
 
     public static void main(String[] args) {
-        CorrelationAnalysisController controller = new CorrelationAnalysisController();
-        List<String> indexes = new ArrayList<>();
-        indexes.add("安全性-存货周转率");
-        indexes.add("安全性类-速动比率");
-        List<Integer> ratio = new ArrayList<>();
-        ratio.add(50);
-        ratio.add(50);
-        controller.selectMulti_FactorsAnalysis(indexes, "IC-mean", ratio);
     }
 
 }
