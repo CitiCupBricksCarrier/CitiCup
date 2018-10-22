@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @EnableAutoConfiguration
@@ -157,9 +154,11 @@ public class PEValuationController {
      */
     @RequestMapping("/getHistoryPE")
     public String getHistoryPE(@RequestParam String stkcd) {
+        Map<String, Double> histPe = new LinkedHashMap<>();
+
         int code = Integer.parseInt(stkcd);
         stockTotals stockTotals = stockTotalsMapper.selectByPrimaryKey(String.valueOf(code));
-        double totals = stockTotals.getTotals();
+        double totals = Double.parseDouble(stockTotals.getTotals()); //从亿元换算成万元
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String today = sdf.format(new Date());
@@ -183,14 +182,24 @@ public class PEValuationController {
             stockPrice stockPrice = stockPriceMapper.selectByPrimaryKey(key);
             double closePrice = Double.parseDouble(stockPrice.getValue()); //获取当天收盘价
 
+            stockNetProfitsKey netProfitsKey = new stockNetProfitsKey();
+            netProfitsKey.setStkcd(String.valueOf(code));
+            String[] strs = out.split("/");
+            String[] month2Quarter = {"", "1", "1", "1", "2", "2", "2", "3", "3", "3", "4", "4", "4"};
+            String quarter = strs[0] + "-" + month2Quarter[Integer.parseInt(strs[1])];
+            netProfitsKey.setQuarter(quarter);
+            if(null == stockNetProfitsMapper.selectByPrimaryKey(netProfitsKey)) {
+                continue;
+            }
+            stockNetProfits netProfits = stockNetProfitsMapper.selectByPrimaryKey(netProfitsKey);
+            double netProfit = Double.parseDouble(netProfits.getNetProfits());
 
+            double pe = ((totals * closePrice) / netProfit);
 
-
+            histPe.put(out, pe);
         }
 
-
-
-        return "";
+        return JSONObject.toJSONString(histPe);
     }
 
     private double getExpectedEPS(String stkcd) {
