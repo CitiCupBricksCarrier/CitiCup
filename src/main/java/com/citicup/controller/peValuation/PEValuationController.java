@@ -113,15 +113,16 @@ public class PEValuationController {
         List<CompanyPeInfo> list  = new ArrayList<>();
         for(int i = 0; i<rankList.size(); i++) {
             stockPE stockPE = rankList.get(i);
-            String stkcd = stockPE.getPe();
+            String stkcd = stockPE.getStkcd();
             int len = stkcd.length();
             if(len < 6) {
                 for(int j = 0; j<6-len; j++) {
                     stkcd = "0" + stkcd;
                 }
             }
+
             String compName = companyBasicInformationMapper.selectByPrimaryKey(stkcd).getCompname();
-            CompanyPeInfo cmp = new CompanyPeInfo(compName, stkcd, Double.parseDouble(stockPE.getPe()), getPEValuationPercentile(stkcd));
+            CompanyPeInfo cmp = new CompanyPeInfo(compName, stkcd, Double.parseDouble(stockPE.getPe()), getPEValuationEstimate(stkcd));
             list.add(cmp);
         }
         return JSONObject.toJSONString(list);
