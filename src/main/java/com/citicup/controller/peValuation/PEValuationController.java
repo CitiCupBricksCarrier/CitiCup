@@ -2,8 +2,10 @@ package com.citicup.controller.peValuation;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
 import com.citicup.dao.peValuation.*;
-import com.citicup.model.correlationAnalysis.*;
+import com.citicup.model.dataDisplay.CompanyBasicInformation;
+import com.citicup.model.peValuation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,8 @@ public class PEValuationController {
     private stockPriceMapper stockPriceMapper;
     @Autowired
     private stockNetProfitsMapper stockNetProfitsMapper;
+    @Autowired
+    private CompanyBasicInformationMapper companyBasicInformationMapper;
 
     /**
      * 根据Stkcd(股票id)查找公司的PE值
@@ -105,7 +109,22 @@ public class PEValuationController {
      */
     @RequestMapping("/getPEValuationOrderList")
     public String getPEValuationOrderList() {
-        return JSONObject.toJSONString(getPEOrderList());
+        List<stockPE> rankList = getPEOrderList();
+        List<CompanyPeInfo> list  = new ArrayList<>();
+        for(int i = 0; i<rankList.size(); i++) {
+            stockPE stockPE = rankList.get(i);
+            String stkcd = stockPE.getPe();
+            int len = stkcd.length();
+            if(len < 6) {
+                for(int j = 0; j<6-len; j++) {
+                    stkcd = "0" + stkcd;
+                }
+            }
+            String compName = companyBasicInformationMapper.selectByPrimaryKey(stkcd).getCompname();
+            CompanyPeInfo cmp = new CompanyPeInfo(compName, stkcd, Double.parseDouble(stockPE.getPe()), getPEValuationPercentile(stkcd));
+            list.add(cmp);
+        }
+        return JSONObject.toJSONString(list);
     }
 
     /**
@@ -158,7 +177,7 @@ public class PEValuationController {
 
         int code = Integer.parseInt(stkcd);
         stockTotals stockTotals = stockTotalsMapper.selectByPrimaryKey(String.valueOf(code));
-        double totals = Double.parseDouble(stockTotals.getTotals()); //从亿元换算成万元
+        double totals = Double.parseDouble(stockTotals.getTotals());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String today = sdf.format(new Date());
@@ -185,17 +204,16 @@ public class PEValuationController {
             stockNetProfitsKey netProfitsKey = new stockNetProfitsKey();
             netProfitsKey.setStkcd(String.valueOf(code));
             String[] strs = out.split("/");
-            String[] month2Quarter = {"", "1", "1", "1", "2", "2", "2", "3", "3", "3", "4", "4", "4"};
-            String quarter = strs[0] + "-" + month2Quarter[Integer.parseInt(strs[1])];
+            String[] month2Quarter = {"", "01", "01", "01", "02", "02", "02", "03", "03", "03", "04", "04", "04"};
+            String quarter = strs[0] + month2Quarter[Integer.parseInt(strs[1])];
             netProfitsKey.setQuarter(quarter);
             if(null == stockNetProfitsMapper.selectByPrimaryKey(netProfitsKey)) {
                 continue;
             }
             stockNetProfits netProfits = stockNetProfitsMapper.selectByPrimaryKey(netProfitsKey);
             double netProfit = Double.parseDouble(netProfits.getNetProfits());
-
             double pe = ((totals * closePrice) / netProfit);
-
+            System.out.println("pe: "+pe);
             histPe.put(out, pe);
         }
 
