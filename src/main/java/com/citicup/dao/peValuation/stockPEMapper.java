@@ -1,4 +1,4 @@
-package com.citicup.dao.correlationAnalysis;
+package com.citicup.dao.peValuation;
 
 import com.citicup.model.correlationAnalysis.stockPE;
 import org.apache.ibatis.annotations.Select;

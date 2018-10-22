@@ -2,21 +2,17 @@ package com.citicup.controller.peValuation;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.citicup.dao.correlationAnalysis.DisposedProfitMapper;
-import com.citicup.dao.correlationAnalysis.stockPEMapper;
-import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
-import com.citicup.model.correlationAnalysis.DisposedProfit;
-import com.citicup.model.correlationAnalysis.DisposedProfitKey;
-import com.citicup.model.correlationAnalysis.stockPE;
-import com.citicup.model.dataDisplay.CompanyBasicInformation;
+import com.citicup.dao.peValuation.*;
+import com.citicup.model.correlationAnalysis.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +25,12 @@ public class PEValuationController {
     private DisposedProfitMapper disposedProfitMapper;
     @Autowired
     private stockPEMapper stockPEMapper;
+    @Autowired
+    private stockTotalsMapper stockTotalsMapper;
+    @Autowired
+    private stockPriceMapper stockPriceMapper;
+    @Autowired
+    private stockNetProfitsMapper stockNetProfitsMapper;
 
     /**
      * 根据Stkcd(股票id)查找公司的PE值
@@ -36,9 +38,9 @@ public class PEValuationController {
      */
     @RequestMapping("/getLatestPEValue")
     public String getLatestPEValueByStkcd(@RequestParam String stkcd) {
-        double code = Double.parseDouble(stkcd);
+        int code = Integer.parseInt(stkcd);
         stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
-        double pe = stockPE.getPe();
+        double pe = Double.parseDouble(stockPE.getPe());
         return JSONObject.toJSONString(String.format("%.2f", pe));
     }
 
@@ -59,16 +61,16 @@ public class PEValuationController {
      */
     @RequestMapping("/getPEValuationPercentile")
     public String getPEValuationPercentile(@RequestParam String stkcd) {
+        int code = Integer.parseInt(stkcd);
         List<stockPE> list = getPEOrderList();
         int index = 0;
         for(int i = 0; i<list.size(); i++) {
-            if(list.get(i).getStkcd().equals(stkcd)) {
+            if(list.get(i).getStkcd().equals(String.valueOf(code))) {
                 index = i;
                 break;
             }
         }
-
-        double percentile = (index + 1) / list.size();
+        double percentile = (index + 1.0) / list.size();
         String result = String.format("%.2f", percentile * 100) + "%";
         return JSONObject.toJSONString(result);
     }
@@ -79,7 +81,16 @@ public class PEValuationController {
      */
     @RequestMapping("/getPEValuationEstimate")
     public String getPEValuationEstimate(@RequestParam String stkcd) {
-        double percentile = Double.parseDouble(getPEValuationPercentile(stkcd));
+        int code = Integer.parseInt(stkcd);
+        List<stockPE> list = getPEOrderList();
+        int index = 0;
+        for(int i = 0; i<list.size(); i++) {
+            if(list.get(i).getStkcd().equals(String.valueOf(code))) {
+                index = i;
+                break;
+            }
+        }
+        double percentile = (index + 1.0) / list.size();
         if(0 <= percentile && percentile < 0.33) {
             return "估值较低";
         }
@@ -109,9 +120,10 @@ public class PEValuationController {
         list.sort(new Comparator<stockPE>() {
             @Override
             public int compare(stockPE s1, stockPE s2) {
-                if (s2.getPe() - s1.getPe() > 0) {
+                double diff = Double.parseDouble(s2.getPe()) - Double.parseDouble(s1.getPe());
+                if (diff > 0) {
                     return -1;
-                } else if (s2.getPe() - s1.getPe() < 0) {
+                } else if (diff < 0) {
                     return 1;
                 } else {
                     return 0;
@@ -127,8 +139,9 @@ public class PEValuationController {
      */
     @RequestMapping("/getExpectedSharePrice")
     public String getExpectedSharePrice(@RequestParam String stkcd) {
-        stockPE stockPE = stockPEMapper.selectByPrimaryKey(stkcd);
-        double pe = stockPE.getPe();
+        int code = Integer.parseInt(stkcd);
+        stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
+        double pe = Double.parseDouble(stockPE.getPe());
         if(getExpectedEPS(stkcd) == -1.0) {
             return "无该公司相关数据";
         }
@@ -139,10 +152,43 @@ public class PEValuationController {
 
     /**
      * 获取该公司的历史PE走势图
+     *历史PE = 总市值（历史股价（元）× 总股本（亿元））/净利润（万元）
      * @return
      */
     @RequestMapping("/getHistoryPE")
     public String getHistoryPE(@RequestParam String stkcd) {
+        int code = Integer.parseInt(stkcd);
+        stockTotals stockTotals = stockTotalsMapper.selectByPrimaryKey(String.valueOf(code));
+        double totals = stockTotals.getTotals();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String today = sdf.format(new Date());
+        String out = "";
+        for(int i = 0; !out.equals(today); i++) {
+            String str = "2016/04/20"; //数据初始日期
+            // 将字符串的日期转为Date类型，ParsePosition(0)表示从第一个字符开始解析
+            Date date = sdf.parse(str, new ParsePosition(0));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, i);
+            Date date1 = calendar.getTime();
+            out = sdf.format(date1);
+            //System.out.println(out);
+            stockPriceKey key = new stockPriceKey();
+            key.setStkcd(String.valueOf(code));
+            key.setDate(out);
+            if(null == stockPriceMapper.selectByPrimaryKey(key)){ //若无该日期数据则跳过
+                continue;
+            }
+            stockPrice stockPrice = stockPriceMapper.selectByPrimaryKey(key);
+            double closePrice = Double.parseDouble(stockPrice.getValue()); //获取当天收盘价
+
+
+
+
+        }
+
+
 
         return "";
     }
