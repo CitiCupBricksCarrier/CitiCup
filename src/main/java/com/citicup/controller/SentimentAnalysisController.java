@@ -20,6 +20,10 @@ import java.util.Map;
 @EnableAutoConfiguration
 public class SentimentAnalysisController {
 
+    /**
+     * 得到日期列表
+     * @return { timeList : [...] }
+     */
     @RequestMapping("/competitorAnalysisTimeList")
     public String competitorAnalysisTimeList(){
         final String[] timeList= {
@@ -35,6 +39,16 @@ public class SentimentAnalysisController {
         }}.toString();
     }
 
+    /**
+     * 竞争者分析
+     * @param stkidA 公司A
+     * @param stkidB 公司B
+     * @param time 时间
+     * @return {
+     *     stkidA : {...}
+     *     stkidB : {...}
+     * }
+     */
     @RequestMapping("/competitorAnalysis")
     public String competitorAnalysis(@RequestParam String stkidA, @RequestParam String stkidB, @RequestParam String time){
         return new JSONObject(){
