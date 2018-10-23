@@ -1,6 +1,6 @@
 package com.citicup.dao.peValuation;
 
-import com.citicup.model.correlationAnalysis.stockTotals;
+import com.citicup.model.peValuation.stockTotals;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
