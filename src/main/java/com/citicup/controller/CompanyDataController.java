@@ -78,8 +78,8 @@ public class CompanyDataController {
     @RequestMapping("/searchByKeyword")
     public String searchByKeyword(@RequestParam String keyword) {
 
-        List<CompanyBasicInformation> list = companyBasicInformationMapper.searchByStkcd(keyword);
-        list.addAll(companyBasicInformationMapper.searchByName(keyword));
+        List<CompanyBasicInformation> list = companyBasicInformationMapper.macthByName(keyword);
+        list.addAll(companyBasicInformationMapper.macthByStkcd(keyword));
         List<CompanyBasicInformation> t = new ArrayList<>(new HashSet<>(list));
         return JSONObject.toJSONString(t);
     }

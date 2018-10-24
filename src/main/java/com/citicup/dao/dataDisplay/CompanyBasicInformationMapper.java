@@ -69,6 +69,13 @@ public interface CompanyBasicInformationMapper {
     @Select("SELECT * FROM citicup.公司基本信息 WHERE stkcd = #{stkcd, jdbcType=VARCHAR}")
     List<CompanyBasicInformation> searchByStkcd(String stkcd);
 
-    @Select("SELECT * FROM citicup.公司基本信息 WHERE name = #{name, jdbcType=VARCHAR}")
-    List<CompanyBasicInformation> searchByName(String name);
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE compName = #{compName, jdbcType=VARCHAR}")
+    List<CompanyBasicInformation> searchByName(String compName);
+
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE compName LIKE concat('%',#{compName, jdbcType=VARCHAR},'%')")
+    List<CompanyBasicInformation> macthByName(String compName);
+
+    @Select("SELECT * FROM citicup.公司基本信息 WHERE stkcd LIKE concat('%',#{stkcd, jdbcType=VARCHAR},'%')")
+    List<CompanyBasicInformation> macthByStkcd(String stkcd);
+
 }
