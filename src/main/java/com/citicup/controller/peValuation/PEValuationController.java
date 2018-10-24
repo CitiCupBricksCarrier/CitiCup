@@ -25,11 +25,11 @@ public class PEValuationController {
     @Autowired
     private stockPEMapper stockPEMapper;
     @Autowired
-    private stockTotalsMapper stockTotalsMapper;
-    @Autowired
     private stockPriceMapper stockPriceMapper;
     @Autowired
     private stockNetProfitsMapper stockNetProfitsMapper;
+    @Autowired
+    private PE_historyMapper pe_historyMapper;
     @Autowired
     private CompanyBasicInformationMapper companyBasicInformationMapper;
 
@@ -151,6 +151,48 @@ public class PEValuationController {
     }
 
     /**
+     * 获取该公司的历史PE走势图,近两年（2016.10.24-2018.10.19）的数据
+     * 时间段：近半年、近一年、近两年
+     * @return
+     */
+    @RequestMapping("/getHistoryPE")
+    public String getHistoryPE(@RequestParam String stkcd, @RequestParam String timeInterval) {
+        Map<String, Double> histPe = new LinkedHashMap<>();
+
+        String beginDate = ""; //数据初始日期
+        String finalDate = "2018-10-19"; //数据最后日期
+        switch (timeInterval) {
+            case "半年": beginDate = "2018-04-19"; break;
+            case "一年": beginDate = "2017-10-19"; break;
+            case "两年": beginDate = "2016-10-24"; break;
+            default:
+                return "错误时间段";
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String out = "";
+        for(int i = 0; !out.equals(finalDate); i++) {
+            // 将字符串的日期转为Date类型，ParsePosition(0)表示从第一个字符开始解析
+            Date date = sdf.parse(beginDate, new ParsePosition(0));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, i);
+            Date date1 = calendar.getTime();
+            out = sdf.format(date1);
+            PE_historyKey key = new PE_history();
+            key.setSymbol(stkcd);
+            key.setTradingdate(out);
+            if(null == pe_historyMapper.selectByPrimaryKey(key)){ //若无该日期数据则跳过
+                continue;
+            }
+            PE_history pe = pe_historyMapper.selectByPrimaryKey(key);
+            histPe.put(out.substring(2), Double.parseDouble(pe.getPe()));
+        }
+
+        return JSONObject.toJSONString(histPe);
+    }
+
+    /**
      * 获取该公司的预测股价(目标价=PE倍数×EPS预测值)
      * @return
      */
@@ -167,65 +209,12 @@ public class PEValuationController {
         return JSONObject.toJSONString(expectedSharePrice);
     }
 
-    /**
-     * 获取该公司的历史PE走势图
-     *历史PE = 总市值（历史股价（元）× 总股本（亿元））/净利润（万元）
-     * @return
-     */
-    @RequestMapping("/getHistoryPE")
-    public String getHistoryPE(@RequestParam String stkcd) {
-        Map<String, Double> histPe = new LinkedHashMap<>();
-
-        int code = Integer.parseInt(stkcd);
-        stockTotals stockTotals = stockTotalsMapper.selectByPrimaryKey(String.valueOf(code));
-        double totals = Double.parseDouble(stockTotals.getTotals());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        String today = sdf.format(new Date());
-        String out = "";
-        for(int i = 0; !out.equals(today); i++) {
-            String str = "2016/04/20"; //数据初始日期
-            // 将字符串的日期转为Date类型，ParsePosition(0)表示从第一个字符开始解析
-            Date date = sdf.parse(str, new ParsePosition(0));
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            calendar.add(Calendar.DATE, i);
-            Date date1 = calendar.getTime();
-            out = sdf.format(date1);
-            //System.out.println(out);
-            stockPriceKey key = new stockPriceKey();
-            key.setStkcd(String.valueOf(code));
-            key.setDate(out);
-            if(null == stockPriceMapper.selectByPrimaryKey(key)){ //若无该日期数据则跳过
-                continue;
-            }
-            stockPrice stockPrice = stockPriceMapper.selectByPrimaryKey(key);
-            double closePrice = Double.parseDouble(stockPrice.getValue()); //获取当天收盘价
-
-            stockNetProfitsKey netProfitsKey = new stockNetProfitsKey();
-            netProfitsKey.setStkcd(String.valueOf(code));
-            String[] strs = out.split("/");
-            String[] month2Quarter = {"", "01", "01", "01", "02", "02", "02", "03", "03", "03", "04", "04", "04"};
-            String quarter = strs[0] + month2Quarter[Integer.parseInt(strs[1])];
-            netProfitsKey.setQuarter(quarter);
-            if(null == stockNetProfitsMapper.selectByPrimaryKey(netProfitsKey)) {
-                continue;
-            }
-            stockNetProfits netProfits = stockNetProfitsMapper.selectByPrimaryKey(netProfitsKey);
-            double netProfit = Double.parseDouble(netProfits.getNetProfits());
-            double pe = ((totals * closePrice) / netProfit);
-            System.out.println("pe: "+pe);
-            histPe.put(out, pe);
-        }
-
-        return JSONObject.toJSONString(histPe);
-    }
-
     private double getExpectedEPS(String stkcd) {
         DisposedProfitKey key = new DisposedProfitKey();
         key.setStkcd(stkcd);
         key.setTime("2015-12-31");
         if(null == disposedProfitMapper.selectByPrimaryKey(key)) {
+            System.out.println("表中无该数据");
             return -1.0;
         }
         DisposedProfit data2015 = disposedProfitMapper.selectByPrimaryKey(key);

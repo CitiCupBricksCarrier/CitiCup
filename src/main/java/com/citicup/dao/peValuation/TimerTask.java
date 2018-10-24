@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 public class TimerTask {
     private int count=0;
 
-    @Scheduled(cron = "0 0/1 17 * * ?")//每分钟都执行
+    @Scheduled(cron = "* * * * * ?")//每分钟都执行
     private void process() {
-        System.out.println("this is scheduler task running "+(count++));
+        //System.out.println("this is scheduler task running "+(count++));
     }
 }

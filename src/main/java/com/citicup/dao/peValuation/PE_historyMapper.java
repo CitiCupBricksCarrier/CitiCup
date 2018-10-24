@@ -1,7 +1,7 @@
-package com.citicup.dao.correlationAnalysis;
+package com.citicup.dao.peValuation;
 
-import com.citicup.model.correlationAnalysis.PE_history;
-import com.citicup.model.correlationAnalysis.PE_historyKey;
+import com.citicup.model.peValuation.PE_history;
+import com.citicup.model.peValuation.PE_historyKey;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
