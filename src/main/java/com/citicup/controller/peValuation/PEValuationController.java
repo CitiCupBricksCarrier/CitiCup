@@ -25,10 +25,6 @@ public class PEValuationController {
     @Autowired
     private stockPEMapper stockPEMapper;
     @Autowired
-    private stockPriceMapper stockPriceMapper;
-    @Autowired
-    private stockNetProfitsMapper stockNetProfitsMapper;
-    @Autowired
     private PE_historyMapper pe_historyMapper;
     @Autowired
     private CompanyBasicInformationMapper companyBasicInformationMapper;
@@ -200,13 +196,16 @@ public class PEValuationController {
     public String getExpectedSharePrice(@RequestParam String stkcd) {
         int code = Integer.parseInt(stkcd);
         stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
+        if(null == stockPE) {
+            return "无该公司收盘价数据";
+        }
         double pe = Double.parseDouble(stockPE.getPe());
         if(getExpectedEPS(stkcd) == -1.0) {
             return "无该公司相关数据";
         }
         double expectedEPS = getExpectedEPS(stkcd);
         double expectedSharePrice = pe * expectedEPS;
-        return JSONObject.toJSONString(expectedSharePrice);
+        return JSONObject.toJSONString(String.format("%.4f", expectedSharePrice));
     }
 
     private double getExpectedEPS(String stkcd) {
@@ -246,25 +245,25 @@ public class PEValuationController {
         if(expectedNonoperatingIncome == -1.0) { return -1.0; }
 
         //销售费用/营业收入、管理费用/营业收入、财务费用/营业收入 求三者的两年均值作为预测值 通过2019年的营业收入×三个比例算出三个值（销售费用、管理费用、财务费用）
-        double expectedSellingexpenses = ((Double.parseDouble(data2015.getSellingexpensesRevenue()) + 1
-                + Double.parseDouble(data2016.getSellingexpensesRevenue()) + 1
-                + Double.parseDouble(data2017.getSellingexpensesRevenue()) + 1) / 3) * expectedIncome;
-        double expectedManagementcost = ((Double.parseDouble(data2015.getManagementcostRevenue()) + 1
-                + Double.parseDouble(data2016.getManagementcostRevenue()) + 1
-                + Double.parseDouble(data2017.getManagementcostRevenue())) + 1 / 3) * expectedIncome;
-        double expectedFinancialcost = ((Double.parseDouble(data2015.getFinancialcostRevenue()) + 1
-                + Double.parseDouble(data2016.getFinancialcostRevenue()) + 1
-                + Double.parseDouble(data2017.getFinancialcostRevenue())) + 1 / 3) * expectedIncome;
-        //公允价值变动收益、其他业务成本、少数股东损益 求均值
-        double averageOfFairvaluechangeincome = Math.abs((Double.parseDouble(data2015.getFairvaluechangeincome())
+        double expectedSellingexpenses = ((Double.parseDouble(data2015.getSellingexpensesRevenue())
+                + Double.parseDouble(data2016.getSellingexpensesRevenue())
+                + Double.parseDouble(data2017.getSellingexpensesRevenue())) / 3) * expectedIncome;
+        double expectedManagementcost = ((Double.parseDouble(data2015.getManagementcostRevenue())
+                + Double.parseDouble(data2016.getManagementcostRevenue())
+                + Double.parseDouble(data2017.getManagementcostRevenue())) / 3) * expectedIncome;
+        double expectedFinancialcost = ((Double.parseDouble(data2015.getFinancialcostRevenue())
                 + Double.parseDouble(data2016.getFinancialcostRevenue())
-                + Double.parseDouble(data2017.getFinancialcostRevenue()))/ 3);
-        double averageOfOtherbusinesscosts = Math.abs((Double.parseDouble(data2015.getOtherbusinesscosts())
+                + Double.parseDouble(data2017.getFinancialcostRevenue())) / 3) * expectedIncome;
+        //公允价值变动收益、其他业务成本、少数股东损益 求均值
+        double averageOfFairvaluechangeincome = (Double.parseDouble(data2015.getFairvaluechangeincome())
+                + Double.parseDouble(data2016.getFinancialcostRevenue())
+                + Double.parseDouble(data2017.getFinancialcostRevenue())/ 3);
+        double averageOfOtherbusinesscosts = (Double.parseDouble(data2015.getOtherbusinesscosts())
                 + Double.parseDouble(data2016.getOtherbusinesscosts())
-                + Double.parseDouble(data2017.getOtherbusinesscosts()))/ 3);
-        double averageOfMinorityinterest = Math.abs((Double.parseDouble(data2015.getMinorityinterest())
+                + Double.parseDouble(data2017.getOtherbusinesscosts())/ 3);
+        double averageOfMinorityinterest = (Double.parseDouble(data2015.getMinorityinterest())
                 + Double.parseDouble(data2016.getMinorityinterest())
-                + Double.parseDouble(data2017.getMinorityinterest()))/ 3);
+                + Double.parseDouble(data2017.getMinorityinterest())/ 3);
         //营业利润减出来
         double expectedOperatingprofit = expectedIncome - (expectedCost + expectedTaxandadditional + expectedSellingexpenses
                 + expectedManagementcost + expectedFinancialcost + expectedInvestmentincome + averageOfFairvaluechangeincome
@@ -279,7 +278,7 @@ public class PEValuationController {
         double expectedParentcompanynetprofit = expectedNetprofit - averageOfMinorityinterest;
 
         double expectedEPS = expectedParentcompanynetprofit /
-                (Math.abs(Double.parseDouble(data2017.getParentcompanynetprofit())) / Math.abs(Double.parseDouble(data2017.getEps())+1));
+                (Double.parseDouble(data2017.getParentcompanynetprofit()) / Double.parseDouble(data2017.getEps()));
         return expectedEPS;
     }
 
