@@ -37,11 +37,11 @@ public interface ArticleMapper {
      */
     @Insert({
         "insert into article (id, graphId, ",
-        "author, time, ",
-        "text)",
+        "author, time, title, ",
+        "watchNum, text)",
         "values (#{id,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
-        "#{author,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, ",
-        "#{text,jdbcType=LONGVARCHAR})"
+        "#{author,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, ",
+        "#{watchnum,jdbcType=VARCHAR}, #{text,jdbcType=LONGVARCHAR})"
     })
     int insert(Article record);
 
@@ -62,7 +62,7 @@ public interface ArticleMapper {
      */
     @Select({
         "select",
-        "id, graphId, author, time, text",
+        "id, graphId, author, time, title, watchNum, text",
         "from article",
         "where id = #{id,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}",
@@ -72,7 +72,9 @@ public interface ArticleMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.VARCHAR, id=true),
         @Result(column="graphId", property="graphid", jdbcType=JdbcType.VARCHAR, id=true),
         @Result(column="author", property="author", jdbcType=JdbcType.VARCHAR, id=true),
-        @Result(column="time", property="time", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="time", property="time", jdbcType=JdbcType.VARCHAR),
+        @Result(column="title", property="title", jdbcType=JdbcType.VARCHAR),
+        @Result(column="watchNum", property="watchnum", jdbcType=JdbcType.VARCHAR),
         @Result(column="text", property="text", jdbcType=JdbcType.LONGVARCHAR)
     })
     Article selectByPrimaryKey(ArticleKey key);
@@ -94,7 +96,9 @@ public interface ArticleMapper {
      */
     @Update({
         "update article",
-        "set time = #{time,jdbcType=TIMESTAMP},",
+        "set time = #{time,jdbcType=VARCHAR},",
+          "title = #{title,jdbcType=VARCHAR},",
+          "watchNum = #{watchnum,jdbcType=VARCHAR},",
           "text = #{text,jdbcType=LONGVARCHAR}",
         "where id = #{id,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}",
@@ -110,7 +114,9 @@ public interface ArticleMapper {
      */
     @Update({
         "update article",
-        "set time = #{time,jdbcType=TIMESTAMP}",
+        "set time = #{time,jdbcType=VARCHAR},",
+          "title = #{title,jdbcType=VARCHAR},",
+          "watchNum = #{watchnum,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}",
           "and author = #{author,jdbcType=VARCHAR}"

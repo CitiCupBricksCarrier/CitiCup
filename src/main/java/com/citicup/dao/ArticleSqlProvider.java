@@ -35,7 +35,15 @@ public class ArticleSqlProvider {
         }
         
         if (record.getTime() != null) {
-            VALUES("time", "#{time,jdbcType=TIMESTAMP}");
+            VALUES("time", "#{time,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTitle() != null) {
+            VALUES("title", "#{title,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getWatchnum() != null) {
+            VALUES("watchNum", "#{watchnum,jdbcType=VARCHAR}");
         }
         
         if (record.getText() != null) {
@@ -56,7 +64,15 @@ public class ArticleSqlProvider {
         UPDATE("article");
         
         if (record.getTime() != null) {
-            SET("time = #{time,jdbcType=TIMESTAMP}");
+            SET("time = #{time,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTitle() != null) {
+            SET("title = #{title,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getWatchnum() != null) {
+            SET("watchNum = #{watchnum,jdbcType=VARCHAR}");
         }
         
         if (record.getText() != null) {
