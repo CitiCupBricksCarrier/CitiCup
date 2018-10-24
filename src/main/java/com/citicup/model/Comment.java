@@ -126,7 +126,7 @@ public class Comment extends CommentKey implements Serializable {
         }
         Comment other = (Comment) that;
         return (this.getAuthor() == null ? other.getAuthor() == null : this.getAuthor().equals(other.getAuthor()))
-            && (this.getGraphid() == null ? other.getGraphid() == null : this.getGraphid().equals(other.getGraphid()))
+            && (this.getArticleid() == null ? other.getArticleid() == null : this.getArticleid().equals(other.getArticleid()))
             && (this.getTime() == null ? other.getTime() == null : this.getTime().equals(other.getTime()))
             && (this.getComment() == null ? other.getComment() == null : this.getComment().equals(other.getComment()))
             && (this.getUp() == null ? other.getUp() == null : this.getUp().equals(other.getUp()))
@@ -144,7 +144,7 @@ public class Comment extends CommentKey implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getAuthor() == null) ? 0 : getAuthor().hashCode());
-        result = prime * result + ((getGraphid() == null) ? 0 : getGraphid().hashCode());
+        result = prime * result + ((getArticleid() == null) ? 0 : getArticleid().hashCode());
         result = prime * result + ((getTime() == null) ? 0 : getTime().hashCode());
         result = prime * result + ((getComment() == null) ? 0 : getComment().hashCode());
         result = prime * result + ((getUp() == null) ? 0 : getUp().hashCode());
@@ -170,15 +170,5 @@ public class Comment extends CommentKey implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
-    }
-
-    public Comment(String author, String graphid, String time, String comment, Integer up, Integer down) {
-        super(author, graphid, time);
-        this.comment = comment;
-        this.up = up;
-        this.down = down;
-    }
-
-    public Comment() {
     }
 }

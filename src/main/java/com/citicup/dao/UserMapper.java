@@ -33,10 +33,10 @@ public interface UserMapper {
     @Insert({
         "insert into user (uid, name, ",
         "phoneNum, password, ",
-        "isVip)",
+        "isVip, summary)",
         "values (#{uid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
         "#{phonenum,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
-        "#{isvip,jdbcType=TINYINT})"
+        "#{isvip,jdbcType=TINYINT}, #{summary,jdbcType=VARCHAR})"
     })
     int insert(User record);
 
@@ -57,7 +57,7 @@ public interface UserMapper {
      */
     @Select({
         "select",
-        "uid, name, phoneNum, password, isVip",
+        "uid, name, phoneNum, password, isVip, summary",
         "from user",
         "where uid = #{uid,jdbcType=VARCHAR}"
     })
@@ -66,7 +66,8 @@ public interface UserMapper {
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="phoneNum", property="phonenum", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
-        @Result(column="isVip", property="isvip", jdbcType=JdbcType.TINYINT)
+        @Result(column="isVip", property="isvip", jdbcType=JdbcType.TINYINT),
+        @Result(column="summary", property="summary", jdbcType=JdbcType.VARCHAR)
     })
     User selectByPrimaryKey(String uid);
 
@@ -90,7 +91,8 @@ public interface UserMapper {
         "set name = #{name,jdbcType=VARCHAR},",
           "phoneNum = #{phonenum,jdbcType=VARCHAR},",
           "password = #{password,jdbcType=VARCHAR},",
-          "isVip = #{isvip,jdbcType=TINYINT}",
+          "isVip = #{isvip,jdbcType=TINYINT},",
+          "summary = #{summary,jdbcType=VARCHAR}",
         "where uid = #{uid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(User record);

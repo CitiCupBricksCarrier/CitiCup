@@ -42,6 +42,10 @@ public class UserSqlProvider {
             VALUES("isVip", "#{isvip,jdbcType=TINYINT}");
         }
         
+        if (record.getSummary() != null) {
+            VALUES("summary", "#{summary,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -69,6 +73,10 @@ public class UserSqlProvider {
         
         if (record.getIsvip() != null) {
             SET("isVip = #{isvip,jdbcType=TINYINT}");
+        }
+        
+        if (record.getSummary() != null) {
+            SET("summary = #{summary,jdbcType=VARCHAR}");
         }
         
         WHERE("uid = #{uid,jdbcType=VARCHAR}");

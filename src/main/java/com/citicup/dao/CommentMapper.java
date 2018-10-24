@@ -24,7 +24,7 @@ public interface CommentMapper {
     @Delete({
         "delete from comment",
         "where author = #{author,jdbcType=VARCHAR}",
-          "and graphId = #{graphid,jdbcType=VARCHAR}",
+          "and articleId = #{articleid,jdbcType=VARCHAR}",
           "and time = #{time,jdbcType=VARCHAR}"
     })
     int deleteByPrimaryKey(CommentKey key);
@@ -36,10 +36,10 @@ public interface CommentMapper {
      * @mbggenerated
      */
     @Insert({
-        "insert into comment (author, graphId, ",
+        "insert into comment (author, articleId, ",
         "time, comment, up, ",
         "down)",
-        "values (#{author,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
+        "values (#{author,jdbcType=VARCHAR}, #{articleid,jdbcType=VARCHAR}, ",
         "#{time,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{up,jdbcType=INTEGER}, ",
         "#{down,jdbcType=INTEGER})"
     })
@@ -62,15 +62,15 @@ public interface CommentMapper {
      */
     @Select({
         "select",
-        "author, graphId, time, comment, up, down",
+        "author, articleId, time, comment, up, down",
         "from comment",
         "where author = #{author,jdbcType=VARCHAR}",
-          "and graphId = #{graphid,jdbcType=VARCHAR}",
+          "and articleId = #{articleid,jdbcType=VARCHAR}",
           "and time = #{time,jdbcType=VARCHAR}"
     })
     @Results({
         @Result(column="author", property="author", jdbcType=JdbcType.VARCHAR, id=true),
-        @Result(column="graphId", property="graphid", jdbcType=JdbcType.VARCHAR, id=true),
+        @Result(column="articleId", property="articleid", jdbcType=JdbcType.VARCHAR, id=true),
         @Result(column="time", property="time", jdbcType=JdbcType.VARCHAR, id=true),
         @Result(column="comment", property="comment", jdbcType=JdbcType.VARCHAR),
         @Result(column="up", property="up", jdbcType=JdbcType.INTEGER),
@@ -99,7 +99,7 @@ public interface CommentMapper {
           "up = #{up,jdbcType=INTEGER},",
           "down = #{down,jdbcType=INTEGER}",
         "where author = #{author,jdbcType=VARCHAR}",
-          "and graphId = #{graphid,jdbcType=VARCHAR}",
+          "and articleId = #{articleid,jdbcType=VARCHAR}",
           "and time = #{time,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(Comment record);

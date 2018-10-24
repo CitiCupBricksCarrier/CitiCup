@@ -16,7 +16,7 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://47.100.14.24:3306/citicup" userId="root" password="DebugTeam">
+                        connectionURL="jdbc:mysql://localhost/citicup" userId="root" password="DebugTeam">
         </jdbcConnection>
         <javaTypeResolver>
             <!-- This property is used to specify whether MyBatis Generator should
@@ -24,7 +24,7 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
         <!-- 生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="com.citicup.model.dataDisplay"
+        <javaModelGenerator targetPackage="com.citicup.model"
                             targetProject="target">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
@@ -36,8 +36,8 @@
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置 -->
         <!--ANNOTATEDMAPPER or XMLMAPPER-->
-        <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.citicup.dao.dataDisplay" implementationPackage="com.citicup.dao.dataDisplay.impl"  targetProject="target">
+        <javaClientGenerator type="ANNOTATEDMAPPER"
+                             targetPackage="com.citicup.dao" implementationPackage="com.citicup.dao"  targetProject="target">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -174,10 +174,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="中国汽车企业资产负债率" domainObjectName="AssetLiabilityRatioOfAutomobileEnterprisesInChina"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="中国汽车企业资产负债率" domainObjectName="AssetLiabilityRatioOfAutomobileEnterprisesInChina"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="中国汽车企业销售利润率" domainObjectName="ProfitMarginOfAutomobileSalesInChina"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -282,26 +282,26 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="净利润与利润总额比" domainObjectName="NetProfitAndTotalProfitRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="净利润增长率" domainObjectName="NetProfitGrowthRate"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="利息保障倍数" domainObjectName="InterestCoverageRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="利润总额与息税前利润相比" domainObjectName="TotalProfitPreTaxProfitRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="利润总额增长率" domainObjectName="TotalProfitGrowthRate"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="净利润与利润总额比" domainObjectName="NetProfitAndTotalProfitRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="净利润增长率" domainObjectName="NetProfitGrowthRate"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="利息保障倍数" domainObjectName="InterestCoverageRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="利润总额与息税前利润相比" domainObjectName="TotalProfitPreTaxProfitRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="利润总额增长率" domainObjectName="TotalProfitGrowthRate"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="图形和数据导出中国汽车行业利润总额" domainObjectName="GraphicsAndDataDeriveTotalProfitsFromChinasAutoIndustry"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -350,22 +350,22 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="总资产增长率" domainObjectName="TotalAssetsGrowthRate"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="成本费用利润率" domainObjectName="ProfitMarginOfTheCostAndExpense"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="所有者权益增长率" domainObjectName="GrowthRateOfOwnersEquity"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="投资收益率" domainObjectName="RateOfReturnOnInvestment"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="总资产增长率" domainObjectName="TotalAssetsGrowthRate"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="成本费用利润率" domainObjectName="ProfitMarginOfTheCostAndExpense"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="所有者权益增长率" domainObjectName="GrowthRateOfOwnersEquity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="投资收益率" domainObjectName="RateOfReturnOnInvestment"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="日本汽车销量" domainObjectName="TheJapaneseCarSales"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -386,10 +386,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="流动比率" domainObjectName="CurrentRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="流动比率" domainObjectName="CurrentRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="流动资产周转率" domainObjectName="TurnoverOfCurrentAssets"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -414,30 +414,30 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="营业利润增长率" domainObjectName="OperatingProfitGrowth"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="营业总成本增长率" domainObjectName="TotalOperatingCostGrowthRate"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="营业成本率" domainObjectName="OperatingCostRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="营业收入增长率" domainObjectName="RevenueGrowth"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="营业毛利率" domainObjectName="OperatingMargin"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="营运资金与借款比" domainObjectName="WorkingCapitalAndLoanRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="营业利润增长率" domainObjectName="OperatingProfitGrowth"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="营业总成本增长率" domainObjectName="TotalOperatingCostGrowthRate"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="营业成本率" domainObjectName="OperatingCostRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="营业收入增长率" domainObjectName="RevenueGrowth"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="营业毛利率" domainObjectName="OperatingMargin"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
+        <!--<table tableName="营运资金与借款比" domainObjectName="WorkingCapitalAndLoanRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="行业上市地位全部" domainObjectName="StatusOfIndustryListing_all"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -486,10 +486,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="速动比率" domainObjectName="QuickRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="速动比率" domainObjectName="QuickRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="gain乘用车整体价格变化指数" domainObjectName="GainPassengerCarOverallPriceChangeIndex"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -518,18 +518,18 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="中国汽车企业现金流动负债比率" domainObjectName="CashFlowLiabilityRatioOfAutomobileEnterprisesInChina"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="中国汽车企业现金流动负债比率" domainObjectName="CashFlowLiabilityRatioOfAutomobileEnterprisesInChina"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="中国汽车行业产成品存货" domainObjectName="ChinaAutoIndustryFinishedGoodsInventory"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="user" domainObjectName="User"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="user" domainObjectName="User"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="graph" domainObjectName="Graph"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="sfalse"-->
@@ -542,9 +542,13 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="comment" domainObjectName="Comment"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="comment" domainObjectName="Comment"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="article" domainObjectName="Article"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
     </context>
 </generatorConfiguration>
