@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @EnableAutoConfiguration
@@ -76,6 +73,15 @@ public class CompanyDataController {
 
         List<CompanyBasicInformation> companyBasicInformationWithBLOBsList = companyBasicInformationMapper.getAll();
         return JSONObject.toJSONString(companyBasicInformationWithBLOBsList);
+    }
+
+    @RequestMapping("/searchByKeyword")
+    public String searchByKeyword(@RequestParam String keyword) {
+
+        List<CompanyBasicInformation> list = companyBasicInformationMapper.searchByStkcd(keyword);
+        list.addAll(companyBasicInformationMapper.searchByName(keyword));
+        List<CompanyBasicInformation> t = new ArrayList<>(new HashSet<>(list));
+        return JSONObject.toJSONString(t);
     }
 
     /**
