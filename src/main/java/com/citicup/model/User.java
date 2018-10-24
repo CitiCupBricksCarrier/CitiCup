@@ -270,4 +270,13 @@ public class User implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public User(String uid, String name, String phonenum, String password, Byte isvip, String summary) {
+        this.uid = uid;
+        this.name = name;
+        this.phonenum = phonenum;
+        this.password = password;
+        this.isvip = isvip;
+        this.summary = summary;
+    }
 }
