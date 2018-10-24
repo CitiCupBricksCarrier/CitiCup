@@ -68,7 +68,7 @@ public class UserController {
             User user = userMapper.selectByPrimaryKey(username);
             //在数据库创建此用户
             if (user == null){
-                User usert = new User(username, username, "phonenum", "citiuser");
+                User usert = new User(username, username, "phonenum", "citicupuser", (byte) 0, "这个用户很懒，还没有填写简介");
                 userMapper.insert(usert);
             }
         }

@@ -171,4 +171,14 @@ public class Comment extends CommentKey implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public Comment(String author, String articleid, String time, String comment, Integer up, Integer down) {
+        super(author, articleid, time);
+        this.comment = comment;
+        this.up = up;
+        this.down = down;
+    }
+
+    public Comment() {
+    }
 }
