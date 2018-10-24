@@ -279,4 +279,7 @@ public class User implements Serializable {
         this.isvip = isvip;
         this.summary = summary;
     }
+
+    public User() {
+    }
 }

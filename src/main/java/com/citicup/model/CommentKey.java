@@ -171,4 +171,7 @@ public class CommentKey implements Serializable {
         this.articleid = articleid;
         this.time = time;
     }
+
+    public CommentKey() {
+    }
 }
