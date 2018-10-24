@@ -128,6 +128,6 @@ public interface PointMapper {
             "</foreach> </script>"})
     int savePointList(@Param("list") List<Point> list);
 
-    @Delete({"DELETE FROM edge where graphid = #{item, jdbcType=VARCHAR}"})
+    @Delete({"DELETE FROM point where graphid = #{item, jdbcType=VARCHAR}"})
     int deleteByGraphId(String graphId);
 }
