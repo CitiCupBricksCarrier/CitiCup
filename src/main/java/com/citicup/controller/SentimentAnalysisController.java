@@ -118,126 +118,125 @@ public class SentimentAnalysisController {
     private JSONObject loadCompetitorData(String stkid, String time){
 
         JSONObject json = new JSONObject();
-
         AverageAccountsReceivableTurnoverRatioKey averageAccountsReceivableTurnoverRatioKey = new AverageAccountsReceivableTurnoverRatio();
         averageAccountsReceivableTurnoverRatioKey.setStkcd(stkid);
         averageAccountsReceivableTurnoverRatioKey.setAcceper(time);
-        json.put("AverageAccountsReceivableTurnoverRatio", averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(averageAccountsReceivableTurnoverRatioKey));
+        json.put("AverageAccountsReceivableTurnoverRatio", averageAccountsReceivableTurnoverRatioMapper.selectByPrimaryKey(averageAccountsReceivableTurnoverRatioKey).getAccrecturnrate());
 
         DaysSalesOutstandingKey daysSalesOutstandingKey = new DaysSalesOutstanding();
         daysSalesOutstandingKey.setStkcd(stkid);
         daysSalesOutstandingKey.setAcceper(time);
-        json.put("DaysSalesOutstanding", daysSalesOutstandingMapper.selectByPrimaryKey(daysSalesOutstandingKey));
+        json.put("DaysSalesOutstanding", daysSalesOutstandingMapper.selectByPrimaryKey(daysSalesOutstandingKey).getSalesoutstandingdays());
 
         InventoryTurnoverRatioKey inventoryTurnoverRatioKey = new InventoryTurnoverRatio();
         inventoryTurnoverRatioKey.setStkcd(stkid);
         inventoryTurnoverRatioKey.setAcceper(time);
-        json.put("InventoryTurnoverRatio", inventoryTurnoverRatioMapper.selectByPrimaryKey(inventoryTurnoverRatioKey));
+        json.put("InventoryTurnoverRatio", inventoryTurnoverRatioMapper.selectByPrimaryKey(inventoryTurnoverRatioKey).getInvturnrate());
 
         DaysInInventoryKey daysInInventoryKey = new DaysInInventory();
         daysInInventoryKey.setStkcd(stkid);
         daysInInventoryKey.setAcceper(time);
-        json.put("DaysInInventory", daysInInventoryMapper.selectByPrimaryKey(daysInInventoryKey));
+        json.put("DaysInInventory", daysInInventoryMapper.selectByPrimaryKey(daysInInventoryKey).getInvturndays());
 
         TurnoverOfCurrentAssetsKey turnoverOfCurrentAssetsKey = new TurnoverOfCurrentAssets();
         turnoverOfCurrentAssetsKey.setStkcd(stkid);
         turnoverOfCurrentAssetsKey.setAcceper(time);
-        json.put("TurnoverOfCurrentAssets", turnoverOfCurrentAssetsMapper.selectByPrimaryKey(turnoverOfCurrentAssetsKey));
+        json.put("TurnoverOfCurrentAssets", turnoverOfCurrentAssetsMapper.selectByPrimaryKey(turnoverOfCurrentAssetsKey).getTurnrateofmobileassets());
 
         EquityTurnoverKey equityTurnoverKey = new EquityTurnover();
         equityTurnoverKey.setStkcd(stkid);
         equityTurnoverKey.setAcceper(time);
-        json.put("EquityTurnover", equityTurnoverMapper.selectByPrimaryKey(equityTurnoverKey));
+        json.put("EquityTurnover", equityTurnoverMapper.selectByPrimaryKey(equityTurnoverKey).getEquityturn());
 
         CurrentRatioKey currentRatioKey = new CurrentRatio();
         currentRatioKey.setStkcd(stkid);
         currentRatioKey.setAcceper(time);
-        json.put("CurrentRatio", currentRatioMapper.selectByPrimaryKey(currentRatioKey));
+        json.put("CurrentRatio", currentRatioMapper.selectByPrimaryKey(currentRatioKey).getCurratio());
 
         QuickRatioKey quickRatioKey = new QuickRatio();
         quickRatioKey.setStkcd(stkid);
         quickRatioKey.setAcceper(time);
-        json.put("QuickRatio", quickRatioMapper.selectByPrimaryKey(quickRatioKey));
+        json.put("QuickRatio", quickRatioMapper.selectByPrimaryKey(quickRatioKey).getQuiritio());
 
         WorkingCapitalAndLoanRatioKey workingCapitalAndLoanRatioKey = new WorkingCapitalAndLoanRatio();
         workingCapitalAndLoanRatioKey.setStkcd(stkid);
         workingCapitalAndLoanRatioKey.setAcceper(time);
-        json.put("WorkingCapitalAndLoanRatio", workingCapitalAndLoanRatioMapper.selectByPrimaryKey(workingCapitalAndLoanRatioKey));
+        json.put("WorkingCapitalAndLoanRatio", workingCapitalAndLoanRatioMapper.selectByPrimaryKey(workingCapitalAndLoanRatioKey).getWorkcapandloanratio());
 
         InterestCoverageRatioKey interestCoverageRatioKey = new InterestCoverageRatio();
         interestCoverageRatioKey.setStkcd(stkid);
         interestCoverageRatioKey.setAcceper(time);
-        json.put("InterestCoverageRatio", interestCoverageRatioMapper.selectByPrimaryKey(interestCoverageRatioKey));
+        json.put("InterestCoverageRatio", interestCoverageRatioMapper.selectByPrimaryKey(interestCoverageRatioKey).getIntercovratio());
 
         AssetLiabilityRatioKey assetLiabilityRatioKey = new AssetLiabilityRatio();
         assetLiabilityRatioKey.setStkcd(stkid);
         assetLiabilityRatioKey.setAcceper(time);
-        json.put("AssetLiabilityRatio", assetLiabilityRatioMapper.selectByPrimaryKey(assetLiabilityRatioKey));
+        json.put("AssetLiabilityRatio", assetLiabilityRatioMapper.selectByPrimaryKey(assetLiabilityRatioKey).getAssetabiratio());
 
         NetProfitGrowthRateKey netProfitGrowthRateKey = new NetProfitGrowthRate();
         netProfitGrowthRateKey.setStkcd(stkid);
         netProfitGrowthRateKey.setFiscalyear(time);
-        json.put("NetProfitGrowthRate", netProfitGrowthRateMapper.selectByPrimaryKey(netProfitGrowthRateKey));
+        json.put("NetProfitGrowthRate", netProfitGrowthRateMapper.selectByPrimaryKey(netProfitGrowthRateKey).getNetprogrowthrate());
 
         TotalProfitGrowthRateKey totalProfitGrowthRateKey = new TotalProfitGrowthRate();
         totalProfitGrowthRateKey.setStkcd(stkid);
         totalProfitGrowthRateKey.setFiscalyear(time);
-        json.put("TotalProfitGrowthRate", totalProfitGrowthRateMapper.selectByPrimaryKey(totalProfitGrowthRateKey));
+        json.put("TotalProfitGrowthRate", totalProfitGrowthRateMapper.selectByPrimaryKey(totalProfitGrowthRateKey).getTotalprogrowthrate());
 
         RevenueGrowthKey revenueGrowthKey = new RevenueGrowth();
         revenueGrowthKey.setStkcd(stkid);
         revenueGrowthKey.setFiscalyear(time);
-        json.put("RevenueGrowth", revenueGrowthMapper.selectByPrimaryKey(revenueGrowthKey));
+        json.put("RevenueGrowth", revenueGrowthMapper.selectByPrimaryKey(revenueGrowthKey).getGrowthrateofoperincome());
 
         TotalOperatingCostGrowthRateKey totalOperatingCostGrowthRateKey = new TotalOperatingCostGrowthRate();
         totalOperatingCostGrowthRateKey.setStkcd(stkid);
         totalOperatingCostGrowthRateKey.setFiscalyear(time);
-        json.put("TotalOperatingCostGrowthRate", totalOperatingCostGrowthRateMapper.selectByPrimaryKey(totalOperatingCostGrowthRateKey));
+        json.put("TotalOperatingCostGrowthRate", totalOperatingCostGrowthRateMapper.selectByPrimaryKey(totalOperatingCostGrowthRateKey).getTotalopercostgrowthrate());
 
         GrowthRateOfOwnersEquityKey growthRateOfOwnersEquityKey = new GrowthRateOfOwnersEquity();
         growthRateOfOwnersEquityKey.setStkcd(stkid);
         growthRateOfOwnersEquityKey.setFiscalyear(time);
-        json.put("GrowthRateOfOwnersEquity", growthRateOfOwnersEquityMapper.selectByPrimaryKey(growthRateOfOwnersEquityKey));
+        json.put("GrowthRateOfOwnersEquity", growthRateOfOwnersEquityMapper.selectByPrimaryKey(growthRateOfOwnersEquityKey).getGrowthrateofowner());
 
         TotalAssetsGrowthRateKey totalAssetsGrowthRateKey = new TotalAssetsGrowthRate();
         totalAssetsGrowthRateKey.setStkcd(stkid);
         totalAssetsGrowthRateKey.setFiscalyear(time);
-        json.put("TotalAssetsGrowthRate", totalAssetsGrowthRateMapper.selectByPrimaryKey(totalAssetsGrowthRateKey));
+        json.put("TotalAssetsGrowthRate", totalAssetsGrowthRateMapper.selectByPrimaryKey(totalAssetsGrowthRateKey).getTotalassetgrowthrate());
 
         OperatingProfitGrowthKey operatingProfitGrowthKey = new OperatingProfitGrowth();
         operatingProfitGrowthKey.setStkcd(stkid);
         operatingProfitGrowthKey.setFiscalyear(time);
-        json.put("OperatingProfitGrowth", operatingProfitGrowthMapper.selectByPrimaryKey(operatingProfitGrowthKey));
+        json.put("OperatingProfitGrowth", operatingProfitGrowthMapper.selectByPrimaryKey(operatingProfitGrowthKey).getGrowthrateofoperpro());
 
         NetProfitAndTotalProfitRatioKey netProfitAndTotalProfitRatioKey = new NetProfitAndTotalProfitRatio();
         netProfitAndTotalProfitRatioKey.setStkcd(stkid);
         netProfitAndTotalProfitRatioKey.setAcceper(time);
-        json.put("NetProfitAndTotalProfitRatio", netProfitAndTotalProfitRatioMapper.selectByPrimaryKey(netProfitAndTotalProfitRatioKey));
+        json.put("NetProfitAndTotalProfitRatio", netProfitAndTotalProfitRatioMapper.selectByPrimaryKey(netProfitAndTotalProfitRatioKey).getNetproandtotalproratio());
 
         TotalProfitPreTaxProfitRatioKey totalProfitPreTaxProfitRatioKey = new TotalProfitPreTaxProfitRatio();
         totalProfitPreTaxProfitRatioKey.setStkcd(stkid);
         totalProfitPreTaxProfitRatioKey.setAcceper(time);
-        json.put("TotalProfitPreTaxProfitRatio", totalProfitPreTaxProfitRatioMapper.selectByPrimaryKey(totalProfitPreTaxProfitRatioKey));
+        json.put("TotalProfitPreTaxProfitRatio", totalProfitPreTaxProfitRatioMapper.selectByPrimaryKey(totalProfitPreTaxProfitRatioKey).getTotalprocomparedtopretaxpro());
 
         OperatingMarginKey operatingMarginKey = new OperatingMargin();
         operatingMarginKey.setStkcd(stkid);
         operatingMarginKey.setAcceper(time);
-        json.put("OperatingMargin", operatingMarginMapper.selectByPrimaryKey(operatingMarginKey));
+        json.put("OperatingMargin", operatingMarginMapper.selectByPrimaryKey(operatingMarginKey).getBusigrossinterrate());
 
         OperatingCostRatioKey operatingCostRatioKey = new OperatingCostRatio();
         operatingCostRatioKey.setStkcd(stkid);
         operatingCostRatioKey.setAcceper(time);
-        json.put("OperatingCostRatio", operatingCostRatioMapper.selectByPrimaryKey(operatingCostRatioKey));
+        json.put("OperatingCostRatio", operatingCostRatioMapper.selectByPrimaryKey(operatingCostRatioKey).getOpercostrate());
 
         ProfitMarginOfTheCostAndExpenseKey profitMarginOfTheCostAndExpenseKey = new ProfitMarginOfTheCostAndExpense();
         profitMarginOfTheCostAndExpenseKey.setStkcd(stkid);
         profitMarginOfTheCostAndExpenseKey.setAcceper(time);
-        json.put("ProfitMarginOfTheCostAndExpense", profitMarginOfTheCostAndExpenseMapper.selectByPrimaryKey(profitMarginOfTheCostAndExpenseKey));
+        json.put("ProfitMarginOfTheCostAndExpense", profitMarginOfTheCostAndExpenseMapper.selectByPrimaryKey(profitMarginOfTheCostAndExpenseKey).getCostpromargin());
 
         RateOfReturnOnInvestmentKey rateOfReturnOnInvestmentKey = new RateOfReturnOnInvestment();
         rateOfReturnOnInvestmentKey.setStkcd(stkid);
         rateOfReturnOnInvestmentKey.setAcceper(time);
-        json.put("RateOfReturnOnInvestment", rateOfReturnOnInvestmentMapper.selectByPrimaryKey(rateOfReturnOnInvestmentKey));
+        json.put("RateOfReturnOnInvestment", rateOfReturnOnInvestmentMapper.selectByPrimaryKey(rateOfReturnOnInvestmentKey).getReturnoninvest());
 
         return json;
     }
