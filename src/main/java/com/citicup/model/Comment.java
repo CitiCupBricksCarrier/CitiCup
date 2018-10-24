@@ -178,4 +178,7 @@ public class Comment extends CommentKey implements Serializable {
         this.up = up;
         this.down = down;
     }
+
+    public Comment() {
+    }
 }
