@@ -31,12 +31,20 @@ public interface UserMapper {
      * @mbggenerated
      */
     @Insert({
-        "insert into user (uid, name, ",
-        "phoneNum, password, ",
-        "isVip, summary)",
-        "values (#{uid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
-        "#{phonenum,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
-        "#{isvip,jdbcType=TINYINT}, #{summary,jdbcType=VARCHAR})"
+        "insert into user (uid, phoneNum, ",
+        "password, isBinded, ",
+        "citiNum, name, sex, ",
+        "birthday, idNum, ",
+        "occupation, organization, ",
+        "contactNum, address, ",
+        "summary, credit)",
+        "values (#{uid,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR}, ",
+        "#{password,jdbcType=VARCHAR}, #{isbinded,jdbcType=TINYINT}, ",
+        "#{citinum,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, ",
+        "#{birthday,jdbcType=VARCHAR}, #{idnum,jdbcType=VARCHAR}, ",
+        "#{occupation,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, ",
+        "#{contactnum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, ",
+        "#{summary,jdbcType=VARCHAR}, #{credit,jdbcType=INTEGER})"
     })
     int insert(User record);
 
@@ -57,17 +65,27 @@ public interface UserMapper {
      */
     @Select({
         "select",
-        "uid, name, phoneNum, password, isVip, summary",
+        "uid, phoneNum, password, isBinded, citiNum, name, sex, birthday, idNum, occupation, ",
+        "organization, contactNum, address, summary, credit",
         "from user",
         "where uid = #{uid,jdbcType=VARCHAR}"
     })
     @Results({
         @Result(column="uid", property="uid", jdbcType=JdbcType.VARCHAR, id=true),
-        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="phoneNum", property="phonenum", jdbcType=JdbcType.VARCHAR),
         @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
-        @Result(column="isVip", property="isvip", jdbcType=JdbcType.TINYINT),
-        @Result(column="summary", property="summary", jdbcType=JdbcType.VARCHAR)
+        @Result(column="isBinded", property="isbinded", jdbcType=JdbcType.TINYINT),
+        @Result(column="citiNum", property="citinum", jdbcType=JdbcType.VARCHAR),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+        @Result(column="sex", property="sex", jdbcType=JdbcType.CHAR),
+        @Result(column="birthday", property="birthday", jdbcType=JdbcType.VARCHAR),
+        @Result(column="idNum", property="idnum", jdbcType=JdbcType.VARCHAR),
+        @Result(column="occupation", property="occupation", jdbcType=JdbcType.VARCHAR),
+        @Result(column="organization", property="organization", jdbcType=JdbcType.VARCHAR),
+        @Result(column="contactNum", property="contactnum", jdbcType=JdbcType.VARCHAR),
+        @Result(column="address", property="address", jdbcType=JdbcType.VARCHAR),
+        @Result(column="summary", property="summary", jdbcType=JdbcType.VARCHAR),
+        @Result(column="credit", property="credit", jdbcType=JdbcType.INTEGER)
     })
     User selectByPrimaryKey(String uid);
 
@@ -88,11 +106,20 @@ public interface UserMapper {
      */
     @Update({
         "update user",
-        "set name = #{name,jdbcType=VARCHAR},",
-          "phoneNum = #{phonenum,jdbcType=VARCHAR},",
+        "set phoneNum = #{phonenum,jdbcType=VARCHAR},",
           "password = #{password,jdbcType=VARCHAR},",
-          "isVip = #{isvip,jdbcType=TINYINT},",
-          "summary = #{summary,jdbcType=VARCHAR}",
+          "isBinded = #{isbinded,jdbcType=TINYINT},",
+          "citiNum = #{citinum,jdbcType=VARCHAR},",
+          "name = #{name,jdbcType=VARCHAR},",
+          "sex = #{sex,jdbcType=CHAR},",
+          "birthday = #{birthday,jdbcType=VARCHAR},",
+          "idNum = #{idnum,jdbcType=VARCHAR},",
+          "occupation = #{occupation,jdbcType=VARCHAR},",
+          "organization = #{organization,jdbcType=VARCHAR},",
+          "contactNum = #{contactnum,jdbcType=VARCHAR},",
+          "address = #{address,jdbcType=VARCHAR},",
+          "summary = #{summary,jdbcType=VARCHAR},",
+          "credit = #{credit,jdbcType=INTEGER}",
         "where uid = #{uid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(User record);

@@ -26,10 +26,6 @@ public class UserSqlProvider {
             VALUES("uid", "#{uid,jdbcType=VARCHAR}");
         }
         
-        if (record.getName() != null) {
-            VALUES("name", "#{name,jdbcType=VARCHAR}");
-        }
-        
         if (record.getPhonenum() != null) {
             VALUES("phoneNum", "#{phonenum,jdbcType=VARCHAR}");
         }
@@ -38,12 +34,52 @@ public class UserSqlProvider {
             VALUES("password", "#{password,jdbcType=VARCHAR}");
         }
         
-        if (record.getIsvip() != null) {
-            VALUES("isVip", "#{isvip,jdbcType=TINYINT}");
+        if (record.getIsbinded() != null) {
+            VALUES("isBinded", "#{isbinded,jdbcType=TINYINT}");
+        }
+        
+        if (record.getCitinum() != null) {
+            VALUES("citiNum", "#{citinum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getName() != null) {
+            VALUES("name", "#{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSex() != null) {
+            VALUES("sex", "#{sex,jdbcType=CHAR}");
+        }
+        
+        if (record.getBirthday() != null) {
+            VALUES("birthday", "#{birthday,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getIdnum() != null) {
+            VALUES("idNum", "#{idnum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOccupation() != null) {
+            VALUES("occupation", "#{occupation,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOrganization() != null) {
+            VALUES("organization", "#{organization,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContactnum() != null) {
+            VALUES("contactNum", "#{contactnum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAddress() != null) {
+            VALUES("address", "#{address,jdbcType=VARCHAR}");
         }
         
         if (record.getSummary() != null) {
             VALUES("summary", "#{summary,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCredit() != null) {
+            VALUES("credit", "#{credit,jdbcType=INTEGER}");
         }
         
         return SQL();
@@ -59,10 +95,6 @@ public class UserSqlProvider {
         BEGIN();
         UPDATE("user");
         
-        if (record.getName() != null) {
-            SET("name = #{name,jdbcType=VARCHAR}");
-        }
-        
         if (record.getPhonenum() != null) {
             SET("phoneNum = #{phonenum,jdbcType=VARCHAR}");
         }
@@ -71,12 +103,52 @@ public class UserSqlProvider {
             SET("password = #{password,jdbcType=VARCHAR}");
         }
         
-        if (record.getIsvip() != null) {
-            SET("isVip = #{isvip,jdbcType=TINYINT}");
+        if (record.getIsbinded() != null) {
+            SET("isBinded = #{isbinded,jdbcType=TINYINT}");
+        }
+        
+        if (record.getCitinum() != null) {
+            SET("citiNum = #{citinum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getName() != null) {
+            SET("name = #{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSex() != null) {
+            SET("sex = #{sex,jdbcType=CHAR}");
+        }
+        
+        if (record.getBirthday() != null) {
+            SET("birthday = #{birthday,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getIdnum() != null) {
+            SET("idNum = #{idnum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOccupation() != null) {
+            SET("occupation = #{occupation,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOrganization() != null) {
+            SET("organization = #{organization,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContactnum() != null) {
+            SET("contactNum = #{contactnum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAddress() != null) {
+            SET("address = #{address,jdbcType=VARCHAR}");
         }
         
         if (record.getSummary() != null) {
             SET("summary = #{summary,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCredit() != null) {
+            SET("credit = #{credit,jdbcType=INTEGER}");
         }
         
         WHERE("uid = #{uid,jdbcType=VARCHAR}");

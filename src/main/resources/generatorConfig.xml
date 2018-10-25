@@ -16,7 +16,7 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://47.100.14.24:3306/citicup" userId="root" password="DebugTeam">
+                        connectionURL="jdbc:mysql://localhost/citicup" userId="root" password="DebugTeam">
         </jdbcConnection>
         <javaTypeResolver>
             <!-- This property is used to specify whether MyBatis Generator should
@@ -24,7 +24,7 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
         <!-- 生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="com.citicup.model.dataDisplay"
+        <javaModelGenerator targetPackage="com.citicup.model"
                             targetProject="target">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
@@ -36,8 +36,8 @@
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置 -->
         <!--ANNOTATEDMAPPER or XMLMAPPER-->
-        <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.citicup.dao.dataDisplay" implementationPackage="com.citicup.dao.dataDisplay.impl"  targetProject="target">
+        <javaClientGenerator type="ANNOTATEDMAPPER"
+                             targetPackage="com.citicup.dao" implementationPackage="com.citicup.dao"  targetProject="target">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -482,10 +482,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <table tableName="资产负债率" domainObjectName="AssetLiabilityRatio"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="资产负债率" domainObjectName="AssetLiabilityRatio"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
         <!--<table tableName="速动比率" domainObjectName="QuickRatio"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
@@ -526,10 +526,10 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
-        <!--<table tableName="user" domainObjectName="User"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
+        <table tableName="user" domainObjectName="User"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
         <!--<table tableName="graph" domainObjectName="Graph"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="sfalse"-->
