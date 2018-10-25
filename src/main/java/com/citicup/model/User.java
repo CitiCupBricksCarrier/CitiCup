@@ -585,4 +585,15 @@ public class User implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public User(String uid, String name, String phonenum, String password, String summary) {
+        this.uid = uid;
+        this.name = name;
+        this.phonenum = phonenum;
+        this.password = password;
+        this.summary = summary;
+    }
+
+    public User() {
+    }
 }
