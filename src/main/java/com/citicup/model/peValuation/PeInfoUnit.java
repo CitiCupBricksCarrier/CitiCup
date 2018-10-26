@@ -5,16 +5,16 @@ import java.util.List;
 public class PeInfoUnit {
     private double pe;
     private String pePercentile;
-    private String timeToMarket;
+    private String valuationTime;
     private String evaluation;
     private double forecast;
     private List<CompanyPeInfo> peRank;
 
-    public PeInfoUnit(double pe, String pePercentile, String evaluation, String timeToMarket, double forecast, List<CompanyPeInfo> list) {
+    public PeInfoUnit(double pe, String pePercentile, String evaluation, String valuationTime, double forecast, List<CompanyPeInfo> list) {
         this.pe = pe;
         this.pePercentile = pePercentile;
         this.evaluation = evaluation;
-        this.timeToMarket = timeToMarket;
+        this.valuationTime = valuationTime;
         this.forecast = forecast;
         this.peRank = list;
     }
@@ -28,7 +28,7 @@ public class PeInfoUnit {
     }
 
     public String getTimeToMarket() {
-        return timeToMarket;
+        return valuationTime;
     }
 
     public String getEvaluation() {

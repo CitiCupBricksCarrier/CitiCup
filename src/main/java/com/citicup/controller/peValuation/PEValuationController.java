@@ -33,11 +33,11 @@ public class PEValuationController {
     public String getPEValuationInfo(@RequestParam String stkcd) {
        double pe = Double.parseDouble(getLatestPEValueByStkcd(stkcd));
        String pePercentile = getPEValuationPercentile(stkcd);
-       String timeToMarket = getValuationTime();
+       String valuationTime = getValuationTime();
        String evaluation = getPEValuationEstimate(stkcd);
        double forecast = Double.parseDouble(getExpectedSharePrice(stkcd));
        List<CompanyPeInfo> list = getPEValuationOrderList();
-       return JSONObject.toJSONString(new PeInfoUnit(pe, pePercentile, timeToMarket, evaluation, forecast, list));
+       return JSONObject.toJSONString(new PeInfoUnit(pe, pePercentile, evaluation, valuationTime, forecast, list));
     }
 
     /**
