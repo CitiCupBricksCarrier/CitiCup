@@ -29,121 +29,15 @@ public class PEValuationController {
     @Autowired
     private CompanyBasicInformationMapper companyBasicInformationMapper;
 
-    /**
-     * 根据Stkcd(股票id)查找公司的PE值
-     * @return
-     */
-    @RequestMapping("/getLatestPEValue")
-    public String getLatestPEValueByStkcd(@RequestParam String stkcd) {
-        int code = Integer.parseInt(stkcd);
-        stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
-        double pe = Double.parseDouble(stockPE.getPe());
-        return JSONObject.toJSONString(String.format("%.2f", pe));
-    }
-
-    /**
-     * 获取估值时间(获取当天时间)
-     * @return
-     */
-    @RequestMapping("/getValuationTime")
-    public String getValuationTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        return JSON.toJSONString(sdf.format(date));
-    }
-
-    /**
-     * 获取指定公司的PE值百分位(默认升序)
-     * @return
-     */
-    @RequestMapping("/getPEValuationPercentile")
-    public String getPEValuationPercentile(@RequestParam String stkcd) {
-        int code = Integer.parseInt(stkcd);
-        List<stockPE> list = getPEOrderList();
-        int index = 0;
-        for(int i = 0; i<list.size(); i++) {
-            if(list.get(i).getStkcd().equals(String.valueOf(code))) {
-                index = i;
-                break;
-            }
-        }
-        double percentile = (index + 1.0) / list.size();
-        String result = String.format("%.2f", percentile * 100) + "%";
-        return JSONObject.toJSONString(result);
-    }
-
-    /**
-     * 获取指定公司的PE值估值评价(默认升序)
-     * @return
-     */
-    @RequestMapping("/getPEValuationEstimate")
-    public String getPEValuationEstimate(@RequestParam String stkcd) {
-        int code = Integer.parseInt(stkcd);
-        List<stockPE> list = getPEOrderList();
-        int index = 0;
-        for(int i = 0; i<list.size(); i++) {
-            if(list.get(i).getStkcd().equals(String.valueOf(code))) {
-                index = i;
-                break;
-            }
-        }
-        double percentile = (index + 1.0) / list.size();
-        if(0 <= percentile && percentile < 0.33) {
-            return "估值较低";
-        }
-        else if(0.33 <= percentile && percentile < 0.66) {
-            return "估值适中";
-        }
-        else {
-            return "估值较高";
-        }
-    }
-
-    /**
-     * 获取公司PE值排序序列(默认升序)
-     * @return
-     */
-    @RequestMapping("/getPEValuationOrderList")
-    public String getPEValuationOrderList() {
-        List<stockPE> rankList = getPEOrderList();
-        List<CompanyPeInfo> list  = new ArrayList<>();
-        for(int i = 0; i<rankList.size(); i++) {
-            stockPE stockPE = rankList.get(i);
-            String stkcd = stockPE.getStkcd();
-            int len = stkcd.length();
-            if(len < 6) {
-                for(int j = 0; j<6-len; j++) {
-                    stkcd = "0" + stkcd;
-                }
-            }
-
-            String compName = companyBasicInformationMapper.selectByPrimaryKey(stkcd).getCompname();
-            CompanyPeInfo cmp = new CompanyPeInfo(compName, stkcd, Double.parseDouble(stockPE.getPe()), getPEValuationEstimate(stkcd));
-            list.add(cmp);
-        }
-        return JSONObject.toJSONString(list);
-    }
-
-    /**
-     * 公司PE值排序序列(默认升序)
-     * @return
-     */
-    private List<stockPE> getPEOrderList() {
-        List<stockPE> list = stockPEMapper.getAll();
-        list.sort(new Comparator<stockPE>() {
-            @Override
-            public int compare(stockPE s1, stockPE s2) {
-                double diff = Double.parseDouble(s2.getPe()) - Double.parseDouble(s1.getPe());
-                if (diff > 0) {
-                    return -1;
-                } else if (diff < 0) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-        return list;
+    @RequestMapping("/demo")
+    public String getPEValuationInfo(@RequestParam String stkcd) {
+       double pe = Double.parseDouble(getLatestPEValueByStkcd(stkcd));
+       String pePercentile = getPEValuationPercentile(stkcd);
+       String timeToMarket = getValuationTime();
+       String evaluation = getPEValuationEstimate(stkcd);
+       double forecast = Double.parseDouble(getExpectedSharePrice(stkcd));
+       List<CompanyPeInfo> list = getPEValuationOrderList();
+       return JSONObject.toJSONString(new PeInfoUnit(pe, pePercentile, timeToMarket, evaluation, forecast, list));
     }
 
     /**
@@ -189,11 +83,122 @@ public class PEValuationController {
     }
 
     /**
+     * 根据Stkcd(股票id)查找公司的PE值
+     * @return
+     */
+    private String getLatestPEValueByStkcd(@RequestParam String stkcd) {
+        int code = Integer.parseInt(stkcd);
+        stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
+        double pe = Double.parseDouble(stockPE.getPe());
+        return String.format("%.2f", pe);
+    }
+
+    /**
+     * 获取估值时间(获取当天时间)
+     * @return
+     */
+    private String getValuationTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return sdf.format(date);
+    }
+
+    /**
+     * 获取指定公司的PE值百分位(默认升序)
+     * @return
+     */
+    private String getPEValuationPercentile(@RequestParam String stkcd) {
+        int code = Integer.parseInt(stkcd);
+        List<stockPE> list = getPEOrderList();
+        int index = 0;
+        for(int i = 0; i<list.size(); i++) {
+            if(list.get(i).getStkcd().equals(String.valueOf(code))) {
+                index = i;
+                break;
+            }
+        }
+        double percentile = (index + 1.0) / list.size();
+        String result = String.format("%.2f", percentile * 100) + "%";
+        return result;
+    }
+
+    /**
+     * 获取指定公司的PE值估值评价(默认升序)
+     * @return
+     */
+    private String getPEValuationEstimate(@RequestParam String stkcd) {
+        int code = Integer.parseInt(stkcd);
+        List<stockPE> list = getPEOrderList();
+        int index = 0;
+        for(int i = 0; i<list.size(); i++) {
+            if(list.get(i).getStkcd().equals(String.valueOf(code))) {
+                index = i;
+                break;
+            }
+        }
+        double percentile = (index + 1.0) / list.size();
+        if(0 <= percentile && percentile < 0.33) {
+            return "估值较低";
+        }
+        else if(0.33 <= percentile && percentile < 0.66) {
+            return "估值适中";
+        }
+        else {
+            return "估值较高";
+        }
+    }
+
+    /**
+     * 获取公司PE值排序序列(默认升序)
+     * @return
+     */
+    private List<CompanyPeInfo> getPEValuationOrderList() {
+        List<stockPE> rankList = getPEOrderList();
+        List<CompanyPeInfo> list  = new ArrayList<>();
+        for(int i = 0; i<rankList.size(); i++) {
+            stockPE stockPE = rankList.get(i);
+            String stkcd = stockPE.getStkcd();
+            int len = stkcd.length();
+            if(len < 6) {
+                for(int j = 0; j<6-len; j++) {
+                    stkcd = "0" + stkcd;
+                }
+            }
+
+            String compName = companyBasicInformationMapper.selectByPrimaryKey(stkcd).getCompname();
+            CompanyPeInfo cmp = new CompanyPeInfo(compName, stkcd, Double.parseDouble(stockPE.getPe()), getPEValuationEstimate(stkcd));
+            list.add(cmp);
+        }
+        return list;
+    }
+
+    /**
+     * 公司PE值排序序列(默认升序)
+     * @return
+     */
+    private List<stockPE> getPEOrderList() {
+        List<stockPE> list = stockPEMapper.getAll();
+        list.sort(new Comparator<stockPE>() {
+            @Override
+            public int compare(stockPE s1, stockPE s2) {
+                double diff = Double.parseDouble(s2.getPe()) - Double.parseDouble(s1.getPe());
+                if (diff > 0) {
+                    return -1;
+                } else if (diff < 0) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        return list;
+    }
+
+    /**
      * 获取该公司的预测股价(目标价=PE倍数×EPS预测值)
      * @return
      */
-    @RequestMapping("/getExpectedSharePrice")
-    public String getExpectedSharePrice(@RequestParam String stkcd) {
+    private String getExpectedSharePrice(@RequestParam String stkcd) {
         int code = Integer.parseInt(stkcd);
         stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
         if(null == stockPE) {
@@ -205,7 +210,7 @@ public class PEValuationController {
         }
         double expectedEPS = getExpectedEPS(stkcd);
         double expectedSharePrice = pe * expectedEPS;
-        return JSONObject.toJSONString(String.format("%.4f", expectedSharePrice));
+        return String.format("%.4f", expectedSharePrice);
     }
 
     private double getExpectedEPS(String stkcd) {
