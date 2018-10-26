@@ -270,10 +270,9 @@ public class SentimentAnalysisController {
 
     @RequestMapping("/sentimentAnalysis")
     public String sentimentAnalysis(@RequestParam String stkid){
-        NewsAPIHelper apiHelper = new NewsAPIHelper();
-        String stkName = companyBasicInformationMapper.selectByPrimaryKey(stkid).getCompname();
+        News n = newsMapper.selectByPrimaryKey(stkid);
 
-        JSONObject retJson = apiHelper.getNewsProcess(stkid, stkName);
+        JSONObject retJson = JSONObject.parseObject(newsMapper.selectByPrimaryKey(stkid).getInfo());
         JSONArray posList = retJson.getJSONArray("posList");
         JSONArray wordList = retJson.getJSONArray("wordList");
         List<String> sentimentIndexList = new ArrayList<>();

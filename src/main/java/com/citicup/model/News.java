@@ -165,4 +165,10 @@ public class News implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public News(String stkcd, String compname, String info) {
+        this.stkcd = stkcd;
+        this.compname = compname;
+        this.info = info;
+    }
 }
