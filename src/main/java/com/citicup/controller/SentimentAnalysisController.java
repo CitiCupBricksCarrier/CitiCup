@@ -2,7 +2,9 @@ package com.citicup.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.citicup.dao.NewsMapper;
 import com.citicup.dao.dataDisplay.*;
+import com.citicup.model.News;
 import com.citicup.model.dataDisplay.*;
 import com.citicup.util.NewsAPIHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -240,6 +242,31 @@ public class SentimentAnalysisController {
 
     @Autowired
     private CompanyBasicInformationMapper companyBasicInformationMapper;
+
+    @Autowired
+    public NewsMapper newsMapper;
+
+    @RequestMapping("/download")
+    public String download() {
+        NewsAPIHelper newsAPIHelper = new NewsAPIHelper();
+        List<CompanyBasicInformation> list = companyBasicInformationMapper.getAll();
+        System.out.println("begin");
+        for (int i = 202; i < 203; i++) {
+            try {
+                CompanyBasicInformation companyBasicInformation = list.get(i);
+                System.out.println("第" + (i+1) + "条公司舆情开始获取");
+                String news = newsAPIHelper.getNewsProcess(companyBasicInformation.getCompname(), companyBasicInformation.getStkcd()).toString();
+                System.out.println("第" + (i+1) + "条公司舆情开始插入");
+                newsMapper.insert(new News(companyBasicInformation.getCompname(), companyBasicInformation.getStkcd(), news));
+                System.out.println("第" + (i+1) + "条公司舆情插入成功");
+            } catch (ClassCastException e) {
+//                e.printStackTrace();
+                System.out.println("第" + (i+1) + "is dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+        }
+        System.out.println("done.");
+        return "success";
+    }
 
     @RequestMapping("/sentimentAnalysis")
     public String sentimentAnalysis(@RequestParam String stkid){

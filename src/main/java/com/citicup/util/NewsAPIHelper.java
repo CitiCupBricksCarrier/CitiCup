@@ -2,6 +2,11 @@ package com.citicup.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.citicup.dao.NewsMapper;
+import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
+import com.citicup.model.News;
+import com.citicup.model.dataDisplay.CompanyBasicInformation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -96,7 +101,7 @@ public class NewsAPIHelper {
             }
             in.close();
             int re = process.waitFor();
-            System.out.println(re);
+//            System.out.println(re);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,9 +120,10 @@ public class NewsAPIHelper {
         String servicePath = "http://www.digudata.com:8082/data/find";
 
         //关键字
-        String key = "\"" + compName + "\" or \"" + stkcd + "\"";
+        String key = "\"" + compName.replaceAll("\\(|\\)", "") + "\" or \"" + stkcd + "\"";
         String[] timeGap = getTimeGap();
-        String token = "b9edb973-c798-4a98-924f-f21c7a05a572";
+//        0dbb272b-b477-4a00-b67b-bbce3397ad0b
+        String token = "dc01df0b-e0bb-43d8-9d9a-b1f4d67aae62";
 
         // 设置参数
         Map params = new HashMap();
