@@ -27,7 +27,7 @@ public class PeInfoUnit {
         return pePercentile;
     }
 
-    public String getTimeToMarket() {
+    public String getValuationTime() {
         return valuationTime;
     }
 
