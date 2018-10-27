@@ -36,7 +36,7 @@ public class PEValuationController {
        String valuationTime = getValuationTime();
        String evaluation = getPEValuationEstimate(stkcd);
        double forecast = Double.parseDouble(getExpectedSharePrice(stkcd));
-       List<CompanyPeInfo> list = getPERank(0); // 默认获取第一页顺序序列
+       List<CompanyPeInfo> list = getPEOrderList(0); // 默认获取第一页顺序序列
        return JSONObject.toJSONString(new PeInfoUnit(pe, pePercentile, evaluation, valuationTime, forecast, list));
     }
 
@@ -157,11 +157,14 @@ public class PEValuationController {
      * @return
      */
     @RequestMapping("/getPERank")
-    public List<CompanyPeInfo> getPERank(@RequestParam int page) {
+    public String getPERank(@RequestParam int page) {
+        return JSONObject.toJSONString(getPEOrderList(page));
+    }
+
+    private List<CompanyPeInfo> getPEOrderList(int page) {
         List<stockPE> rankList = stockPEMapper.getSorted();
         List<CompanyPeInfo> list  = new ArrayList<>();
         final int pageSize = 20;
-        //long startTime=System.nanoTime();
         for(int i = page*20; i < (page+1)*pageSize && i<rankList.size(); i++) {
             stockPE stockPE = rankList.get(i);
             String stkcd = stockPE.getStkcd();
@@ -176,8 +179,6 @@ public class PEValuationController {
             CompanyPeInfo cmp = new CompanyPeInfo(compName, stkcd, Double.parseDouble(stockPE.getPe()), getPEValuationEstimate(stkcd));
             list.add(cmp);
         }
-//        long endTime=System.nanoTime();
-//        System.out.println("当前程序耗时："+(endTime-startTime)+"ns");
         return list;
     }
 
