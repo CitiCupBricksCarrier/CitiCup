@@ -38,10 +38,12 @@ public interface ArticleMapper {
     @Insert({
         "insert into article (id, graphId, ",
         "author, time, title, ",
-        "watchNum, text)",
+        "watchNum, up, down, ",
+        "text)",
         "values (#{id,jdbcType=VARCHAR}, #{graphid,jdbcType=VARCHAR}, ",
         "#{author,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, ",
-        "#{watchnum,jdbcType=VARCHAR}, #{text,jdbcType=LONGVARCHAR})"
+        "#{watchnum,jdbcType=VARCHAR}, #{up,jdbcType=INTEGER}, #{down,jdbcType=INTEGER}, ",
+        "#{text,jdbcType=LONGVARCHAR})"
     })
     int insert(Article record);
 
@@ -62,7 +64,7 @@ public interface ArticleMapper {
      */
     @Select({
         "select",
-        "id, graphId, author, time, title, watchNum, text",
+        "id, graphId, author, time, title, watchNum, up, down, text",
         "from article",
         "where id = #{id,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}",
@@ -75,6 +77,8 @@ public interface ArticleMapper {
         @Result(column="time", property="time", jdbcType=JdbcType.VARCHAR),
         @Result(column="title", property="title", jdbcType=JdbcType.VARCHAR),
         @Result(column="watchNum", property="watchnum", jdbcType=JdbcType.VARCHAR),
+        @Result(column="up", property="up", jdbcType=JdbcType.INTEGER),
+        @Result(column="down", property="down", jdbcType=JdbcType.INTEGER),
         @Result(column="text", property="text", jdbcType=JdbcType.LONGVARCHAR)
     })
     Article selectByPrimaryKey(ArticleKey key);
@@ -99,6 +103,8 @@ public interface ArticleMapper {
         "set time = #{time,jdbcType=VARCHAR},",
           "title = #{title,jdbcType=VARCHAR},",
           "watchNum = #{watchnum,jdbcType=VARCHAR},",
+          "up = #{up,jdbcType=INTEGER},",
+          "down = #{down,jdbcType=INTEGER},",
           "text = #{text,jdbcType=LONGVARCHAR}",
         "where id = #{id,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}",
@@ -116,7 +122,9 @@ public interface ArticleMapper {
         "update article",
         "set time = #{time,jdbcType=VARCHAR},",
           "title = #{title,jdbcType=VARCHAR},",
-          "watchNum = #{watchnum,jdbcType=VARCHAR}",
+          "watchNum = #{watchnum,jdbcType=VARCHAR},",
+          "up = #{up,jdbcType=INTEGER},",
+          "down = #{down,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=VARCHAR}",
           "and graphId = #{graphid,jdbcType=VARCHAR}",
           "and author = #{author,jdbcType=VARCHAR}"

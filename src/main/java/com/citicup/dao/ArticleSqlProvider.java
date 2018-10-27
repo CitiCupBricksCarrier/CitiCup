@@ -46,6 +46,14 @@ public class ArticleSqlProvider {
             VALUES("watchNum", "#{watchnum,jdbcType=VARCHAR}");
         }
         
+        if (record.getUp() != null) {
+            VALUES("up", "#{up,jdbcType=INTEGER}");
+        }
+        
+        if (record.getDown() != null) {
+            VALUES("down", "#{down,jdbcType=INTEGER}");
+        }
+        
         if (record.getText() != null) {
             VALUES("text", "#{text,jdbcType=LONGVARCHAR}");
         }
@@ -73,6 +81,14 @@ public class ArticleSqlProvider {
         
         if (record.getWatchnum() != null) {
             SET("watchNum = #{watchnum,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUp() != null) {
+            SET("up = #{up,jdbcType=INTEGER}");
+        }
+        
+        if (record.getDown() != null) {
+            SET("down = #{down,jdbcType=INTEGER}");
         }
         
         if (record.getText() != null) {
