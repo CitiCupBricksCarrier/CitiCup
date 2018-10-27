@@ -8,6 +8,7 @@ import com.citicup.util.CitiAPIHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.print.attribute.standard.JobOriginatingUserName;
@@ -24,6 +25,24 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @RequestMapping("signup")
+    public String signup(@RequestParam String id, @RequestParam String name,
+                         @RequestParam String password){
+        User user = new User(id, name, password);
+        userMapper.insert(user);
+
+        return "success";
+    }
+
+    @RequestMapping("creditsCharge")
+    public synchronized String creditsCharge(@RequestParam String id, @RequestParam int credits){
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setCredit(user.getCredit() + credits);
+        userMapper.updateByPrimaryKey(user);
+
+        return "success";
+    }
 
     @RequestMapping("getLoginParams")
     public String getLoginParams() throws IOException{
@@ -68,7 +87,7 @@ public class UserController {
             User user = userMapper.selectByPrimaryKey(username);
             //在数据库创建此用户
             if (user == null){
-                User usert = new User(username, username, "phonenum", "citicupuser", "这个用户很懒，还没有填写简介");
+                User usert = new User(username, username, "citicupuser");
                 userMapper.insert(usert);
             }
         }
