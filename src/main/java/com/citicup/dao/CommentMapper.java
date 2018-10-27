@@ -104,6 +104,6 @@ public interface CommentMapper {
     })
     int updateByPrimaryKey(Comment record);
 
-    @Select({"SELECT * FROM comment WHERE graphid = #{graphId, jdbcType=VARCHAR}"})
-    List<Comment> getAllById(String graphId);
+    @Select({"SELECT * FROM comment WHERE articleId = #{articleId, jdbcType=VARCHAR}"})
+    List<Comment> getAllById(String articleId);
 }
