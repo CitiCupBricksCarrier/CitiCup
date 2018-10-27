@@ -113,9 +113,10 @@ public interface EdgeMapper {
     @Select({"SELECT * FROM edge WHERE graphid = #{graphId, jdbcType=VARCHAR}"})
     List<Edge> getAllById(String graphId);
 
-    @Insert({"<script> <foreach collection=\"list\" item=\"item\" index=\"index\"  separator=\",\"> " +
-            "INSERT INTO edge(stkcda, stkcdb, graphid, status, propagateproba, propagateprobb, fund, id, begin, end) VALUES " +
-            "(#{item.stkcda},#{item.stkcdb},#{item.graphid},#{item.status},#{item.propagateproba},#{item.propagateprobb},#{item.fund},#{item.id},#{item.begin},#{item.end})" +
+    @Insert({"<script> INSERT INTO edge(stkcda, stkcdb, graphid, status, propagateproba, propagateprobb, fund, id, begin, end) " +
+            "VALUES " +
+            "<foreach collection=\"list\" item=\"item\" index=\"index\"  separator=\",\"> "+
+            "(#{item.stkcda},#{item.stkcdb},#{item.graphid},#{item.status},#{item.propagateproba},#{item.propagateprobb},#{item.fund},#{item.id},#{item.begin},#{item.end})"+
             "</foreach> </script>"})
     int saveEdgeList(@Param("list") List<Edge> list);
 
