@@ -56,4 +56,7 @@ public interface stockPEMapper {
 
     @Select("SELECT * FROM citicup.stockpe")
     List<stockPE> getAll();
+
+    @Select("SELECT * FROM citicup.stockpe AS stockpe ORDER BY stockpe.pe+0.0 ASC")
+    List<stockPE> getSorted();
 }
