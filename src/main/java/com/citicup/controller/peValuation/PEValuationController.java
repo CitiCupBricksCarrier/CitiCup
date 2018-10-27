@@ -86,7 +86,8 @@ public class PEValuationController {
      * 根据Stkcd(股票id)查找公司的PE值
      * @return
      */
-    private String getLatestPEValueByStkcd(@RequestParam String stkcd) {
+    @RequestMapping("/getPEValue")
+    public String getLatestPEValueByStkcd(@RequestParam String stkcd) {
         int code = Integer.parseInt(stkcd);
         stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
         double pe = Double.parseDouble(stockPE.getPe());
@@ -97,7 +98,8 @@ public class PEValuationController {
      * 获取估值时间(获取当天时间)
      * @return
      */
-    private String getValuationTime() {
+    @RequestMapping("/getValuationTime")
+    public String getValuationTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         return sdf.format(date);
@@ -107,9 +109,10 @@ public class PEValuationController {
      * 获取指定公司的PE值百分位(默认升序)
      * @return
      */
-    private String getPEValuationPercentile(@RequestParam String stkcd) {
+    @RequestMapping("/getPEValuationPercentile")
+    public String getPEValuationPercentile(@RequestParam String stkcd) {
         int code = Integer.parseInt(stkcd);
-        List<stockPE> list = getPEOrderList();
+        List<stockPE> list = stockPEMapper.getSorted();
         int index = 0;
         for(int i = 0; i<list.size(); i++) {
             if(list.get(i).getStkcd().equals(String.valueOf(code))) {
@@ -126,9 +129,10 @@ public class PEValuationController {
      * 获取指定公司的PE值估值评价(默认升序)
      * @return
      */
-    private String getPEValuationEstimate(@RequestParam String stkcd) {
+    @RequestMapping("getPEValuationEstimate")
+    public String getPEValuationEstimate(@RequestParam String stkcd) {
         int code = Integer.parseInt(stkcd);
-        List<stockPE> list = getPEOrderList();
+        List<stockPE> list = stockPEMapper.getSorted();
         int index = 0;
         for(int i = 0; i<list.size(); i++) {
             if(list.get(i).getStkcd().equals(String.valueOf(code))) {
@@ -152,8 +156,9 @@ public class PEValuationController {
      * 获取公司PE值排序序列(默认升序)
      * @return
      */
-    private List<CompanyPeInfo> getPEValuationOrderList() {
-        List<stockPE> rankList = getPEOrderList();
+    @RequestMapping("/getPERank")
+    public List<CompanyPeInfo> getPEValuationOrderList() {
+        List<stockPE> rankList = stockPEMapper.getSorted();
         List<CompanyPeInfo> list  = new ArrayList<>();
         for(int i = 0; i<rankList.size(); i++) {
             stockPE stockPE = rankList.get(i);
@@ -173,36 +178,15 @@ public class PEValuationController {
     }
 
     /**
-     * 公司PE值排序序列(默认升序)
-     * @return
-     */
-    private List<stockPE> getPEOrderList() {
-        List<stockPE> list = stockPEMapper.getAll();
-        list.sort(new Comparator<stockPE>() {
-            @Override
-            public int compare(stockPE s1, stockPE s2) {
-                double diff = Double.parseDouble(s2.getPe()) - Double.parseDouble(s1.getPe());
-                if (diff > 0) {
-                    return -1;
-                } else if (diff < 0) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-        return list;
-    }
-
-    /**
      * 获取该公司的预测股价(目标价=PE倍数×EPS预测值)
      * @return
      */
-    private String getExpectedSharePrice(@RequestParam String stkcd) {
+    @RequestMapping("/getExpectedSharePrice")
+    public String getExpectedSharePrice(@RequestParam String stkcd) {
         int code = Integer.parseInt(stkcd);
         stockPE stockPE = stockPEMapper.selectByPrimaryKey(String.valueOf(code));
         if(null == stockPE) {
-            return "无该公司收盘价数据";
+            return "无该公司相关数据";
         }
         double pe = Double.parseDouble(stockPE.getPe());
         if(getExpectedEPS(stkcd) == -1.0) {
