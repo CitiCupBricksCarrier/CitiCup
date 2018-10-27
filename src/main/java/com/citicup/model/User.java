@@ -586,14 +586,25 @@ public class User implements Serializable {
         return sb.toString();
     }
 
-    public User(String uid, String name, String phonenum, String password, String summary) {
+    public User(String uid, String name, String password) {
         this.uid = uid;
-        this.name = name;
-        this.phonenum = phonenum;
+        this.phonenum = "";
         this.password = password;
-        this.summary = summary;
+        this.isbinded = (byte) 0;
+        this.citinum = "";
+        this.name = name;
+        this.sex = "";
+        this.birthday = "";
+        this.idnum = "";
+        this.occupation = "";
+        this.organization = "";
+        this.contactnum = "";
+        this.address = "";
+        this.summary = "这个用户很懒，什么也没留下";
+        this.credit = 5000;
     }
 
     public User() {
     }
+
 }
