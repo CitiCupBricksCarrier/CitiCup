@@ -137,16 +137,22 @@ public class ArticleController {
         return "success";
     }
 
-//    文章没有点赞
-//    @RequestMapping("/likeArcticle")
-//    public String likeArcticle(@RequestParam String id, @RequestParam String graphid,
-//                                         @RequestParam String author){
-//
-//        Article article = articleMapper.selectByPrimaryKey(new ArticleKey(){
-//            {setId(id);setGraphid(graphid);setAuthor(author);}
-//        });
-//        article.setWatchnum((Integer.parseInt(article.get())+1)+"");
-//        articleMapper.updateByPrimaryKey(article);
-//        return "success";
-//    }
+    /**
+     * 点赞
+     * @param id
+     * @param graphid
+     * @param author
+     * @return
+     */
+    @RequestMapping("/likeArcticle")
+    public String likeArcticle(@RequestParam String id, @RequestParam String graphid,
+                                         @RequestParam String author){
+
+        Article article = articleMapper.selectByPrimaryKey(new ArticleKey(){
+            {setId(id);setGraphid(graphid);setAuthor(author);}
+        });
+        article.setUp(article.getUp()+1);
+        articleMapper.updateByPrimaryKey(article);
+        return "success";
+    }
 }
