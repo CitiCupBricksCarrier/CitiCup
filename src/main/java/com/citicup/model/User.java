@@ -593,7 +593,7 @@ public class User implements Serializable {
         this.isbinded = (byte) 0;
         this.citinum = "";
         this.name = name;
-        this.sex = "";
+        this.sex = "男";
         this.birthday = "";
         this.idnum = "";
         this.occupation = "";
