@@ -26,6 +26,27 @@ public class UserController {
     private UserMapper userMapper;
 
     /**
+     * 绑定花旗账户
+     * @param user
+     * @param citiNum 花旗账号
+     * @param citiPassword 花旗密码
+     * @return
+     */
+    @RequestMapping("bindCiticupNum")
+    public String modifyUserDetail(@RequestParam String user,
+                                   @RequestParam String citiNum,
+                                   @RequestParam String citiPassword){
+
+        User usert = userMapper.selectByPrimaryKey(user);
+        usert.setCitinum(citiNum);
+        usert.setIsbinded((byte) 1);
+
+        userMapper.updateByPrimaryKey(usert);
+
+        return "success";
+    }
+
+    /**
      * 修改用户信息
      * @param user
      * @return
@@ -63,15 +84,40 @@ public class UserController {
         return JSONObject.toJSONString(user);
     }
 
+    /**
+     * 注册
+     * @param id
+     * @param name
+     * @param password
+     * @return
+     */
     @RequestMapping("signup")
     public String signup(@RequestParam String id, @RequestParam String name,
-                         @RequestParam String password){
+                         @RequestParam String password, HttpServletRequest request){
         User user = new User(id, name, password);
         userMapper.insert(user);
+
+        HttpSession session = request.getSession();
+        //创建session
+        try {
+            session.removeAttribute("user");//清空session
+            session.removeAttribute("userinfo");
+            session.setAttribute("user", user);
+            session.setAttribute("userinfo", "");
+            session.setMaxInactiveInterval(15 * 60);
+        } catch (Exception e) {
+            System.out.println("");
+        }
 
         return "success";
     }
 
+    /**
+     * 积分充值
+     * @param id
+     * @param credits
+     * @return
+     */
     @RequestMapping("creditsCharge")
     public synchronized String creditsCharge(@RequestParam String id, @RequestParam int credits){
         User user = userMapper.selectByPrimaryKey(id);
