@@ -43,7 +43,7 @@ public class UserController {
 
         userMapper.updateByPrimaryKey(usert);
 
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     /**
@@ -70,7 +70,7 @@ public class UserController {
 
         userMapper.updateByPrimaryKey(usert);
 
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     /**
@@ -109,7 +109,7 @@ public class UserController {
             System.out.println("");
         }
 
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     /**
@@ -124,7 +124,7 @@ public class UserController {
         user.setCredit(user.getCredit() + credits);
         userMapper.updateByPrimaryKey(user);
 
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     @RequestMapping("getLoginParams")

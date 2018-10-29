@@ -48,7 +48,7 @@ public class ArticleController {
         }};
 
         articleMapper.insert(article);
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     /**
@@ -107,7 +107,7 @@ public class ArticleController {
         });
         article.setWatchnum((Integer.parseInt(article.getWatchnum())+1)+"");
         articleMapper.updateByPrimaryKey(article);
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     /**
@@ -134,7 +134,7 @@ public class ArticleController {
         userMapper.updateByPrimaryKey(userAuthor);
         userMapper.updateByPrimaryKey(userMotivator);
 
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 
     /**
@@ -153,6 +153,6 @@ public class ArticleController {
         });
         article.setUp(article.getUp()+1);
         articleMapper.updateByPrimaryKey(article);
-        return "success";
+        return new JSONObject(){{put("retmessage","success");}}.toString();
     }
 }
