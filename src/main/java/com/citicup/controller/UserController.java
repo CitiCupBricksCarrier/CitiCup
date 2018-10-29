@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.print.attribute.standard.JobOriginatingUserName;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +24,44 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    @RequestMapping("modifyUserDetail")
+    public String modifyUserDetail(@RequestParam String user){
+        JSONObject json = JSON.parseObject(user);
+        User usert = userMapper.selectByPrimaryKey(json.getString("uid"));
+
+        usert.setPhonenum(json.getString("phonenum"));
+        usert.setCitinum(json.getString("citinum"));
+        usert.setName(json.getString("name"));
+        usert.setSex(json.getString("sex"));
+        usert.setBirthday(json.getString("birthday"));
+        usert.setIdnum(json.getString("idnum"));
+        usert.setOccupation(json.getString("occupation"));
+        usert.setOrganization(json.getString("organization"));
+        usert.setContactnum(json.getString("contactnum"));
+        usert.setAddress(json.getString("address"));
+        usert.setSummary(json.getString("summary"));
+
+        userMapper.updateByPrimaryKey(usert);
+
+        return "success";
+    }
+
+    /**
+     * 得到用户信息
+     * @param id
+     * @return
+     */
+    @RequestMapping("getUserDetail")
+    public String getUserDetail(@RequestParam String id){
+        User user = userMapper.selectByPrimaryKey(id);
+        return JSONObject.toJSONString(user);
+    }
 
     @RequestMapping("signup")
     public String signup(@RequestParam String id, @RequestParam String name,
@@ -150,39 +187,4 @@ public class UserController {
         }
         out.close();
     }
-
-//    @RequestMapping("getUserDetail")
-//    public void getUserType(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        IDService idService=new ID();
-//        HttpSession session=request.getSession();
-//        String username=session.getAttribute("user").toString();
-//        UserInfo userInfo=idService.getUserByName(username);
-//        String type=userInfo.getType();
-//        String credits=userInfo.getCredits()+"";
-//        JSONObject jsonObject=new JSONObject();
-//        jsonObject.put("name",username);
-//        jsonObject.put("type",type);
-//        jsonObject.put("credit",credits);
-//        PrintWriter out=response.getWriter();
-//        out.print(jsonObject);
-//        out.close();
-//    }
-//
-//    @RequestMapping("getVisitUserDetail")
-//    public void getVisitUserDetail(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        IDService idService=new ID();
-//        String username = request.getParameter("userName");
-//        UserInfo userInfo=idService.getUserByName(username);
-//        String type=userInfo.getType();
-//        String credits=userInfo.getCredits()+"";
-//        JSONObject jsonObject=new JSONObject();
-//        jsonObject.put("name",username);
-//        jsonObject.put("type",type);
-//        jsonObject.put("credit",credits);
-//        PrintWriter out=response.getWriter();
-//        out.print(jsonObject);
-//        out.close();
-//    }
 }
