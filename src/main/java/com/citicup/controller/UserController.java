@@ -149,30 +149,41 @@ public class UserController {
                 username, password);
 
         if (acetoken == null && !username.equals("1")){
-            retMessage = "fail";
+            User user = userMapper.selectByPrimaryKey(username);
+            if(user == null){
+                retMessage = "用户不存在";
+            }
+            else if(!user.getPassword().equals(password)){
+                retMessage = "密码错误";
+            }
+            else{
+                retMessage = "success";
+            }
         }
         else {
-            try {
-                session.removeAttribute("user");//清空session
-                session.removeAttribute("userinfo");
-            } catch (Exception e) {
-                System.out.println("");
-            }
-            //获取用户信息
-            String infojson = CitiAPIHelper.getUserinfo(acetoken);
-
-            //session的创建，15分钟
-            session.setAttribute("user", username);
-            session.setAttribute("userinfo", infojson);
-            session.setMaxInactiveInterval(15 * 60);
             retMessage = "success";
-
             User user = userMapper.selectByPrimaryKey(username);
             //在数据库创建此用户
             if (user == null){
                 User usert = new User(username, username, "citicupuser");
                 userMapper.insert(usert);
             }
+        }
+
+        //登陆成功
+        if(retMessage.equals("success")){
+            //获取用户信息
+            String infojson = CitiAPIHelper.getUserinfo(acetoken);
+            try {
+                session.removeAttribute("user");//清空session
+                session.removeAttribute("userinfo");
+            } catch (Exception e) {
+                System.out.println("");
+            }
+            //session的创建，15分钟
+            session.setAttribute("user", username);
+            session.setAttribute("userinfo", infojson);
+            session.setMaxInactiveInterval(15 * 60);
         }
 
         PrintWriter out = response.getWriter();
