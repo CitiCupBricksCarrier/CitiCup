@@ -153,7 +153,7 @@ public class UserController {
             if(user == null){
                 retMessage = "用户不存在";
             }
-            else if(!user.getPassword().equals(password)){
+            else if(!user.getPassword().equals(json.getString("ori"))){
                 retMessage = "密码错误";
             }
             else{
