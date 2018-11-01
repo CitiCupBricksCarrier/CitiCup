@@ -43,6 +43,8 @@ public class ArticleController {
             setText(text);
             setTitle(title);
             setTime(time);
+            setUp(0);
+            setDown(0);
         }};
 
         articleMapper.insert(article);
