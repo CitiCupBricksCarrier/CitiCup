@@ -1,11 +1,17 @@
 package com.citicup.controller.correlationAnalysis;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.correlationAnalysis.*;
 import com.citicup.dao.dataDisplay.CompanyBasicInformationMapper;
+import com.citicup.dao.peValuation.stockPriceMapper;
 import com.citicup.model.Index;
 import com.citicup.model.correlationAnalysis.*;
 import com.citicup.model.dataDisplay.CompanyBasicInformation;
+import com.citicup.model.peValuation.stockPrice;
+import com.citicup.model.peValuation.stockPriceKey;
+import org.apache.commons.math3.fitting.GaussianCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -63,6 +70,8 @@ public class CorrelationAnalysisController {
     private AnalysisIndexVisitorMapper analysisIndexVisitorMapper;
     @Autowired
     private stockEPSMapper stockEPSMapper;
+    @Autowired
+    private stockPriceMapper stockPriceMapper;
 
     private static final String[] indexsName = new String[]{"ConsistenceExpectation", "ConsistenceExpectationPredictProfit",
             "CostProfitMarginCumu", "DealersNumChange_1M", "DividendRate", "GPOA_change", "IncometaxProfitPercent",
@@ -103,15 +112,8 @@ public class CorrelationAnalysisController {
         return JSONObject.toJSONString(idxClks);
     }
 
-    /**
-     * 指标对行业的分析
-     * @return 分析结果
-     */
-    @RequestMapping("/AnalysisIndustry")
-    public String selectAnalysisIndustry(@RequestParam String index, @RequestParam String analysisMethod) {
-        increaseIndexClicks(index);
+    private List<Index> getIndexList(String index) {
         List<Index> list = new ArrayList<>();
-
         switch (index){
             case "安全性-存货周转率":
                 List<InventoryTurnover> inv = inventoryTurnoverMapper.getAll();
@@ -276,9 +278,20 @@ public class CorrelationAnalysisController {
 
                 break;
             default:
-                return "查找错误";
+                return new ArrayList<>();
         }
-        if(list.size() == 0) { System.out.println("list长度为0"); return "查找指标为空";}
+        return list;
+    }
+
+    /**
+     * 指标对行业的分析
+     * @return 分析结果
+     */
+    @RequestMapping("/AnalysisIndustry")
+    public String selectAnalysisIndustry(@RequestParam String index, @RequestParam String analysisMethod) {
+        increaseIndexClicks(index);
+        List<Index> list = getIndexList(index);
+        if(list == null || list.size() == 0) { System.out.println("list长度为0"); return "查找指标为空";}
         String reply = getAnalysis(list, analysisMethod);
         return JSONObject.toJSONString(reply);
     }
@@ -494,6 +507,162 @@ public class CorrelationAnalysisController {
     }
 
     /**
+     * 指标值与股价散点图
+     * 数据从2016-05到2018-03
+     * @return 散点图
+     */
+    @RequestMapping("/ScatterChart")
+    public String getIndexAndPriceScatterChart(@RequestParam String index,
+                                               @RequestParam(name="stkcd",required=false,defaultValue="000012") String stkcd) {
+        int length = 23;
+        String[] months = new String[length];
+        double[] indexValues = new double[length];
+        double[] price = new double[length];
+        List<Index> list = getIndexList(index);
+        String beginDate = "2016-05-01";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(sdf.parse(beginDate, new ParsePosition(0)));
+        String month = beginDate.substring(0, 7);
+        for(int i = 0; i<length; i++){
+            int code = Integer.parseInt(stkcd);
+            String stockCode = String.valueOf(code);
+
+            for(Index idx : list) {
+                if(idx.getStkcd().equals(stockCode) && idx.getDate().substring(0,7).equals(month)){
+                    indexValues[i] = Double.parseDouble(idx.getValue());
+
+                }
+            }
+
+            for(int d = 1; d<=31; d++) {
+                String y = month.substring(0, 4); //year
+                int m = Integer.parseInt(month.substring(5));//month
+                String date = y + "/" + m + "/" + d;
+                stockPriceKey key = new stockPriceKey();
+                key.setStkcd(stockCode);
+                key.setDate(date);
+                if(null != stockPriceMapper.selectByPrimaryKey(key)){
+                    stockPrice p = stockPriceMapper.selectByPrimaryKey(key);
+                    price[i] = Double.parseDouble(p.getValue());
+                    break;
+                }
+            }
+
+            months[i] = month;
+            calendar.add(Calendar.MONTH, 1);
+            month = sdf.format(calendar.getTime()).substring(0,7);
+        }
+
+        JSONObject scatterChart = new JSONObject();
+        scatterChart.put("xAxis", months);
+        scatterChart.put("yIndex", indexValues);
+        scatterChart.put("yPrice", price);
+        return scatterChart.toJSONString();
+    }
+
+    /**
+     * 指标IC的相关图
+     * @return
+     */
+    @RequestMapping("/IcRelevantChart")
+    public String getIcRelevantChart(@RequestParam String index) {
+        JSONObject wholeCharts = new JSONObject();
+
+        wholeCharts.put("OriginalChart", getIcSequence(index));
+        wholeCharts.put("NormalDistribution", getNormalDistribution(index));
+        wholeCharts.put("QQChart", getQQChart(index));
+        wholeCharts.put("ThermodynamicChart", getThermodynamicChart(index));
+
+        Map<String, Double> icSequence = getIcSequence(getIndexList(index));
+        double sumOfIC = 0.0;
+        double sumOfPowIC = 0.0;
+        for(double ic : icSequence.values()) {
+            sumOfIC += ic;
+            sumOfPowIC += Math.pow(ic, 2);
+        }
+        double mean = sumOfIC / icSequence.size();
+        double std = Math.sqrt(sumOfPowIC - ((Math.pow(sumOfIC, 2) / icSequence.size())));;
+        wholeCharts.put("mean", mean);
+        wholeCharts.put("std", std);
+
+        return wholeCharts.toJSONString();
+    }
+
+    /**
+     * 多空收益序列直线图
+     * @return 直线图
+     */
+    @RequestMapping("/RsSequenceDiagram")
+    public String getRsSequence(@RequestParam String index) {
+        Map<String, Double> rsSequence = getRsSequence(getIndexList(index));
+        String[] rsSqeX = new String[rsSequence.size()];
+        double[] rsSqeY = new double[rsSequence.size()];
+        int i = 0;
+        for(Map.Entry<String, Double> entry : rsSequence.entrySet()) {
+            rsSqeX[i] = entry.getKey();
+            rsSqeY[i] = entry.getValue();
+            i++;
+        }
+        JSONObject rsSqeChart = new JSONObject();
+        rsSqeChart.put("xAxis", rsSqeX);
+        rsSqeChart.put("yAxis", rsSqeY);
+        return rsSqeChart.toJSONString();
+    }
+
+    private JSONObject getIcSequence(String index) {
+        Map<String, Double> icSequence = getIcSequence(getIndexList(index));
+        String[] icSqeX = new String[icSequence.size()];
+        double[] icSqeY = new double[icSequence.size()];
+        int i = 0;
+        for (Map.Entry<String, Double> entry : icSequence.entrySet()) {
+            icSqeX[i] = entry.getKey();
+            icSqeY[i] = entry.getValue();
+            i++;
+        }
+        JSONObject icSqeChart = new JSONObject();
+        icSqeChart.put("xAxis", icSqeX);
+        icSqeChart.put("yAxis", icSqeY);
+
+        return icSqeChart;
+    }
+
+    private JSONObject getNormalDistribution(String index) {
+        return null;
+    }
+
+    private JSONObject getQQChart(String index) {
+
+        return null;
+    }
+
+    private JSONObject getThermodynamicChart(String index) {
+        //x axis
+        String[] year = {"2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018"};
+        //y axis
+        String[] quarter = {"01", "02", "03", "04"};
+        JSONArray cells = new JSONArray();
+
+        Map<String, Double> icSequence = getIcSequence(getIndexList(index));
+        for (String aQuarter : quarter) {
+            for (String aYear : year) {
+                JSONObject cell = new JSONObject();
+                cell.put("x", aYear);
+                cell.put("y", aQuarter);
+                cell.put("value", icSequence.get(aYear + "-" + aQuarter));
+                cells.add(cell);
+            }
+        }
+
+        JSONObject thermodynamicChart = new JSONObject();
+        thermodynamicChart.put("xAxis", year);
+        thermodynamicChart.put("yAxis", quarter);
+        thermodynamicChart.put("dataArray", cells);
+
+        return thermodynamicChart;
+    }
+
+    /**
      * 单个指标当天增加一次访问量
      *
      */
@@ -579,19 +748,18 @@ public class CorrelationAnalysisController {
         stdOfBot = Math.sqrt(stdOfBot / size);
         if(stdOfTop * stdOfBot == 0) { System.out.println("除零错误"); }
         double result = (a - (b*c)/size) / (stdOfTop * stdOfBot);
-
+        result -=  Math.floor(result);
         return result;
     }
 
     /**
-     * 计算 IC-mean 指标
-     * @return IC-mean 指标
+     * 获取IC序列
+     * @return IC序列
      */
-    private double getIC_Mean(List<Index> list) {
+    private Map<String, Double> getIcSequence(List<Index> list) {
+        Map<String, Double> icSequence = new LinkedHashMap<>();
         List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
-        double sumOfIC = 0.0;
-
         for(stockEPS s : stockEPSList){
             if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
                 continue;
@@ -649,11 +817,42 @@ public class CorrelationAnalysisController {
                     }
                 }
             }
-            sumOfIC += getIC(series);
+            String date = quarter.substring(0,4) + "-" + quarter.substring(4,6);
+            icSequence.put(date, getIC(series));
         }
-        double IC_Mean = sumOfIC / epsPerQuarter.size();
+        return icSequence;
+    }
 
-        return IC_Mean - Math.floor(IC_Mean);
+    /**
+     * 计算 IC-mean 指标
+     * @return IC-mean 指标
+     */
+    private double getIC_Mean(List<Index> list) {
+        Map<String, Double> icSequence = getIcSequence(list);
+        double sumOfIC = 0.0;
+        for(double ic : icSequence.values()) {
+            sumOfIC += ic;
+        }
+        double IC_Mean = sumOfIC / icSequence.size();
+
+        return IC_Mean;
+    }
+
+    /**
+     * 计算 IC-Std 指标
+     * @return IC-Std 指标
+     */
+    private double getIC_Std(List<Index> list) {
+        Map<String, Double> icSequence = getIcSequence(list);
+        double sumOfIC = 0.0;
+        double sumOfPowIC = 0.0;
+        for(double ic : icSequence.values()) {
+            sumOfIC += ic;
+            sumOfPowIC += Math.pow(ic, 2);
+        }
+
+        double IC_std = Math.sqrt(sumOfPowIC - ((Math.pow(sumOfIC, 2) / icSequence.size())));
+        return IC_std;
     }
 
     /**
@@ -661,74 +860,16 @@ public class CorrelationAnalysisController {
      * @return IC-IR 指标
      */
     private double getIC_IR(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
-        Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
+        Map<String, Double> icSequence = getIcSequence(list);
         double sumOfIC = 0.0;
         double sumOfPowIC = 0.0;
-
-        for(stockEPS s : stockEPSList){
-            if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
-                continue;
-            }
-            String date = s.getDate();
-            Index index = new Index(s.getStkcd(),s.getDate(),s.getValue());
-            if(epsPerQuarter.containsKey(date)) {
-                epsPerQuarter.get(date).add(index);
-            }
-            else {
-                List<Index> listOfIndexes = new ArrayList<>();
-                listOfIndexes.add(index);
-                epsPerQuarter.put(date, listOfIndexes);
-            }
+        for(double ic : icSequence.values()) {
+            sumOfIC += ic;
+            sumOfPowIC += Math.pow(ic, 2);
         }
 
-        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空"); System.exit(0);}
-
-        for(String quarter : epsPerQuarter.keySet()) {
-            List<Index> tmp = new ArrayList<>();
-            for(Index idx : list) {
-                String[] date = idx.getDate().split("-");
-                if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
-                    switch (quarter.substring(4,6)){ // 匹配月份和季度
-                        case "01": // 第一季度
-                            if(date[1].equals("02")){
-                                tmp.add(idx);
-                            }
-                            break;
-                        case "02": // 第二季度
-                            if(date[1].equals("05")){
-                                tmp.add(idx);
-                            }
-                            break;
-                        case "03": // 第三季度
-                            if(date[1].equals("08")){
-                                tmp.add(idx);
-                            }
-                            break;
-                        case "04": // 第四季度
-                            if(date[1].equals("11")){
-                                tmp.add(idx);
-                            }
-                            break;
-                    }
-                }
-            }
-            List<String> standardizedIndexes = standardize(tmp);
-            List<String> standardizedEps = standardize(epsPerQuarter.get(quarter));
-            List<Double> series = new ArrayList<>();
-            for (String standardizedIndex : standardizedIndexes) {
-                for (int j = 0; j < standardizedEps.size(); j++) {
-                    if (standardizedIndex.equals(standardizedEps.get(j))) {
-                        series.add((double) j);
-                    }
-                }
-            }
-            sumOfIC += getIC(series);
-            sumOfPowIC += Math.pow(getIC(series), 2);
-        }
-
-        double IC_std = Math.sqrt(sumOfPowIC - ((Math.pow(sumOfIC, 2) / epsPerQuarter.size())));
-        double IC_IR = (sumOfIC / epsPerQuarter.size()) / IC_std * 10;
+        double IC_std = Math.sqrt(sumOfPowIC - ((Math.pow(sumOfIC, 2) / icSequence.size())));
+        double IC_IR = (sumOfIC / icSequence.size()) / IC_std;
 
         return IC_IR;
     }
@@ -738,87 +879,29 @@ public class CorrelationAnalysisController {
      * @return IC-T 指标
      */
     private double getIC_T(List<Index> list) {
-        List<stockEPS> stockEPSList = stockEPSMapper.getAll();
-        Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
+        Map<String, Double> icSequence = getIcSequence(list);
         double sumOfIC = 0.0;
         double sumOfPowIC = 0.0;
-
-        for(stockEPS s : stockEPSList){
-            if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
-                continue;
-            }
-            String date = s.getDate();
-            Index index =  new Index(s.getStkcd(),s.getDate(),s.getValue());
-            if(epsPerQuarter.containsKey(date)) {
-                epsPerQuarter.get(date).add(index);
-            }
-            else {
-                List<Index> listOfIndexes = new ArrayList<>();
-                listOfIndexes.add(index);
-                epsPerQuarter.put(date, listOfIndexes);
-            }
+        for(double ic : icSequence.values()) {
+            sumOfIC += ic;
+            sumOfPowIC += Math.pow(ic, 2);
         }
 
-        if(epsPerQuarter.size() <= 0) { System.out.println("股票收益内容为空"); System.exit(0);}
-
-        for(String quarter : epsPerQuarter.keySet()) {
-            List<Index> tmp = new ArrayList<>();
-            for(Index idx : list) {
-                String[] date = idx.getDate().split("-");
-                if(quarter.substring(0,4).equals(date[0])){ // 匹配年份
-                    switch (quarter.substring(4,6)){ // 匹配月份和季度
-                        case "01": // 第一季度
-                            if(date[1].equals("02")){
-                                tmp.add(idx);
-                            }
-                            break;
-                        case "02": // 第二季度
-                            if(date[1].equals("05")){
-                                tmp.add(idx);
-                            }
-                            break;
-                        case "03": // 第三季度
-                            if(date[1].equals("08")){
-                                tmp.add(idx);
-                            }
-                            break;
-                        case "04": // 第四季度
-                            if(date[1].equals("11")){
-                                tmp.add(idx);
-                            }
-                            break;
-                    }
-                }
-            }
-            List<String> standardizedIndexes = standardize(tmp);
-            List<String> standardizedEps = standardize(epsPerQuarter.get(quarter));
-            List<Double> series = new ArrayList<>();
-            for (String standardizedIndex : standardizedIndexes) {
-                for (int j = 0; j < standardizedEps.size(); j++) {
-                    if (standardizedIndex.equals(standardizedEps.get(j))) {
-                        series.add((double) j);
-                    }
-                }
-            }
-            sumOfIC += getIC(series);
-            sumOfPowIC += Math.pow(getIC(series), 2);
-        }
-
-        double IC_Var = sumOfPowIC - Math.pow((sumOfIC / epsPerQuarter.size()), 2);
-        double IC_Mean = sumOfIC / epsPerQuarter.size();
-        double IC_T = (IC_Mean - 0) / (Math.sqrt((IC_Var / epsPerQuarter.size())));
+        double IC_Var = sumOfPowIC - Math.pow((sumOfIC / icSequence.size()), 2);
+        double IC_Mean = sumOfIC / icSequence.size();
+        double IC_T = (IC_Mean - 0) / (Math.sqrt((IC_Var / icSequence.size())));
 
         return IC_T;
     }
 
     /**
-     * 计算 多空收益 指标
-     * @return 多空收益 指标
+     * 获取RS序列
+     * @return RS序列
      */
-    private double getLong_Short_Earnings(List<Index> list) {
+    private Map<String, Double> getRsSequence(List<Index> list) {
         List<stockEPS> stockEPSList = stockEPSMapper.getAll();
         Map<String, List<Index>> epsPerQuarter = new LinkedHashMap<>();
-        double sumOfRS = 0.0;
+        Map<String, Double> rsSequence = new LinkedHashMap<>();
 
         for(stockEPS s : stockEPSList){
             if(s == null || s.getValue() == null || s.getValue().equals("inf")) {
@@ -876,10 +959,24 @@ public class CorrelationAnalysisController {
                     }
                 }
             }
-            sumOfRS += getRS(series);
+            String date = quarter.substring(0, 4) + "-" + quarter.substring(4, 6);
+            rsSequence.put(date, getRS(series));
+        }
+        return rsSequence;
+    }
+
+    /**
+     * 计算 多空收益 指标
+     * @return 多空收益 指标
+     */
+    private double getLong_Short_Earnings(List<Index> list) {
+        Map<String, Double> rsSequence = getRsSequence(list);
+        double sumOfRS = 0.0;
+        for(double ic : rsSequence.values()) {
+            sumOfRS += ic;
         }
 
-        double RS = sumOfRS / epsPerQuarter.size();
+        double RS = sumOfRS / rsSequence.size();
         return RS;
     }
 
@@ -971,7 +1068,23 @@ public class CorrelationAnalysisController {
         return reply;
     }
 
-    public static void main(String[] args) {
-    }
+//    public static void main(String[] args) {
+//        WeightedObservedPoints obs = new WeightedObservedPoints();
+//        obs.add(0, 25);
+//        obs.add(1, 68);
+//        obs.add(2, 144);
+//        obs.add(3, 220);
+//        obs.add(4, 335);
+//        obs.add(5, 199);
+//        obs.add(6, 52);
+//        obs.add(7, 14);
+//        obs.add(8, 5);
+//        obs.add(9, 2);
+//
+//        double[] parameters = GaussianCurveFitter.create().fit(obs.toList());
+//        for (double i : parameters) {
+//            System.out.println(i);
+//        }
+//    }
 
 }
