@@ -33,7 +33,7 @@ public class ArticleController {
                               @RequestParam String author, @RequestParam String text,
                               @RequestParam String title){
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = df.format(new Date());
         Article article = new Article(){{
             setWatchnum("0");
