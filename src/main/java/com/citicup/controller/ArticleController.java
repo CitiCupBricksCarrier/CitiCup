@@ -1,5 +1,6 @@
 package com.citicup.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.ArticleMapper;
 import com.citicup.dao.UserMapper;
@@ -29,9 +30,14 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/newArcticle")
-    public String newArcticle(@RequestParam String id, @RequestParam String graphid,
-                              @RequestParam String author, @RequestParam String text,
-                              @RequestParam String title){
+    public String newArcticle(@RequestParam String data){
+
+        JSONObject json = JSON.parseObject(data);
+        String author = json.getString("author");
+        String graphid = json.getString("grapid");
+        String id = json.getString("id");
+        String title = json.getString("title");
+        String text = json.getString("text");
 
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = df.format(new Date());
