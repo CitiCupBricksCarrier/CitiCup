@@ -1,6 +1,7 @@
 package com.citicup.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.ArticleMapper;
 import com.citicup.dao.UserMapper;
@@ -8,10 +9,12 @@ import com.citicup.model.Article;
 import com.citicup.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +34,7 @@ public class ArticleController {
      */
     @RequestMapping("/newArcticle")
     public String newArcticle(@RequestParam String data){
+
 
         JSONObject json = JSON.parseObject(data);
         String author = json.getString("author");
