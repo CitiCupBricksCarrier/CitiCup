@@ -131,8 +131,11 @@ public interface ArticleMapper {
     })
     int updateByPrimaryKey(Article record);
 
-    @Select({"select * from article where author = #{author,jdbcType=VARCHAR}"})
+    @Select({"select * from article where author = #{author, jdbcType=VARCHAR}"})
     List<Article> selectByAuthor(String author);
+
+    @Select({"select * from article where id = #{id, jdbcType=VARCHAR}"})
+    Article selectById(String id);
 
     @Select({"select * from article"})
     List<Article> selectAll();

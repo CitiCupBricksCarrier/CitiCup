@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.citicup.dao.ArticleMapper;
 import com.citicup.dao.UserMapper;
 import com.citicup.model.Article;
-import com.citicup.model.ArticleKey;
 import com.citicup.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -77,17 +75,12 @@ public class ArticleController {
      * 得到单篇文章
      * @param id
      * @param graphid
-     * @param author
      * @return
      */
     @RequestMapping("/getSingleArctile")
-    public String getSingleArctile(@RequestParam String id, @RequestParam String graphid,
-                                         @RequestParam String author){
+    public String getSingleArctile(@RequestParam String id, @RequestParam String graphid){
 
-        Article article = articleMapper.selectByPrimaryKey(new ArticleKey(){
-            {setId(id);setGraphid(graphid);setAuthor(author);}
-        });
-
+        Article article = articleMapper.selectById(id);
         return JSONObject.toJSONString(article);
     }
 
@@ -95,16 +88,12 @@ public class ArticleController {
      * 增加文章浏览量
      * @param id
      * @param graphid
-     * @param author
      * @return
      */
     @RequestMapping("/increaseArticlesBrowse")
-    public String increaseArticlesBrowse(@RequestParam String id, @RequestParam String graphid,
-                                         @RequestParam String author){
+    public String increaseArticlesBrowse(@RequestParam String id, @RequestParam String graphid){
 
-        Article article = articleMapper.selectByPrimaryKey(new ArticleKey(){
-            {setId(id);setGraphid(graphid);setAuthor(author);}
-        });
+        Article article = articleMapper.selectById(id);
         article.setWatchnum((Integer.parseInt(article.getWatchnum())+1)+"");
         articleMapper.updateByPrimaryKey(article);
         return new JSONObject(){{put("retmessage","success");}}.toString();
@@ -141,16 +130,12 @@ public class ArticleController {
      * 点赞
      * @param id
      * @param graphid
-     * @param author
      * @return
      */
     @RequestMapping("/likeArcticle")
-    public String likeArcticle(@RequestParam String id, @RequestParam String graphid,
-                                         @RequestParam String author){
+    public String likeArcticle(@RequestParam String id, @RequestParam String graphid){
 
-        Article article = articleMapper.selectByPrimaryKey(new ArticleKey(){
-            {setId(id);setGraphid(graphid);setAuthor(author);}
-        });
+        Article article = articleMapper.selectById(id);
         article.setUp(article.getUp()+1);
         articleMapper.updateByPrimaryKey(article);
         return new JSONObject(){{put("retmessage","success");}}.toString();
