@@ -116,7 +116,11 @@ public class ArticleController {
         User userMotivator = userMapper.selectByPrimaryKey(motivater);
 
         if (userMotivator.getCredit() < credits){
-            return "credits not enough!";
+            return new JSONObject(){{put("retmessage","credits not enough");}}.toString();
+        }
+
+        if (userAuthor.getUid().equals(userMotivator.getUid())){
+            return new JSONObject(){{put("retmessage","不能给打赏自己");}}.toString();
         }
 
         userMotivator.setCredit(userMotivator.getCredit()-credits);
@@ -125,7 +129,7 @@ public class ArticleController {
         userMapper.updateByPrimaryKey(userAuthor);
         userMapper.updateByPrimaryKey(userMotivator);
 
-        return new JSONObject(){{put("retmessage","success");}}.toString();
+        return new JSONObject(){{put("retmessage","打赏成功");}}.toString();
     }
 
     /**
