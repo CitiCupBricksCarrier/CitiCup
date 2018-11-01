@@ -38,7 +38,7 @@ public class ArticleController {
 
         JSONObject json = JSON.parseObject(data);
         String author = json.getString("author");
-        String graphid = json.getString("grapid");
+        String graphid = json.getString("graphid");
         String id = json.getString("id");
         String title = json.getString("title");
         String text = json.getString("text");
